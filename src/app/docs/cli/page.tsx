@@ -1,0 +1,1 @@
+export default function Page() { return ( <div className="space-y-4"> <h1 className="text-3xl font-bold tracking-tight mb-2 capitalize">Cli</h1> <p className="text-muted-foreground">This is the Cli documentation page. More content coming soon.</p> </div> ); }
