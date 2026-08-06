@@ -1,9 +1,6 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 
 function NavLink({ href, children, isNew = false }: { href: string; children: React.ReactNode, isNew?: boolean }) {
-  // We can add logic to highlight the active link based on current path if needed,
-  // but for simplicity, we'll just render it normally for now.
   return (
     <Link href={href} className="flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground">
       {children}
@@ -18,46 +15,43 @@ export default function DocsLayout({
   children: React.ReactNode;
 }) {
   const sections = [
-    { title: "Ai Sdk", href: "/docs/ai-sdk" },
-    { title: "Api Reference", href: "/docs/api-reference" },
-    { title: "Authentication", href: "/docs/authentication" },
-    { title: "Changelog", href: "/docs/changelog" },
-    { title: "Cli", href: "/docs/cli" },
-    { title: "Components Json", href: "/docs/components-json" },
-    { title: "Dark Mode", href: "/docs/dark-mode" },
-    { title: "Dynamic Search", href: "/docs/dynamic-search" },
-    { title: "Examples", href: "/docs/examples" },
-    { title: "Figma", href: "/docs/figma" },
-    { title: "Formisch", href: "/docs/formisch" },
-    { title: "Forms", href: "/docs/forms" },
-    { title: "Get Started", href: "/docs/get-started" },
-    { title: "Github Registries", href: "/docs/github-registries" },
-    { title: "Installation", href: "/docs/installation" },
-    { title: "Introduction", href: "/docs/introduction" },
-    { title: "Javascript", href: "/docs/javascript" },
-    { title: "Legacy Docs", href: "/docs/legacy-docs" },
-    { title: "Llms Txt", href: "/docs/llms-txt" },
-    { title: "Mcp Server", href: "/docs/mcp-server" },
-    { title: "Monorepo", href: "/docs/monorepo" },
-    { title: "Namespaces", href: "/docs/namespaces" },
-    { title: "Open In V0", href: "/docs/open-in-v0" },
-    { title: "Package Imports", href: "/docs/package-imports" },
-    { title: "React Hook Form", href: "/docs/react-hook-form" },
-    { title: "Registry", href: "/docs/registry" },
-    { title: "Registry Directory", href: "/docs/registry-directory" },
-    { title: "Registry Item Json", href: "/docs/registry-item-json" },
-    { title: "Registry Json", href: "/docs/registry-json" },
-    { title: "Scroll Fade", href: "/docs/scroll-fade" },
-    { title: "Shadcn Helpers", href: "/docs/shadcn-helpers" },
-    { title: "Shadcn React", href: "/docs/shadcn-react" },
-    { title: "Shimmer", href: "/docs/shimmer" },
-    { title: "Skills", href: "/docs/skills" },
-    { title: "Tanstack Ai", href: "/docs/tanstack-ai" },
-    { title: "Tanstack Form", href: "/docs/tanstack-form" },
-    { title: "Theming", href: "/docs/theming" },
-    { title: "Typeset", href: "/docs/typeset" },
-    { title: "Utilities", href: "/docs/utilities" }
-  ];
+    {
+        "title": "Introduction",
+        "href": "/docs/introduction"
+    },
+    {
+        "title": "Components",
+        "href": "/docs/components"
+    },
+    {
+        "title": "Installation",
+        "href": "/docs/installation"
+    },
+    {
+        "title": "Theming",
+        "href": "/docs/theming"
+    },
+    {
+        "title": "CLI",
+        "href": "/docs/cli"
+    },
+    {
+        "title": "Typeset",
+        "href": "/docs/typeset"
+    },
+    {
+        "title": "Skills",
+        "href": "/docs/skills"
+    },
+    {
+        "title": "Registry",
+        "href": "/docs/registry"
+    },
+    {
+        "title": "Changelog",
+        "href": "/docs/changelog"
+    }
+];
 
   const components = [
     { title: "Accordion", href: "/docs/components/accordion" },
@@ -108,9 +102,11 @@ export default function DocsLayout({
     { title: "Radio Group", href: "/docs/components/radio-group" },
     { title: "Resizable", href: "/docs/components/resizable" },
     { title: "Scroll Area", href: "/docs/components/scroll-area" },
+    { title: "Scroll Fade", href: "/docs/components/scroll-fade" },
     { title: "Select", href: "/docs/components/select" },
     { title: "Separator", href: "/docs/components/separator" },
     { title: "Sheet", href: "/docs/components/sheet" },
+    { title: "Shimmer", href: "/docs/components/shimmer" },
     { title: "Sidebar", href: "/docs/components/sidebar" },
     { title: "Skeleton", href: "/docs/components/skeleton" },
     { title: "Slider", href: "/docs/components/slider" },
@@ -126,14 +122,75 @@ export default function DocsLayout({
     { title: "Typography", href: "/docs/components/typography" }
   ];
 
+  const registryItems = [
+    {
+        "title": "Registry",
+        "href": "/docs/registry"
+    },
+    {
+        "title": "Introduction",
+        "href": "/docs/introduction"
+    },
+    {
+        "title": "Getting Started",
+        "href": "/docs/get-started"
+    },
+    {
+        "title": "GitHub Registries",
+        "href": "/docs/github-registries"
+    },
+    {
+        "title": "Registry Directory",
+        "href": "/docs/registry-directory"
+    },
+    {
+        "title": "Examples",
+        "href": "/docs/examples"
+    },
+    {
+        "title": "Namespaces",
+        "href": "/docs/namespaces"
+    },
+    {
+        "title": "Authentication",
+        "href": "/docs/authentication"
+    },
+    {
+        "title": "Dynamic Search",
+        "href": "/docs/dynamic-search"
+    },
+    {
+        "title": "MCP Server",
+        "href": "/docs/mcp-server"
+    },
+    {
+        "title": "Open in v0",
+        "href": "/docs/open-in-v0"
+    },
+    {
+        "title": "API Reference",
+        "href": "/docs/api-reference"
+    },
+    {
+        "title": "registry.json",
+        "href": "/docs/registry-json"
+    },
+    {
+        "title": "registry-item.json",
+        "href": "/docs/registry-item-json"
+    }
+];
+
   return (
     <div className="container mx-auto px-4 max-w-screen-2xl">
       <div className="flex flex-col md:flex-row gap-6 md:gap-10 py-8">
         <aside className="w-full md:w-[220px] lg:w-[240px] shrink-0">
           <div className="sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pb-10">
             <div className="space-y-6">
+              
+              {/* Sections */}
               <div className="py-2">
-                <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">Getting Started</h4>
+                <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">Sections</h4>
                 <div className="grid grid-flow-row auto-rows-max text-sm">
                   {sections.map((item) => (
                     <NavLink key={item.href} href={item.href}>{item.title}</NavLink>
@@ -141,6 +198,7 @@ export default function DocsLayout({
                 </div>
               </div>
               
+              {/* Components */}
               <div className="py-2">
                 <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">Components</h4>
                 <div className="grid grid-flow-row auto-rows-max text-sm">
@@ -149,6 +207,17 @@ export default function DocsLayout({
                   ))}
                 </div>
               </div>
+
+              {/* Registry */}
+              <div className="py-2">
+                <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">Registry</h4>
+                <div className="grid grid-flow-row auto-rows-max text-sm">
+                  {registryItems.map((item) => (
+                    <NavLink key={item.href} href={item.href}>{item.title}</NavLink>
+                  ))}
+                </div>
+              </div>
+
             </div>
           </div>
         </aside>

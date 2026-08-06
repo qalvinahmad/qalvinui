@@ -75,10 +75,10 @@ export function SiteHeader() {
                 Docs
               </Link>
               <Link
-                href="/components"
+                href="/docs/components/accordion"
                 className={cn(
                   "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/components") ? "text-foreground" : "text-foreground/60"
+                  pathname?.startsWith("/docs/components") ? "text-foreground" : "text-foreground/60"
                 )}
               >
                 Components
@@ -102,22 +102,40 @@ export function SiteHeader() {
                 Charts
               </Link>
               <Link
-                href="/themes"
+                href="/typeset"
                 className={cn(
                   "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/themes") ? "text-foreground" : "text-foreground/60"
+                  pathname?.startsWith("/typeset") ? "text-foreground" : "text-foreground/60"
                 )}
               >
-                Themes
+                Typeset
               </Link>
               <Link
-                href="/examples"
+                href="/create"
                 className={cn(
                   "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/examples") ? "text-foreground" : "text-foreground/60"
+                  pathname?.startsWith("/create") ? "text-foreground" : "text-foreground/60"
                 )}
               >
-                Examples
+                Create
+              </Link>
+              <Link
+                href="https://qalvinfont.vercel.app/"
+                target="_blank"
+                className={cn(
+                  "transition-colors hover:text-foreground/80 text-foreground/60"
+                )}
+              >
+                Font
+              </Link>
+              <Link
+                href="/colors"
+                className={cn(
+                  "transition-colors hover:text-foreground/80",
+                  pathname?.startsWith("/colors") ? "text-foreground" : "text-foreground/60"
+                )}
+              >
+                Color
               </Link>
             </nav>
           </div>
