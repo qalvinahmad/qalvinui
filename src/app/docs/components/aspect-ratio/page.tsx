@@ -121,7 +121,34 @@ export default function AspectRatioPage() {
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
-        <CodeBlock code={code} />
+        <Tabs defaultValue="tsx" className="w-full">
+          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
+            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .tsx
+            </TabsTrigger>
+            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .ts
+            </TabsTrigger>
+            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .jsx
+            </TabsTrigger>
+            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .js
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="tsx" className="mt-6">
+            <CodeBlock code={code} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-6">
+            <CodeBlock code={code} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-6">
+            <CodeBlock code={code} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-6">
+            <CodeBlock code={code} language="js" />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

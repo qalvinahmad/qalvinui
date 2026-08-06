@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
 import { ChevronDown, Check, Copy } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -26,6 +27,52 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
       <pre className="overflow-x-auto">
         <code className="text-foreground/80">{code}</code>
       </pre>
+    </div>
+  );
+}
+
+function DummyAccordion() {
+  const [openItem, setOpenItem] = useState<string | null>(null);
+
+  const toggle = (id: string) => {
+    setOpenItem(openItem === id ? null : id);
+  };
+
+  return (
+    <div className="w-full max-w-md space-y-2">
+      <div className="border-b">
+        <button onClick={() => toggle("item-1")} className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline text-left">
+          What are your shipping options?
+          <ChevronDown className={cn("h-4 w-4 shrink-0 transition-transform duration-200", openItem === "item-1" ? "rotate-180" : "")} />
+        </button>
+        {openItem === "item-1" && (
+          <div className="pb-4 text-sm text-muted-foreground animate-in slide-in-from-top-1 fade-in-0 duration-200">
+            We offer standard and expedited shipping for all orders.
+          </div>
+        )}
+      </div>
+      <div className="border-b">
+        <button onClick={() => toggle("item-2")} className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline text-left">
+          What is your return policy?
+          <ChevronDown className={cn("h-4 w-4 shrink-0 transition-transform duration-200", openItem === "item-2" ? "rotate-180" : "")} />
+        </button>
+        {openItem === "item-2" && (
+          <div className="pb-4 text-sm text-muted-foreground animate-in slide-in-from-top-1 fade-in-0 duration-200">
+            You can return any item within 30 days of receipt.
+          </div>
+        )}
+      </div>
+      <div className="border-b border-transparent">
+        <button onClick={() => toggle("item-3")} className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline text-left">
+          How can I contact customer support?
+          <ChevronDown className={cn("h-4 w-4 shrink-0 transition-transform duration-200", openItem === "item-3" ? "rotate-180" : "")} />
+        </button>
+        {openItem === "item-3" && (
+          <div className="pb-4 text-sm text-muted-foreground animate-in slide-in-from-top-1 fade-in-0 duration-200">
+            You can reach our support team via email at support@example.com.
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -82,27 +129,7 @@ export default function AccordionPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Accordion Component for preview */}
-              <div className="w-full max-w-md space-y-2">
-                <div className="border-b">
-                  <button className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline">
-                    What are your shipping options?
-                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-                  </button>
-                </div>
-                <div className="border-b">
-                  <button className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline">
-                    What is your return policy?
-                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-                  </button>
-                </div>
-                <div className="border-b border-transparent">
-                  <button className="flex w-full items-center justify-between py-4 font-medium transition-all hover:underline">
-                    How can I contact customer support?
-                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-                  </button>
-                </div>
-              </div>
+              <DummyAccordion />
             </div>
           </TabsContent>
         </Tabs>
@@ -146,7 +173,34 @@ export default function AccordionPage() {
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
-        <CodeBlock code={accordionCode} />
+        <Tabs defaultValue="tsx" className="w-full">
+          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
+            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .tsx
+            </TabsTrigger>
+            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .ts
+            </TabsTrigger>
+            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .jsx
+            </TabsTrigger>
+            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">
+              .js
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="tsx" className="mt-6">
+            <CodeBlock code={accordionCode} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-6">
+            <CodeBlock code={accordionCode} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-6">
+            <CodeBlock code={accordionCode} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-6">
+            <CodeBlock code={accordionCode} language="js" />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

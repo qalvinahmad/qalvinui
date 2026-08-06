@@ -3,6 +3,21 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
+interface TabsContextValue {
+  activeTab: string;
+  setActiveTab: (value: string) => void;
+}
+
+const TabsContext = React.createContext<TabsContextValue | undefined>(undefined);
+
+function useTabs() {
+  const context = React.useContext(TabsContext);
+  if (!context) {
+    throw new Error("Tabs components must be used within a Tabs provider");
+  }
+  return context;
+}
+
 interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultValue?: string;
 }
@@ -11,14 +26,11 @@ export function Tabs({ defaultValue, children, className, ...props }: TabsProps)
   const [activeTab, setActiveTab] = React.useState(defaultValue || "");
 
   return (
-    <div className={cn("w-full", className)} {...props}>
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child, { activeTab, setActiveTab } as any);
-        }
-        return child;
-      })}
-    </div>
+    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+      <div className={cn("w-full", className)} {...props}>
+        {children}
+      </div>
+    </TabsContext.Provider>
   );
 }
 
@@ -40,11 +52,11 @@ export function TabsTrigger({
   value,
   children,
   className,
-  activeTab,
-  setActiveTab,
   ...props
 }: any) {
+  const { activeTab, setActiveTab } = useTabs();
   const isActive = activeTab === value;
+  
   return (
     <button
       type="button"
@@ -61,7 +73,9 @@ export function TabsTrigger({
   );
 }
 
-export function TabsContent({ value, children, className, activeTab, ...props }: any) {
+export function TabsContent({ value, children, className, ...props }: any) {
+  const { activeTab } = useTabs();
+  
   if (activeTab !== value) return null;
   return (
     <div
