@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Search, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const Github = ({ className }: { className?: string }) => (
   <svg
@@ -21,6 +26,28 @@ const Github = ({ className }: { className?: string }) => (
 );
 
 export function SiteHeader() {
+  const pathname = usePathname();
+  const [stars, setStars] = useState<string>("...");
+
+  useEffect(() => {
+    fetch("https://api.github.com/repos/qalvinahmad/qalvinui")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.stargazers_count !== undefined) {
+          // Format number (e.g. 1500 -> 1.5k) if needed, but for now exact string is fine
+          const count = data.stargazers_count;
+          if (count >= 1000) {
+            setStars((count / 1000).toFixed(1) + "k");
+          } else {
+            setStars(count.toString());
+          }
+        } else {
+          setStars("0");
+        }
+      })
+      .catch(() => setStars("0"));
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-14 max-w-screen-2xl items-center px-4">
@@ -28,43 +55,64 @@ export function SiteHeader() {
           <nav className="flex items-center gap-4 text-sm lg:gap-6 font-medium">
             <Link
               href="/"
-              className="transition-colors hover:text-foreground/80 text-foreground"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname === "/" ? "text-foreground" : "text-foreground/60"
+              )}
             >
               Home
             </Link>
             <Link
               href="/docs/installation"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/docs") ? "text-foreground" : "text-foreground/60"
+              )}
             >
               Docs
             </Link>
             <Link
               href="/components"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/components") ? "text-foreground" : "text-foreground/60"
+              )}
             >
               Components
             </Link>
             <Link
               href="/blocks"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/blocks") ? "text-foreground" : "text-foreground/60"
+              )}
             >
               Blocks
             </Link>
             <Link
               href="/charts"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/charts") ? "text-foreground" : "text-foreground/60"
+              )}
             >
               Charts
             </Link>
             <Link
               href="/themes"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/themes") ? "text-foreground" : "text-foreground/60"
+              )}
             >
               Themes
             </Link>
             <Link
               href="/examples"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/examples") ? "text-foreground" : "text-foreground/60"
+              )}
             >
               Examples
             </Link>
@@ -81,10 +129,10 @@ export function SiteHeader() {
             </button>
           </div>
           <nav className="flex items-center gap-2">
-            <Link href="https://github.com" target="_blank" rel="noreferrer">
+            <Link href="https://github.com/qalvinahmad/qalvinui" target="_blank" rel="noreferrer">
               <div className="inline-flex items-center gap-2 text-sm font-medium border border-border/40 rounded-md px-3 py-1.5 bg-muted/50 hover:bg-muted/80 transition-colors">
                 <Github className="h-4 w-4" />
-                <span>121k</span>
+                <span>{stars}</span>
               </div>
             </Link>
             <Button variant="ghost" size="icon" className="h-8 w-8 px-0">
