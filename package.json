@@ -1,7 +1,32 @@
 {
-  "name": "qalvinui",
+  "name": "@alvinahmad/qalvinui",
   "version": "0.1.0",
-  "private": true,
+  "description": "Modern UI component library built with React, Base UI, and Tailwind CSS",
+  "bin": {
+    "qalvinui": "./cli/index.js"
+  },
+  "files": [
+    "cli/**",
+    "src/components/ui/**",
+    "src/lib/**"
+  ],
+  "keywords": [
+    "react",
+    "components",
+    "ui",
+    "tailwindcss",
+    "base-ui",
+    "design-system"
+  ],
+  "author": "qalvinahmad",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qalvinahmad/qalvinui.git"
+  },
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
