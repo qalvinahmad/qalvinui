@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, Loader2 } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,12 +31,138 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function ProgressPage() {
-  const code = `import { Progress } from "@qalvinahmad/ui"
+function ProgressDemo() {
+  return (
+    <div className="w-full max-w-sm space-y-4">
+      <Progress value={66} />
+    </div>
+  );
+}
 
-<Progress>
-  Example
-</Progress>`;
+export default function ProgressDocPage() {
+  const codeTsx = `import { Progress } from "@/components/ui/progress"
+
+export function ProgressDemo() {
+  return <Progress value={66} className="w-[60%]" />
+}`;
+  const codeTs = `// Types & Utility Definition for Progress
+import { type VariantProps } from "class-variance-authority";
+
+export interface progressConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type progressState = "idle" | "loading" | "success" | "error";
+
+export function handleprogressState(state: progressState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { Progress } from "@/components/ui/progress"
+
+export function ProgressDemo() {
+  return <Progress value={66} className="w-[60%]" />
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Progress
+export const defaultprogressConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Progress action triggered", event);
+  },
+};
+
+export function checkprogressReady(config = defaultprogressConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `"use client"
+
+import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
+
+import { cn } from "@/lib/utils"
+
+function Progress({
+  className,
+  children,
+  value,
+  ...props
+}: ProgressPrimitive.Root.Props) {
+  return (
+    <ProgressPrimitive.Root
+      value={value}
+      data-slot="progress"
+      className={cn("flex flex-wrap gap-3", className)}
+      {...props}
+    >
+      {children}
+      <ProgressTrack>
+        <ProgressIndicator />
+      </ProgressTrack>
+    </ProgressPrimitive.Root>
+  )
+}
+
+function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
+  return (
+    <ProgressPrimitive.Track
+      className={cn(
+        "relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted",
+        className
+      )}
+      data-slot="progress-track"
+      {...props}
+    />
+  )
+}
+
+function ProgressIndicator({
+  className,
+  ...props
+}: ProgressPrimitive.Indicator.Props) {
+  return (
+    <ProgressPrimitive.Indicator
+      data-slot="progress-indicator"
+      className={cn("h-full bg-primary transition-all", className)}
+      {...props}
+    />
+  )
+}
+
+function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
+  return (
+    <ProgressPrimitive.Label
+      className={cn("text-sm font-medium", className)}
+      data-slot="progress-label"
+      {...props}
+    />
+  )
+}
+
+function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
+  return (
+    <ProgressPrimitive.Value
+      className={cn(
+        "ml-auto text-sm text-muted-foreground tabular-nums",
+        className
+      )}
+      data-slot="progress-value"
+      {...props}
+    />
+  )
+}
+
+export {
+  Progress,
+  ProgressTrack,
+  ProgressIndicator,
+  ProgressLabel,
+  ProgressValue,
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -63,15 +190,17 @@ export default function ProgressPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Loader2 className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Progress Example
-                </div>
-              </div>
+              <ProgressDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <ProgressDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <ProgressDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +229,15 @@ export default function ProgressPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add progress" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/progress.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +245,24 @@ export default function ProgressPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

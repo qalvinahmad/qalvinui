@@ -2,7 +2,9 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, CheckSquare } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,12 +32,118 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function CheckboxPage() {
-  const code = `import { Checkbox } from "@qalvinahmad/ui"
+function CheckboxDemo() {
+  return (
+    <div className="flex items-center space-x-2">
+      <Checkbox id="terms" defaultChecked />
+      <Label
+        htmlFor="terms"
+        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        Accept terms and conditions
+      </Label>
+    </div>
+  );
+}
 
-<Checkbox>
-  Example
-</Checkbox>`;
+export default function CheckboxDocPage() {
+  const codeTsx = `import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+
+export function CheckboxDemo() {
+  return (
+    <div className="flex items-center space-x-2">
+      <Checkbox id="terms" defaultChecked />
+      <Label
+        htmlFor="terms"
+        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        Accept terms and conditions
+      </Label>
+    </div>
+  )
+}`;
+  const codeTs = `import { Checkbox } from "@/components/ui/checkbox"
+import type { VariantProps } from "class-variance-authority"
+
+// Checkbox component props type
+interface CheckboxProps {
+  id?: string
+  checked?: boolean
+  defaultChecked?: boolean
+  onCheckedChange?: (checked: boolean) => void
+  disabled?: boolean
+  className?: string
+}
+
+export type { CheckboxProps }`;
+  const codeJsx = `import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+
+function CheckboxDemo() {
+  return (
+    <div className="flex items-center space-x-2">
+      <Checkbox id="terms" defaultChecked />
+      <Label
+        htmlFor="terms"
+        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        Accept terms and conditions
+      </Label>
+    </div>
+  )
+}
+
+export default CheckboxDemo`;
+  const codeJs = `// Checkbox state management example
+const checkbox = document.querySelector('[data-slot="checkbox"]')
+
+if (checkbox) {
+  checkbox.addEventListener('click', () => {
+    const isChecked = checkbox.getAttribute('data-checked') === 'true'
+    checkbox.setAttribute('data-checked', String(!isChecked))
+    
+    // Update visual state
+    if (isChecked) {
+      checkbox.classList.remove('bg-primary', 'text-primary-foreground', 'border-primary')
+    } else {
+      checkbox.classList.add('bg-primary', 'text-primary-foreground', 'border-primary')
+    }
+  })
+}`;
+
+  const manualSource = `"use client"
+
+import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox"
+
+import { cn } from "@/lib/utils"
+import { CheckIcon } from "lucide-react"
+
+function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
+  return (
+    <CheckboxPrimitive.Root
+      data-slot="checkbox"
+      className={cn(
+        "peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors outline-none group-has-disabled/field:opacity-50 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary",
+        className
+      )}
+      {...props}
+    >
+      <CheckboxPrimitive.Indicator
+        data-slot="checkbox-indicator"
+        className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
+      >
+        <CheckIcon
+        />
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
+  )
+}
+
+export { Checkbox }
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -63,15 +171,17 @@ export default function CheckboxPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <CheckSquare className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Checkbox Example
-                </div>
-              </div>
+              <CheckboxDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <CheckboxDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <CheckboxDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +210,15 @@ export default function CheckboxPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add checkbox" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/checkbox.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +226,24 @@ export default function CheckboxPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

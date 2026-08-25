@@ -2,7 +2,15 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, Table } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,12 +38,236 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function TablePage() {
-  const code = `import { Table } from "@qalvinahmad/ui"
+function TableDemo() {
+  const invoices = [
+    { invoice: "INV001", status: "Paid", total: "$250.00", method: "Credit Card" },
+    { invoice: "INV002", status: "Pending", total: "$150.00", method: "PayPal" },
+    { invoice: "INV003", status: "Unpaid", total: "$350.00", method: "Bank Transfer" },
+  ];
 
-<Table>
-  Example
-</Table>`;
+  return (
+    <Table className="max-w-md">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Invoice</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {invoices.map((inv) => (
+          <TableRow key={inv.invoice}>
+            <TableCell className="font-medium">{inv.invoice}</TableCell>
+            <TableCell>{inv.status}</TableCell>
+            <TableCell className="text-right">{inv.total}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
+export default function TableDocPage() {
+  const codeTsx = `import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+export function TableDemo() {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Invoice</TableHead>
+          <TableHead>Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>INV001</TableCell>
+          <TableCell>Paid</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Table
+import { type VariantProps } from "class-variance-authority";
+
+export interface tableConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type tableState = "idle" | "loading" | "success" | "error";
+
+export function handletableState(state: tableState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+export function TableDemo() {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Invoice</TableHead>
+          <TableHead>Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>INV001</TableCell>
+          <TableCell>Paid</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Table
+export const defaulttableConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Table action triggered", event);
+  },
+};
+
+export function checktableReady(config = defaulttableConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `"use client"
+
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+function Table({ className, ...props }: React.ComponentProps<"table">) {
+  return (
+    <div
+      data-slot="table-container"
+      className="relative w-full overflow-x-auto"
+    >
+      <table
+        data-slot="table"
+        className={cn("w-full caption-bottom text-sm", className)}
+        {...props}
+      />
+    </div>
+  )
+}
+
+function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
+  return (
+    <thead
+      data-slot="table-header"
+      className={cn("[&_tr]:border-b", className)}
+      {...props}
+    />
+  )
+}
+
+function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
+  return (
+    <tbody
+      data-slot="table-body"
+      className={cn("[&_tr:last-child]:border-0", className)}
+      {...props}
+    />
+  )
+}
+
+function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
+  return (
+    <tfoot
+      data-slot="table-footer"
+      className={cn(
+        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+  return (
+    <tr
+      data-slot="table-row"
+      className={cn(
+        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+  return (
+    <th
+      data-slot="table-head"
+      className={cn(
+        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+  return (
+    <td
+      data-slot="table-cell"
+      className={cn(
+        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function TableCaption({
+  className,
+  ...props
+}: React.ComponentProps<"caption">) {
+  return (
+    <caption
+      data-slot="table-caption"
+      className={cn("mt-4 text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
+
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -63,15 +295,17 @@ export default function TablePage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Table className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Table Example
-                </div>
-              </div>
+              <TableDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <TableDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <TableDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +334,15 @@ export default function TablePage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add table" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/table.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +350,24 @@ export default function TablePage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

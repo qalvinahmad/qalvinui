@@ -2,7 +2,16 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, List } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,12 +39,302 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function SelectPage() {
-  const code = `import { Select } from "@qalvinahmad/ui"
+function SelectDemo() {
+  return (
+    <Select defaultValue="apple">
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Fruits</SelectLabel>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+          <SelectItem value="blueberry">Blueberry</SelectItem>
+          <SelectItem value="grapes">Grapes</SelectItem>
+          <SelectItem value="pineapple">Pineapple</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
 
-<Select>
-  Example
-</Select>`;
+export default function SelectDocPage() {
+  const codeTsx = `import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+export function SelectDemo() {
+  return (
+    <Select>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="orange">Orange</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Select
+import { type VariantProps } from "class-variance-authority";
+
+export interface selectConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type selectState = "idle" | "loading" | "success" | "error";
+
+export function handleselectState(state: selectState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+export function SelectDemo() {
+  return (
+    <Select>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="orange">Orange</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Select
+export const defaultselectConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Select action triggered", event);
+  },
+};
+
+export function checkselectReady(config = defaultselectConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `"use client"
+
+import * as React from "react"
+import { Select as SelectPrimitive } from "@base-ui/react/select"
+
+import { cn } from "@/lib/utils"
+import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react"
+
+const Select = SelectPrimitive.Root
+
+function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
+  return (
+    <SelectPrimitive.Group
+      data-slot="select-group"
+      className={cn("scroll-my-1 p-1", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
+  return (
+    <SelectPrimitive.Value
+      data-slot="select-value"
+      className={cn("flex flex-1 text-left", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectTrigger({
+  className,
+  size = "default",
+  children,
+  ...props
+}: SelectPrimitive.Trigger.Props & {
+  size?: "sm" | "default"
+}) {
+  return (
+    <SelectPrimitive.Trigger
+      data-slot="select-trigger"
+      data-size={size}
+      className={cn(
+        "flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <SelectPrimitive.Icon
+        render={
+          <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
+        }
+      />
+    </SelectPrimitive.Trigger>
+  )
+}
+
+function SelectContent({
+  className,
+  children,
+  side = "bottom",
+  sideOffset = 4,
+  align = "center",
+  alignOffset = 0,
+  alignItemWithTrigger = true,
+  ...props
+}: SelectPrimitive.Popup.Props &
+  Pick<
+    SelectPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
+  >) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Positioner
+        side={side}
+        sideOffset={sideOffset}
+        align={align}
+        alignOffset={alignOffset}
+        alignItemWithTrigger={alignItemWithTrigger}
+        className="isolate z-50"
+      >
+        <SelectPrimitive.Popup
+          data-slot="select-content"
+          data-align-trigger={alignItemWithTrigger}
+          className={cn("relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95", className )}
+          {...props}
+        >
+          <SelectScrollUpButton />
+          <SelectPrimitive.List>{children}</SelectPrimitive.List>
+          <SelectScrollDownButton />
+        </SelectPrimitive.Popup>
+      </SelectPrimitive.Positioner>
+    </SelectPrimitive.Portal>
+  )
+}
+
+function SelectLabel({
+  className,
+  ...props
+}: SelectPrimitive.GroupLabel.Props) {
+  return (
+    <SelectPrimitive.GroupLabel
+      data-slot="select-label"
+      className={cn("px-1.5 py-1 text-xs text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectItem({
+  className,
+  children,
+  ...props
+}: SelectPrimitive.Item.Props) {
+  return (
+    <SelectPrimitive.Item
+      data-slot="select-item"
+      className={cn(
+        "relative flex w-full cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        className
+      )}
+      {...props}
+    >
+      <SelectPrimitive.ItemText className="flex flex-1 shrink-0 gap-2 whitespace-nowrap">
+        {children}
+      </SelectPrimitive.ItemText>
+      <SelectPrimitive.ItemIndicator
+        render={
+          <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
+        }
+      >
+        <CheckIcon className="pointer-events-none" />
+      </SelectPrimitive.ItemIndicator>
+    </SelectPrimitive.Item>
+  )
+}
+
+function SelectSeparator({
+  className,
+  ...props
+}: SelectPrimitive.Separator.Props) {
+  return (
+    <SelectPrimitive.Separator
+      data-slot="select-separator"
+      className={cn("pointer-events-none -mx-1 my-1 h-px bg-border", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectScrollUpButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>) {
+  return (
+    <SelectPrimitive.ScrollUpArrow
+      data-slot="select-scroll-up-button"
+      className={cn(
+        "top-0 z-10 flex w-full cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    >
+      <ChevronUpIcon
+      />
+    </SelectPrimitive.ScrollUpArrow>
+  )
+}
+
+function SelectScrollDownButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>) {
+  return (
+    <SelectPrimitive.ScrollDownArrow
+      data-slot="select-scroll-down-button"
+      className={cn(
+        "bottom-0 z-10 flex w-full cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    >
+      <ChevronDownIcon
+      />
+    </SelectPrimitive.ScrollDownArrow>
+  )
+}
+
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -63,15 +362,17 @@ export default function SelectPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <List className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Select Example
-                </div>
-              </div>
+              <SelectDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <SelectDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <SelectDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +401,15 @@ export default function SelectPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add select" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/select.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +417,24 @@ export default function SelectPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, User } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,12 +31,192 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function AvatarPage() {
-  const code = `import { Avatar } from "@qalvinahmad/ui"
+function AvatarDemo() {
+  return (
+    <div className="flex items-center gap-4">
+      <Avatar className="h-12 w-12">
+        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+      <Avatar className="h-10 w-10">
+        <AvatarImage src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Sarah" />
+        <AvatarFallback>SR</AvatarFallback>
+      </Avatar>
+      <Avatar className="h-8 w-8">
+        <AvatarFallback className="bg-primary text-primary-foreground font-semibold">QA</AvatarFallback>
+      </Avatar>
+    </div>
+  );
+}
 
-<Avatar>
-  Example
-</Avatar>`;
+export default function AvatarDocPage() {
+  const codeTsx = `import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+
+export function AvatarDemo() {
+  return (
+    <Avatar>
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Avatar
+import { type VariantProps } from "class-variance-authority";
+
+export interface avatarConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type avatarState = "idle" | "loading" | "success" | "error";
+
+export function handleavatarState(state: avatarState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+
+export function AvatarDemo() {
+  return (
+    <Avatar>
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Avatar
+export const defaultavatarConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Avatar action triggered", event);
+  },
+};
+
+export function checkavatarReady(config = defaultavatarConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `"use client"
+
+import * as React from "react"
+import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
+
+import { cn } from "@/lib/utils"
+
+function Avatar({
+  className,
+  size = "default",
+  ...props
+}: AvatarPrimitive.Root.Props & {
+  size?: "default" | "sm" | "lg"
+}) {
+  return (
+    <AvatarPrimitive.Root
+      data-slot="avatar"
+      data-size={size}
+      className={cn(
+        "group/avatar relative flex size-8 shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
+  return (
+    <AvatarPrimitive.Image
+      data-slot="avatar-image"
+      className={cn(
+        "aspect-square size-full rounded-full object-cover",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function AvatarFallback({
+  className,
+  ...props
+}: AvatarPrimitive.Fallback.Props) {
+  return (
+    <AvatarPrimitive.Fallback
+      data-slot="avatar-fallback"
+      className={cn(
+        "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="avatar-badge"
+      className={cn(
+        "absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground bg-blend-color ring-2 ring-background select-none",
+        "group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden",
+        "group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2",
+        "group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="avatar-group"
+      className={cn(
+        "group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function AvatarGroupCount({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="avatar-group-count"
+      className={cn(
+        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarBadge,
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -63,15 +244,17 @@ export default function AvatarPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <User className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Avatar Example
-                </div>
-              </div>
+              <AvatarDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <AvatarDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <AvatarDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +283,15 @@ export default function AvatarPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add avatar" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/avatar.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +299,24 @@ export default function AvatarPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

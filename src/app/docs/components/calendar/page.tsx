@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, CalendarDays } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -31,11 +32,128 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
 }
 
 export default function CalendarPage() {
-  const code = `import { Calendar } from "@qalvinahmad/ui"
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
-<Calendar>
-  Example
-</Calendar>`;
+  const codeTsx = `"use client";
+
+import * as React from "react";
+import { Calendar } from "@/components/ui/calendar";
+
+export function CalendarDemo() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+  return (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+      className="rounded-2xl border shadow-sm"
+    />
+  );
+}`;
+
+  const codeTs = `import { type VariantProps } from "class-variance-authority";
+
+export interface CalendarConfig {
+  disabled?: boolean;
+  className?: string;
+  selected?: Date;
+  onSelect?: (date: Date | undefined) => void;
+}`;
+
+  const codeJsx = `"use client";
+
+import React from "react";
+import { Calendar } from "@/components/ui/calendar";
+
+export function CalendarDemo() {
+  const [date, setDate] = React.useState(new Date());
+
+  return (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+      className="rounded-2xl border shadow-sm"
+    />
+  );
+}`;
+
+  const codeJs = `export const defaultCalendarConfig = {
+  disabled: false,
+  mode: "single",
+};`;
+
+  const manualSource = `"use client"
+
+import * as React from "react"
+import { DayPicker } from "react-day-picker"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+
+export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  ...props
+}: CalendarProps) {
+  return (
+    <DayPicker
+      showOutsideDays={showOutsideDays}
+      className={cn("p-4 bg-card rounded-2xl border border-border shadow-sm inline-block", className)}
+      classNames={{
+        months: "flex flex-col sm:flex-row gap-4",
+        month: "space-y-4",
+        month_caption: "flex justify-center pt-1 relative items-center mb-2",
+        caption_label: "text-sm font-semibold text-foreground",
+        nav: "space-x-1 flex items-center",
+        button_previous: cn(
+          buttonVariants({ variant: "outline" }),
+          "h-7 w-7 bg-transparent p-0 opacity-70 hover:opacity-100 absolute left-1 top-0 rounded-lg"
+        ),
+        button_next: cn(
+          buttonVariants({ variant: "outline" }),
+          "h-7 w-7 bg-transparent p-0 opacity-70 hover:opacity-100 absolute right-1 top-0 rounded-lg"
+        ),
+        month_grid: "w-full border-collapse space-y-1",
+        weekdays: "flex justify-between mb-2",
+        weekday:
+          "text-muted-foreground rounded-md w-9 font-medium text-[0.8rem] text-center",
+        week: "flex w-full mt-1 justify-between gap-1",
+        day: "h-9 w-9 p-0 font-normal text-center text-sm rounded-lg flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        day_button: "h-9 w-9 p-0 font-normal rounded-lg flex items-center justify-center w-full h-full",
+        selected:
+          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground font-semibold rounded-lg",
+        today: "bg-muted text-foreground font-bold border border-border/80",
+        outside:
+          "day-outside text-muted-foreground opacity-40 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+        disabled: "text-muted-foreground opacity-30 cursor-not-allowed",
+        range_middle:
+          "aria-selected:bg-accent aria-selected:text-accent-foreground rounded-none",
+        hidden: "invisible",
+        ...classNames,
+      }}
+      components={{
+        Chevron: ({ orientation }) => {
+          if (orientation === "left") {
+            return <ChevronLeft className="h-4 w-4" />
+          }
+          return <ChevronRight className="h-4 w-4" />
+        },
+      }}
+      {...props}
+    />
+  )
+}
+Calendar.displayName = "Calendar"
+
+export { Calendar }`;
+
+  const manualDeps = `npm i react-day-picker date-fns @base-ui/react clsx tailwind-merge lucide-react`;
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -61,17 +179,34 @@ export default function CalendarPage() {
               </TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
-            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <CalendarDays className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Calendar Example
-                </div>
-              </div>
+          <TabsContent value="base" className="mt-6 border rounded-2xl overflow-hidden">
+            <div className="flex flex-col min-h-[380px] w-full items-center justify-center p-8 bg-background gap-4">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+              />
+              <p className="text-xs text-muted-foreground">
+                Selected: <span className="font-semibold text-foreground">{date ? date.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" }) : "None"}</span>
+              </p>
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-2xl overflow-hidden">
+            <div className="flex flex-col min-h-[380px] w-full items-center justify-center p-8 bg-background gap-4">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+              />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-2xl overflow-hidden">
+            <div className="flex flex-col min-h-[380px] w-full items-center justify-center p-8 bg-background gap-4">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+              />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +235,15 @@ export default function CalendarPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add calendar" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/calendar.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +251,24 @@ export default function CalendarPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

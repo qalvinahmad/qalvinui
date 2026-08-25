@@ -2,7 +2,9 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, Type } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +32,114 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function FieldPage() {
-  const code = `import { Field } from "@qalvinahmad/ui"
+function FieldDemo() {
+  return (
+    <div className="flex flex-col gap-4 w-full max-w-sm">
+      <Field label="Username" helperText="This is your public display name." required>
+        <Input placeholder="qalvin" defaultValue="alvin" />
+      </Field>
+      <Field label="Email address" error="Please enter a valid email address." required>
+        <Input type="email" placeholder="you@domain.com" defaultValue="invalid-email" />
+      </Field>
+    </div>
+  );
+}
 
-<Field>
-  Example
-</Field>`;
+export default function FieldDocPage() {
+  const codeTsx = `import { Field } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+
+export function FieldDemo() {
+  return (
+    <Field label="Email" helperText="We won't share your email.">
+      <Input type="email" placeholder="you@domain.com" />
+    </Field>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Field
+import { type VariantProps } from "class-variance-authority";
+
+export interface fieldConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type fieldState = "idle" | "loading" | "success" | "error";
+
+export function handlefieldState(state: fieldState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { Field } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+
+export function FieldDemo() {
+  return (
+    <Field label="Email" helperText="We won't share your email.">
+      <Input type="email" placeholder="you@domain.com" />
+    </Field>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Field
+export const defaultfieldConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Field action triggered", event);
+  },
+};
+
+export function checkfieldReady(config = defaultfieldConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
+
+export interface FieldProps extends React.HTMLAttributes<HTMLDivElement> {
+  label?: string;
+  helperText?: string;
+  error?: string;
+  required?: boolean;
+}
+
+export function Field({
+  className,
+  label,
+  helperText,
+  error,
+  required,
+  children,
+  ...props
+}: FieldProps) {
+  return (
+    <div className={cn("grid gap-1.5 w-full", className)} {...props}>
+      {label && (
+        <Label className="text-xs font-semibold text-foreground flex items-center gap-1">
+          {label}
+          {required && <span className="text-destructive">*</span>}
+        </Label>
+      )}
+      {children}
+      {error ? (
+        <p className="text-[11px] font-medium text-destructive">{error}</p>
+      ) : helperText ? (
+        <p className="text-[11px] text-muted-foreground">{helperText}</p>
+      ) : null}
+    </div>
+  );
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Field</h1>
         <p className="text-lg text-muted-foreground">
-          A field component for form inputs.
+          A form field container that combines label, input, helper text, and validation error.
         </p>
       </div>
 
@@ -63,15 +160,17 @@ export default function FieldPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Type className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Field Example
-                </div>
-              </div>
+              <FieldDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <FieldDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <FieldDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +199,15 @@ export default function FieldPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add field" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/field.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +215,24 @@ export default function FieldPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

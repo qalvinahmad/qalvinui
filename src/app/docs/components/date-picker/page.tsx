@@ -2,7 +2,11 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, Calendar } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "lucide-react";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +34,102 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function DatePickerPage() {
-  const code = `import { DatePicker } from "@qalvinahmad/ui"
+function DatePickerDemo() {
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  return (
+    <Popover>
+      <PopoverTrigger
+        render={
+          <Button variant="outline" className="w-[240px] justify-start text-left font-normal text-xs">
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? date.toDateString() : <span>Pick a date</span>}
+          </Button>
+        }
+      />
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          className="rounded-md border shadow"
+        />
+      </PopoverContent>
+    </Popover>
+  );
+}
 
-<DatePicker>
-  Example
-</DatePicker>`;
+export default function DatePickerDocPage() {
+  const codeTsx = `import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+
+export function DatePickerDemo() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="outline">Pick date</Button>} />
+      <PopoverContent className="w-auto p-0">
+        <Calendar mode="single" />
+      </PopoverContent>
+    </Popover>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Date Picker
+import { type VariantProps } from "class-variance-authority";
+
+export interface datepickerConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type datepickerState = "idle" | "loading" | "success" | "error";
+
+export function handledatepickerState(state: datepickerState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+
+export function DatePickerDemo() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="outline">Pick date</Button>} />
+      <PopoverContent className="w-auto p-0">
+        <Calendar mode="single" />
+      </PopoverContent>
+    </Popover>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Date Picker
+export const defaultdatepickerConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Date Picker action triggered", event);
+  },
+};
+
+export function checkdatepickerReady(config = defaultdatepickerConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `// Source code for date-picker
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+export function datepicker() {
+  return <div className={cn("p-4")}>Component</div>;
+}`;
+  const manualDeps = `npm i react-day-picker date-fns @base-ui/react clsx tailwind-merge lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Date Picker</h1>
         <p className="text-lg text-muted-foreground">
-          A date picker component with range and presets.
+          A date picker component with range and single date selection.
         </p>
       </div>
 
@@ -63,15 +150,17 @@ export default function DatePickerPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Calendar className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Date Picker Example
-                </div>
-              </div>
+              <DatePickerDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <DatePickerDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <DatePickerDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +189,15 @@ export default function DatePickerPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add date-picker" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/date-picker.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +205,24 @@ export default function DatePickerPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, MapPin } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Marker } from "@/components/ui/marker";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +31,96 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function MarkerPage() {
-  const code = `import { Marker } from "@qalvinahmad/ui"
+function MarkerDemo() {
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Marker variant="success">Online</Marker>
+      <Marker variant="warning">Maintenance</Marker>
+      <Marker variant="destructive">Error</Marker>
+      <Marker variant="info">Deploying</Marker>
+      <Marker variant="default" pulse={false}>Static Tag</Marker>
+    </div>
+  );
+}
 
-<Marker>
-  Example
-</Marker>`;
+export default function MarkerDocPage() {
+  const codeTsx = `import { Marker } from "@/components/ui/marker"
+
+export function MarkerDemo() {
+  return <Marker variant="success">Active</Marker>
+}`;
+  const codeTs = `// Types & Utility Definition for Marker
+import { type VariantProps } from "class-variance-authority";
+
+export interface markerConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type markerState = "idle" | "loading" | "success" | "error";
+
+export function handlemarkerState(state: markerState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { Marker } from "@/components/ui/marker"
+
+export function MarkerDemo() {
+  return <Marker variant="success">Active</Marker>
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Marker
+export const defaultmarkerConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Marker action triggered", event);
+  },
+};
+
+export function checkmarkerReady(config = defaultmarkerConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `import * as React from "react";
+import { cn } from "@/lib/utils";
+
+export interface MarkerProps extends React.HTMLAttributes<HTMLSpanElement> {
+  variant?: "default" | "success" | "warning" | "destructive" | "info";
+  pulse?: boolean;
+}
+
+export function Marker({
+  className,
+  variant = "default",
+  pulse = true,
+  children,
+  ...props
+}: MarkerProps) {
+  const variantStyles = {
+    default: "bg-primary text-primary-foreground",
+    success: "bg-emerald-500 text-white",
+    warning: "bg-amber-500 text-white",
+    destructive: "bg-rose-500 text-white",
+    info: "bg-sky-500 text-white",
+  };
+
+  return (
+    <span className={cn("inline-flex items-center gap-1.5 text-xs font-semibold px-2 py-0.5 rounded-full shadow-xs", variantStyles[variant], className)} {...props}>
+      {pulse && <span className="h-1.5 w-1.5 rounded-full bg-current animate-ping" />}
+      {children}
+    </span>
+  );
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Marker</h1>
         <p className="text-lg text-muted-foreground">
-          A component used for marking positions or highlighting.
+          Highlight status badge or pulse marker annotation.
         </p>
       </div>
 
@@ -63,15 +141,17 @@ export default function MarkerPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <MapPin className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Marker Example
-                </div>
-              </div>
+              <MarkerDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <MarkerDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <MarkerDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +180,15 @@ export default function MarkerPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add marker" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/marker.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +196,24 @@ export default function MarkerPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

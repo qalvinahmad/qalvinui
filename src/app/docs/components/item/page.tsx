@@ -2,7 +2,11 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, List } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Item } from "@/components/ui/item";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Bell, Shield, Smartphone } from "lucide-react";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +34,143 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function ItemPage() {
-  const code = `import { Item } from "@qalvinahmad/ui"
+function ItemDemo() {
+  return (
+    <div className="flex flex-col gap-2.5 w-full max-w-sm">
+      <Item
+        icon={<Bell className="h-4 w-4" />}
+        title="Push Notifications"
+        subtitle="Receive alerts for updates"
+        action={<Switch defaultChecked />}
+      />
+      <Item
+        icon={<Shield className="h-4 w-4" />}
+        title="Two-Factor Auth"
+        subtitle="Enhanced security protection"
+        action={<Badge variant="secondary">Enabled</Badge>}
+        showChevron
+      />
+      <Item
+        icon={<Smartphone className="h-4 w-4" />}
+        title="Connected Devices"
+        subtitle="3 active sessions"
+        showChevron
+      />
+    </div>
+  );
+}
 
-<Item>
-  Example
-</Item>`;
+export default function ItemDocPage() {
+  const codeTsx = `import { Item } from "@/components/ui/item"
+import { Bell } from "lucide-react"
+
+export function ItemDemo() {
+  return (
+    <Item
+      icon={<Bell />}
+      title="Notification Item"
+      subtitle="Details text"
+      showChevron
+    />
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Item
+import { type VariantProps } from "class-variance-authority";
+
+export interface itemConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type itemState = "idle" | "loading" | "success" | "error";
+
+export function handleitemState(state: itemState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { Item } from "@/components/ui/item"
+import { Bell } from "lucide-react"
+
+export function ItemDemo() {
+  return (
+    <Item
+      icon={<Bell />}
+      title="Notification Item"
+      subtitle="Details text"
+      showChevron
+    />
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Item
+export const defaultitemConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Item action triggered", event);
+  },
+};
+
+export function checkitemReady(config = defaultitemConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `import * as React from "react";
+import { cn } from "@/lib/utils";
+import { ChevronRight } from "lucide-react";
+
+export interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  icon?: React.ReactNode;
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+  showChevron?: boolean;
+}
+
+export function Item({
+  className,
+  icon,
+  title,
+  subtitle,
+  action,
+  showChevron = false,
+  ...props
+}: ItemProps) {
+  return (
+    <div
+      className={cn(
+        "flex items-center justify-between gap-3 p-3.5 rounded-xl border border-border/80 bg-card hover:bg-muted/40 transition-colors shadow-xs cursor-pointer",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex items-center gap-3 min-w-0">
+        {icon && (
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted text-foreground shrink-0">
+            {icon}
+          </div>
+        )}
+        <div className="min-w-0">
+          <div className="text-xs font-semibold text-foreground truncate">{title}</div>
+          {subtitle && <div className="text-[11px] text-muted-foreground truncate">{subtitle}</div>}
+        </div>
+      </div>
+      <div className="flex items-center gap-2 shrink-0">
+        {action}
+        {showChevron && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+      </div>
+    </div>
+  );
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Item</h1>
         <p className="text-lg text-muted-foreground">
-          A generic list item component.
+          A list or menu item row component with leading icon, title, subtitle, and actions.
         </p>
       </div>
 
@@ -63,15 +191,17 @@ export default function ItemPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <List className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Item Example
-                </div>
-              </div>
+              <ItemDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <ItemDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <ItemDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +230,15 @@ export default function ItemPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add item" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/item.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +246,24 @@ export default function ItemPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

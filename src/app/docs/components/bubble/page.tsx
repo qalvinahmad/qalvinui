@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, MessageCircle } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Bubble } from "@/components/ui/bubble";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,12 +31,135 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function BubblePage() {
-  const code = `import { Bubble } from "@qalvinahmad/ui"
+function BubbleDemo() {
+  return (
+    <div className="flex flex-col gap-4 w-full max-w-md">
+      <Bubble
+        variant="incoming"
+        sender="Alvin"
+        timestamp="10:42 AM"
+        avatar="https://github.com/shadcn.png"
+      >
+        Hey! Have you seen the new Qalvin UI components?
+      </Bubble>
+      <Bubble
+        variant="outgoing"
+        sender="You"
+        timestamp="10:43 AM"
+      >
+        Yes, they look super crisp and work seamlessly with Base UI!
+      </Bubble>
+    </div>
+  );
+}
 
-<Bubble>
-  Example
-</Bubble>`;
+export default function BubbleDocPage() {
+  const codeTsx = `import { Bubble } from "@/components/ui/bubble"
+
+export function BubbleDemo() {
+  return (
+    <Bubble variant="incoming" sender="Sarah" timestamp="12:00 PM">
+      Hello from Qalvin UI!
+    </Bubble>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Bubble
+import { type VariantProps } from "class-variance-authority";
+
+export interface bubbleConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type bubbleState = "idle" | "loading" | "success" | "error";
+
+export function handlebubbleState(state: bubbleState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { Bubble } from "@/components/ui/bubble"
+
+export function BubbleDemo() {
+  return (
+    <Bubble variant="incoming" sender="Sarah" timestamp="12:00 PM">
+      Hello from Qalvin UI!
+    </Bubble>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Bubble
+export const defaultbubbleConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Bubble action triggered", event);
+  },
+};
+
+export function checkbubbleReady(config = defaultbubbleConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+export interface BubbleProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: "incoming" | "outgoing";
+  avatar?: string;
+  sender?: string;
+  timestamp?: string;
+}
+
+export function Bubble({
+  className,
+  variant = "incoming",
+  avatar,
+  sender,
+  timestamp,
+  children,
+  ...props
+}: BubbleProps) {
+  const isOutgoing = variant === "outgoing";
+
+  return (
+    <div
+      className={cn(
+        "flex gap-3 max-w-[80%]",
+        isOutgoing ? "ml-auto flex-row-reverse" : "mr-auto",
+        className
+      )}
+      {...props}
+    >
+      {avatar && (
+        <Avatar className="h-8 w-8 shrink-0 mt-0.5">
+          <AvatarImage src={avatar} />
+          <AvatarFallback>{sender ? sender[0] : "U"}</AvatarFallback>
+        </Avatar>
+      )}
+      <div className={cn("flex flex-col gap-1", isOutgoing ? "items-end" : "items-start")}>
+        {(sender || timestamp) && (
+          <div className="flex items-center gap-2 text-[11px] text-muted-foreground px-1">
+            {sender && <span className="font-semibold text-foreground">{sender}</span>}
+            {timestamp && <span>{timestamp}</span>}
+          </div>
+        )}
+        <div
+          className={cn(
+            "rounded-2xl px-4 py-2.5 text-sm shadow-xs",
+            isOutgoing
+              ? "bg-primary text-primary-foreground rounded-br-xs"
+              : "bg-muted text-foreground rounded-bl-xs border border-border/50"
+          )}
+        >
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -63,15 +187,17 @@ export default function BubblePage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <MessageCircle className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Bubble Example
-                </div>
-              </div>
+              <BubbleDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <BubbleDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <BubbleDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +226,15 @@ export default function BubblePage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add bubble" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/bubble.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +242,24 @@ export default function BubblePage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

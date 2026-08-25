@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, Type } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +31,78 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function TypographyPage() {
-  const code = `import { Typography } from "@qalvinahmad/ui"
+function TypographyDemo() {
+  return (
+    <div className="space-y-4 max-w-md text-left">
+      <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight">The King's Plan</h1>
+      <p className="text-sm text-muted-foreground">The king, seeing how much happier his subjects were, realized the error of his ways.</p>
+      <blockquote className="mt-2 border-l-2 pl-4 italic text-xs text-muted-foreground">
+        "After all," he said, "everyone enjoys a good joke, so it's only fair that they should have some fun."
+      </blockquote>
+    </div>
+  );
+}
 
-<Typography>
-  Example
-</Typography>`;
+export default function TypographyDocPage() {
+  const codeTsx = `export function TypographyDemo() {
+  return (
+    <div>
+      <h1 className="text-4xl font-extrabold tracking-tight">Heading 1</h1>
+      <p className="leading-7">Paragraph text content...</p>
+    </div>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for The King's Plan
+import { type VariantProps } from "class-variance-authority";
+
+export interface typographyConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type typographyState = "idle" | "loading" | "success" | "error";
+
+export function handletypographyState(state: typographyState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `export function TypographyDemo() {
+  return (
+    <div>
+      <h1 className="text-4xl font-extrabold tracking-tight">Heading 1</h1>
+      <p className="leading-7">Paragraph text content...</p>
+    </div>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for The King's Plan
+export const defaulttypographyConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("The King's Plan action triggered", event);
+  },
+};
+
+export function checktypographyReady(config = defaulttypographyConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `// Source code for typography
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+export function typography() {
+  return <div className={cn("p-4")}>Component</div>;
+}`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Typography</h1>
         <p className="text-lg text-muted-foreground">
-          Styles for headings, paragraphs, lists, etc.
+          Styles for headings, paragraphs, lists...etc
         </p>
       </div>
 
@@ -63,15 +123,17 @@ export default function TypographyPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Type className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Typography Example
-                </div>
-              </div>
+              <TypographyDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <TypographyDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <TypographyDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +162,15 @@ export default function TypographyPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add typography" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/typography.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +178,24 @@ export default function TypographyPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

@@ -2,7 +2,10 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, HelpCircle } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +33,78 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function QuestionnairePage() {
-  const code = `import { Questionnaire } from "@qalvinahmad/ui"
+function QuestionnaireDemo() {
+  return (
+    <div className="w-full max-w-sm rounded-xl border bg-card p-5 space-y-4 shadow-sm">
+      <div className="space-y-1">
+        <h4 className="font-bold text-sm">How satisfied are you with Qalvin UI?</h4>
+        <p className="text-xs text-muted-foreground">Select one option below.</p>
+      </div>
+      <RadioGroup defaultValue="excellent" className="space-y-2">
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="excellent" id="q1" />
+          <Label htmlFor="q1" className="text-xs font-medium">⚡ Extremely Satisfied</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="good" id="q2" />
+          <Label htmlFor="q2" className="text-xs font-medium">👍 Very Good</Label>
+        </div>
+      </RadioGroup>
+      <Button size="sm" className="w-full">Submit Feedback</Button>
+    </div>
+  );
+}
 
-<Questionnaire>
-  Example
-</Questionnaire>`;
+export default function QuestionnaireDocPage() {
+  const codeTsx = `export function QuestionnaireDemo() {
+  return <div>Questionnaire Form</div>
+}`;
+  const codeTs = `// Types & Utility Definition for Questionnaire
+import { type VariantProps } from "class-variance-authority";
+
+export interface questionnaireConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type questionnaireState = "idle" | "loading" | "success" | "error";
+
+export function handlequestionnaireState(state: questionnaireState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `export function QuestionnaireDemo() {
+  return <div>Questionnaire Form</div>
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Questionnaire
+export const defaultquestionnaireConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Questionnaire action triggered", event);
+  },
+};
+
+export function checkquestionnaireReady(config = defaultquestionnaireConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `// Source code for questionnaire
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+export function questionnaire() {
+  return <div className={cn("p-4")}>Component</div>;
+}`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Questionnaire</h1>
         <p className="text-lg text-muted-foreground">
-          A component for building forms or questionnaires.
+          Interactive step-by-step survey and multi-choice questionnaires.
         </p>
       </div>
 
@@ -63,15 +125,17 @@ export default function QuestionnairePage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <HelpCircle className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Questionnaire Example
-                </div>
-              </div>
+              <QuestionnaireDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <QuestionnaireDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <QuestionnaireDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +164,15 @@ export default function QuestionnairePage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add questionnaire" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/questionnaire.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +180,24 @@ export default function QuestionnairePage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

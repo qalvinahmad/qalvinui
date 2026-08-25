@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, Paperclip } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { Attachment } from "@/components/ui/attachment";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +31,141 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function AttachmentPage() {
-  const code = `import { Attachment } from "@qalvinahmad/ui"
+function AttachmentDemo() {
+  return (
+    <div className="flex flex-col gap-3 w-full max-w-sm">
+      <Attachment
+        filename="project-specification-2026.pdf"
+        size="4.8 MB"
+        onDownload={() => alert("Downloading...")}
+        onRemove={() => alert("Removed attachment")}
+      />
+      <Attachment
+        filename="brand-assets-dark.svg"
+        size="512 KB"
+        onDownload={() => alert("Downloading...")}
+      />
+    </div>
+  );
+}
 
-<Attachment>
-  Example
-</Attachment>`;
+export default function AttachmentDocPage() {
+  const codeTsx = `import { Attachment } from "@/components/ui/attachment"
+
+export function AttachmentDemo() {
+  return (
+    <Attachment
+      filename="invoice_march.pdf"
+      size="2.4 MB"
+      onDownload={() => {}}
+    />
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Attachment
+import { type VariantProps } from "class-variance-authority";
+
+export interface attachmentConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type attachmentState = "idle" | "loading" | "success" | "error";
+
+export function handleattachmentState(state: attachmentState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { Attachment } from "@/components/ui/attachment"
+
+export function AttachmentDemo() {
+  return (
+    <Attachment
+      filename="invoice_march.pdf"
+      size="2.4 MB"
+      onDownload={() => {}}
+    />
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Attachment
+export const defaultattachmentConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Attachment action triggered", event);
+  },
+};
+
+export function checkattachmentReady(config = defaultattachmentConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Paperclip, FileText, Download, X } from "lucide-react";
+
+export interface AttachmentProps extends React.HTMLAttributes<HTMLDivElement> {
+  filename: string;
+  size?: string;
+  onRemove?: () => void;
+  onDownload?: () => void;
+}
+
+export function Attachment({
+  className,
+  filename,
+  size = "2.4 MB",
+  onRemove,
+  onDownload,
+  ...props
+}: AttachmentProps) {
+  return (
+    <div
+      className={cn(
+        "inline-flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-xs text-xs font-medium text-foreground max-w-sm",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+        <FileText className="h-5 w-5" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="truncate font-semibold text-foreground">{filename}</div>
+        <div className="text-[11px] text-muted-foreground">{size}</div>
+      </div>
+      <div className="flex items-center gap-1">
+        {onDownload && (
+          <button
+            onClick={onDownload}
+            className="p-1 text-muted-foreground hover:text-foreground rounded"
+            aria-label="Download attachment"
+          >
+            <Download className="h-4 w-4" />
+          </button>
+        )}
+        {onRemove && (
+          <button
+            onClick={onRemove}
+            className="p-1 text-muted-foreground hover:text-destructive rounded"
+            aria-label="Remove attachment"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Attachment</h1>
         <p className="text-lg text-muted-foreground">
-          A component to display attached files or documents.
+          A component to display attached files or documents with actions.
         </p>
       </div>
 
@@ -63,15 +186,17 @@ export default function AttachmentPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Paperclip className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Attachment Example
-                </div>
-              </div>
+              <AttachmentDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <AttachmentDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <AttachmentDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +225,15 @@ export default function AttachmentPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add attachment" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/attachment.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +241,24 @@ export default function AttachmentPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

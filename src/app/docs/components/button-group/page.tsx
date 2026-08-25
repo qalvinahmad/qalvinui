@@ -2,7 +2,10 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/custom-tabs";
 import { useState } from "react";
-import { Check, Copy, Layers } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Button } from "@/components/ui/button";
+import { AlignLeft, AlignCenter, AlignRight, AlignJustify } from "lucide-react";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -30,19 +33,114 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-export default function ButtonGroupPage() {
-  const code = `import { ButtonGroup } from "@qalvinahmad/ui"
+function ButtonGroupDemo() {
+  return (
+    <div className="flex flex-col gap-6 items-center">
+      <ButtonGroup>
+        <Button variant="outline">Daily</Button>
+        <Button variant="outline">Weekly</Button>
+        <Button variant="outline">Monthly</Button>
+        <Button variant="outline">Yearly</Button>
+      </ButtonGroup>
 
-<ButtonGroup>
-  Example
-</ButtonGroup>`;
+      <ButtonGroup>
+        <Button variant="secondary" size="icon"><AlignLeft className="h-4 w-4" /></Button>
+        <Button variant="secondary" size="icon"><AlignCenter className="h-4 w-4" /></Button>
+        <Button variant="secondary" size="icon"><AlignRight className="h-4 w-4" /></Button>
+        <Button variant="secondary" size="icon"><AlignJustify className="h-4 w-4" /></Button>
+      </ButtonGroup>
+    </div>
+  );
+}
+
+export default function ButtonGroupDocPage() {
+  const codeTsx = `import { ButtonGroup } from "@/components/ui/button-group"
+import { Button } from "@/components/ui/button"
+
+export function ButtonGroupDemo() {
+  return (
+    <ButtonGroup>
+      <Button variant="outline">Left</Button>
+      <Button variant="outline">Middle</Button>
+      <Button variant="outline">Right</Button>
+    </ButtonGroup>
+  )
+}`;
+  const codeTs = `// Types & Utility Definition for Button Group
+import { type VariantProps } from "class-variance-authority";
+
+export interface buttongroupConfig {
+  disabled?: boolean;
+  className?: string;
+  onAction?: (event: CustomEvent) => void;
+}
+
+export type buttongroupState = "idle" | "loading" | "success" | "error";
+
+export function handlebuttongroupState(state: buttongroupState): boolean {
+  return state === "success";
+}`;
+  const codeJsx = `import { ButtonGroup } from "@/components/ui/button-group"
+import { Button } from "@/components/ui/button"
+
+export function ButtonGroupDemo() {
+  return (
+    <ButtonGroup>
+      <Button variant="outline">Left</Button>
+      <Button variant="outline">Middle</Button>
+      <Button variant="outline">Right</Button>
+    </ButtonGroup>
+  )
+}`;
+  const codeJs = `// Vanilla JavaScript Helper for Button Group
+export const defaultbuttongroupConfig = {
+  disabled: false,
+  className: "",
+  onAction: (event) => {
+    console.log("Button Group action triggered", event);
+  },
+};
+
+export function checkbuttongroupReady(config = defaultbuttongroupConfig) {
+  return !config.disabled;
+}`;
+
+  const manualSource = `import * as React from "react";
+import { cn } from "@/lib/utils";
+
+export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  orientation?: "horizontal" | "vertical";
+}
+
+export function ButtonGroup({
+  className,
+  orientation = "horizontal",
+  ...props
+}: ButtonGroupProps) {
+  return (
+    <div
+      role="group"
+      className={cn(
+        "inline-flex rounded-md shadow-xs",
+        orientation === "horizontal"
+          ? "[&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+          : "flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+`;
+  const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">Button Group</h1>
         <p className="text-lg text-muted-foreground">
-          A set of related buttons grouped together.
+          A set of related buttons grouped together with unified borders.
         </p>
       </div>
 
@@ -63,15 +161,17 @@ export default function ButtonGroupPage() {
           </div>
           <TabsContent value="base" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              {/* Dummy Preview */}
-              <div className="flex items-center gap-3 p-4 border rounded-xl max-w-sm w-full bg-card shadow-sm">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Layers className="h-5 w-5" />
-                </div>
-                <div className="flex-1 font-medium">
-                  Button Group Example
-                </div>
-              </div>
+              <ButtonGroupDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <ButtonGroupDemo />
+            </div>
+          </TabsContent>
+          <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
+            <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
+              <ButtonGroupDemo />
             </div>
           </TabsContent>
         </Tabs>
@@ -100,8 +200,15 @@ export default function ButtonGroupPage() {
               <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add button-group" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
-          <TabsContent value="manual" className="mt-4">
-            <CodeBlock code="// Manual installation instructions here" language="bash" />
+          <TabsContent value="manual" className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">1. Install the required dependencies:</p>
+              <CodeBlock code={manualDeps} language="bash" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-foreground">2. Copy and paste the following code into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">components/ui/button-group.tsx</code>:</p>
+              <CodeBlock code={manualSource} language="tsx" />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -109,16 +216,24 @@ export default function ButtonGroupPage() {
       <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Usage</h2>
         <Tabs defaultValue="tsx" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0 gap-6">
-            <TabsTrigger value="tsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.tsx</TabsTrigger>
-            <TabsTrigger value="ts" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.ts</TabsTrigger>
-            <TabsTrigger value="jsx" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.jsx</TabsTrigger>
-            <TabsTrigger value="js" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 shadow-none font-semibold">.js</TabsTrigger>
+          <TabsList className="bg-muted p-1">
+            <TabsTrigger value="tsx">.tsx</TabsTrigger>
+            <TabsTrigger value="ts">.ts</TabsTrigger>
+            <TabsTrigger value="jsx">.jsx</TabsTrigger>
+            <TabsTrigger value="js">.js</TabsTrigger>
           </TabsList>
-          <TabsContent value="tsx" className="mt-6"><CodeBlock code={code} language="tsx" /></TabsContent>
-          <TabsContent value="ts" className="mt-6"><CodeBlock code={code} language="ts" /></TabsContent>
-          <TabsContent value="jsx" className="mt-6"><CodeBlock code={code} language="jsx" /></TabsContent>
-          <TabsContent value="js" className="mt-6"><CodeBlock code={code} language="js" /></TabsContent>
+          <TabsContent value="tsx" className="mt-4">
+            <CodeBlock code={codeTsx} language="tsx" />
+          </TabsContent>
+          <TabsContent value="ts" className="mt-4">
+            <CodeBlock code={codeTs} language="ts" />
+          </TabsContent>
+          <TabsContent value="jsx" className="mt-4">
+            <CodeBlock code={codeJsx} language="jsx" />
+          </TabsContent>
+          <TabsContent value="js" className="mt-4">
+            <CodeBlock code={codeJs} language="js" />
+          </TabsContent>
         </Tabs>
       </div>
     </div>
