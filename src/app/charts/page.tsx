@@ -25,6 +25,13 @@ interface ChartItem {
   renderChart: (range?: string) => React.ReactNode;
 }
 
+interface FeaturedChartConfig {
+  title: string;
+  description: string;
+  code: string;
+  render: (range: string) => React.ReactNode;
+}
+
 export default function ChartsPage() {
   const [selectedCategory, setSelectedCategory] = useState("Area Charts");
   const [timeRange, setTimeRange] = useState("Last 3 months");
@@ -48,7 +55,333 @@ export default function ChartsPage() {
     "Tooltips",
   ];
 
-  // Chart definitions for all categories
+  // Dynamic Featured Chart for each Category
+  const featuredCharts: Record<string, FeaturedChartConfig> = {
+    "Area Charts": {
+      title: "Area Chart - Interactive",
+      description: "Showing total visitors and device usage breakdown",
+      code: `import { ResponsiveContainer, AreaChart, Area, XAxis, Tooltip, Legend } from "recharts";
+
+export function InteractiveAreaAnalytics() {
+  return (
+    <div className="rounded-xl border bg-card p-6 shadow-sm">
+      <h3 className="font-semibold text-lg">Area Chart - Interactive</h3>
+      <ResponsiveContainer width="100%" height={260}>
+        <AreaChart data={data}>
+          <XAxis dataKey="date" />
+          <Tooltip />
+          <Legend />
+          <Area type="monotone" dataKey="desktop" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.25} />
+          <Area type="monotone" dataKey="mobile" stroke="#10b981" fill="#10b981" fillOpacity={0.25} />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}`,
+      render: () => (
+        <div className="w-full h-64 relative overflow-hidden flex flex-col justify-end">
+          <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full flex-1">
+            <defs>
+              <linearGradient id="mainAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02" />
+              </linearGradient>
+              <linearGradient id="secAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#10b981" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28 L100,50 L0,50 Z"
+              fill="url(#mainAreaGrad)"
+            />
+            <path
+              d="M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28"
+              fill="none"
+              stroke="#3b82f6"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18 L100,50 L0,50 Z"
+              fill="url(#secAreaGrad)"
+            />
+            <path
+              d="M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18"
+              fill="none"
+              stroke="#10b981"
+              strokeWidth="1.5"
+            />
+          </svg>
+          <div className="flex justify-between mt-3 text-xs text-muted-foreground border-t pt-3">
+            <span>Apr 6</span><span>Apr 18</span><span>Apr 30</span><span>May 12</span><span>May 24</span><span>Jun 5</span><span>Jun 17</span><span>Jun 30</span>
+          </div>
+          <div className="flex items-center justify-center gap-6 mt-4 text-xs font-medium">
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Desktop</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Mobile</div>
+          </div>
+        </div>
+      ),
+    },
+
+    "Bar Charts": {
+      title: "Bar Chart - Interactive Multi-Series",
+      description: "Interactive grouped bar comparison with live data switching",
+      code: `import { ResponsiveContainer, BarChart, Bar, XAxis, Tooltip, Legend } from "recharts";
+
+export function InteractiveBarAnalytics() {
+  return (
+    <ResponsiveContainer width="100%" height={260}>
+      <BarChart data={data}>
+        <XAxis dataKey="month" />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="desktop" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="mobile" fill="#10b981" radius={[4, 4, 0, 0]} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}`,
+      render: () => (
+        <div className="w-full h-64 flex flex-col justify-end">
+          <div className="flex-1 flex items-end justify-between gap-4 px-4 pt-4">
+            {[
+              { label: "Apr 6", d: 75, m: 45 },
+              { label: "Apr 18", d: 90, m: 60 },
+              { label: "Apr 30", d: 60, m: 35 },
+              { label: "May 12", d: 95, m: 70 },
+              { label: "May 24", d: 80, m: 50 },
+              { label: "Jun 5", d: 88, m: 58 },
+              { label: "Jun 17", d: 70, m: 40 },
+              { label: "Jun 30", d: 100, m: 75 },
+            ].map((bar, idx) => (
+              <div key={idx} className="flex-1 flex flex-col items-center gap-1 h-full justify-end group cursor-pointer">
+                <div className="w-full flex items-end justify-center gap-1.5 h-full">
+                  <div style={{ height: `${bar.d}%` }} className="w-1/2 bg-blue-500 rounded-t-sm group-hover:brightness-110 transition-all duration-300 shadow-2xs" />
+                  <div style={{ height: `${bar.m}%` }} className="w-1/2 bg-emerald-500 rounded-t-sm group-hover:brightness-110 transition-all duration-300 shadow-2xs" />
+                </div>
+                <span className="text-[11px] text-muted-foreground mt-2">{bar.label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-center gap-6 mt-4 border-t pt-3 text-xs font-medium">
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Desktop</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Mobile</div>
+          </div>
+        </div>
+      ),
+    },
+
+    "Line Charts": {
+      title: "Line Chart - Interactive Multi-Metric",
+      description: "Interactive continuous trend lines with point tooltips",
+      code: `import { ResponsiveContainer, LineChart, Line, XAxis, Tooltip, Legend } from "recharts";
+
+export function InteractiveLineAnalytics() {
+  return (
+    <ResponsiveContainer width="100%" height={260}>
+      <LineChart data={data}>
+        <XAxis dataKey="month" />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="desktop" stroke="#3b82f6" strokeWidth={2.5} dot={{ r: 4 }} />
+        <Line type="monotone" dataKey="mobile" stroke="#10b981" strokeWidth={2.5} dot={{ r: 4 }} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}`,
+      render: () => (
+        <div className="w-full h-64 flex flex-col justify-end">
+          <svg viewBox="0 0 100 45" preserveAspectRatio="none" className="w-full flex-1">
+            <path d="M0,35 C15,20 30,42 45,18 C60,10 75,28 90,14 L100,8" fill="none" stroke="#3b82f6" strokeWidth="2" />
+            <circle cx="15" cy="27" r="1.5" fill="#3b82f6" />
+            <circle cx="45" cy="18" r="1.5" fill="#3b82f6" />
+            <circle cx="75" cy="24" r="1.5" fill="#3b82f6" />
+            <circle cx="100" cy="8" r="1.5" fill="#3b82f6" />
+
+            <path d="M0,42 C15,30 30,38 45,26 C60,18 75,34 90,22 L100,16" fill="none" stroke="#10b981" strokeWidth="2" />
+            <circle cx="15" cy="34" r="1.5" fill="#10b981" />
+            <circle cx="45" cy="26" r="1.5" fill="#10b981" />
+            <circle cx="75" cy="30" r="1.5" fill="#10b981" />
+            <circle cx="100" cy="16" r="1.5" fill="#10b981" />
+          </svg>
+          <div className="flex justify-between mt-3 text-xs text-muted-foreground border-t pt-3">
+            <span>Apr 6</span><span>Apr 18</span><span>Apr 30</span><span>May 12</span><span>May 24</span><span>Jun 5</span><span>Jun 17</span><span>Jun 30</span>
+          </div>
+          <div className="flex items-center justify-center gap-6 mt-4 text-xs font-medium">
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Active Users</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Conversions</div>
+          </div>
+        </div>
+      ),
+    },
+
+    "Pie Charts": {
+      title: "Pie Chart - Interactive Donut Distribution",
+      description: "Interactive slice breakdown with total calculation",
+      code: `import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+
+export function InteractivePieAnalytics() {
+  return (
+    <ResponsiveContainer width="100%" height={260}>
+      <PieChart>
+        <Tooltip />
+        <Legend />
+        <Pie data={data} innerRadius={60} outerRadius={90} paddingAngle={4} dataKey="value">
+          {data.map((entry, index) => <Cell key={index} fill={entry.fill} />)}
+        </Pie>
+      </PieChart>
+    </ResponsiveContainer>
+  );
+}`,
+      render: () => (
+        <div className="w-full h-64 flex flex-col md:flex-row items-center justify-center gap-8 py-2">
+          <div className="relative w-44 h-44 flex items-center justify-center">
+            <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+              <circle cx="18" cy="18" r="13" fill="none" stroke="#3b82f6" strokeWidth="5" strokeDasharray="52 100" strokeDashoffset="0" />
+              <circle cx="18" cy="18" r="13" fill="none" stroke="#10b981" strokeWidth="5" strokeDasharray="26 100" strokeDashoffset="-52" />
+              <circle cx="18" cy="18" r="13" fill="none" stroke="#f59e0b" strokeWidth="5" strokeDasharray="14 100" strokeDashoffset="-78" />
+              <circle cx="18" cy="18" r="13" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="8 100" strokeDashoffset="-92" />
+            </svg>
+            <div className="absolute text-center">
+              <span className="text-xl font-bold">48.2k</span>
+              <span className="block text-[10px] text-muted-foreground">Total Sessions</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Chrome (52%)</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Safari (26%)</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-amber-500" /> Firefox (14%)</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-purple-500" /> Edge (8%)</div>
+          </div>
+        </div>
+      ),
+    },
+
+    "Radar Charts": {
+      title: "Radar Chart - Interactive Performance Polygon",
+      description: "Multi-axis capability rating across 6 dimensions",
+      code: `import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, Legend } from "recharts";
+
+export function InteractiveRadarAnalytics() {
+  return (
+    <ResponsiveContainer width="100%" height={260}>
+      <RadarChart data={data}>
+        <PolarGrid />
+        <PolarAngleAxis dataKey="subject" />
+        <Radar name="Performance" dataKey="score" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.5} />
+      </RadarChart>
+    </ResponsiveContainer>
+  );
+}`,
+      render: () => (
+        <div className="w-full h-64 flex items-center justify-center gap-8 py-2">
+          <div className="relative w-48 h-48 flex items-center justify-center">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <polygon points="50,8 90,34 80,82 50,96 20,82 10,34" fill="none" stroke="currentColor" strokeOpacity="0.15" />
+              <polygon points="50,22 76,40 70,72 50,80 30,72 24,40" fill="none" stroke="currentColor" strokeOpacity="0.15" />
+              <polygon points="50,36 64,48 60,64 50,70 40,64 36,48" fill="none" stroke="currentColor" strokeOpacity="0.15" />
+              <polygon points="50,12 85,36 75,78 50,85 24,68 18,32" fill="#3b82f6" fillOpacity="0.35" stroke="#3b82f6" strokeWidth="1.5" />
+              <polygon points="50,25 72,42 62,65 50,72 32,55 26,38" fill="#10b981" fillOpacity="0.35" stroke="#10b981" strokeWidth="1.5" />
+            </svg>
+          </div>
+          <div className="space-y-2 text-xs font-medium">
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Current Score (92/100)</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Target Benchmark (85/100)</div>
+          </div>
+        </div>
+      ),
+    },
+
+    "Radial Charts": {
+      title: "Radial Chart - Multi-Layer Concentric Rings",
+      description: "Goal tracking with nested progress meters",
+      code: `import { ResponsiveContainer, RadialBarChart, RadialBar, PolarAngleAxis, Legend } from "recharts";
+
+export function InteractiveRadialAnalytics() {
+  return (
+    <ResponsiveContainer width="100%" height={260}>
+      <RadialBarChart innerRadius="40%" outerRadius="100%" data={data}>
+        <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
+        <RadialBar dataKey="value" background cornerRadius={10} />
+      </RadialBarChart>
+    </ResponsiveContainer>
+  );
+}`,
+      render: () => (
+        <div className="w-full h-64 flex items-center justify-center gap-8 py-2">
+          <div className="relative w-44 h-44 flex items-center justify-center">
+            <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+              <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeOpacity="0.1" strokeWidth="3" />
+              <circle cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" strokeWidth="3" strokeDasharray="88 100" strokeLinecap="round" />
+              <circle cx="18" cy="18" r="10.5" fill="none" stroke="currentColor" strokeOpacity="0.1" strokeWidth="3" />
+              <circle cx="18" cy="18" r="10.5" fill="none" stroke="#10b981" strokeWidth="3" strokeDasharray="74 100" strokeLinecap="round" />
+              <circle cx="18" cy="18" r="7" fill="none" stroke="currentColor" strokeOpacity="0.1" strokeWidth="3" />
+              <circle cx="18" cy="18" r="7" fill="none" stroke="#8b5cf6" strokeWidth="3" strokeDasharray="92 100" strokeLinecap="round" />
+            </svg>
+          </div>
+          <div className="space-y-2 text-xs font-medium">
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Revenue (88%)</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Retention (74%)</div>
+            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-purple-500" /> Conversion (92%)</div>
+          </div>
+        </div>
+      ),
+    },
+
+    "Tooltips": {
+      title: "Tooltips - Interactive Reactive Preview",
+      description: "Custom hover inspection cards with live metrics and formatting",
+      code: `import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+
+export function TooltipShowcase() {
+  return (
+    <ChartTooltip
+      content={
+        <ChartTooltipContent
+          indicator="dot"
+          labelFormatter={(value) => \`Date: \${value}\`}
+        />
+      }
+    />
+  );
+}`,
+      render: () => (
+        <div className="w-full h-64 flex flex-col md:flex-row items-center justify-center gap-6 py-2">
+          <div className="rounded-xl border bg-background/95 backdrop-blur-md p-4 shadow-xl border-border/80 text-xs space-y-2 w-56">
+            <div className="font-semibold text-foreground border-b pb-1.5 flex justify-between items-center">
+              <span>May 24, 2026</span>
+              <span className="text-[10px] text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded font-mono">+24.8%</span>
+            </div>
+            <div className="flex justify-between items-center text-muted-foreground">
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-blue-500" /> Total Revenue</span>
+              <span className="font-bold text-foreground font-mono">$18,420.00</span>
+            </div>
+            <div className="flex justify-between items-center text-muted-foreground">
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> New Orders</span>
+              <span className="font-bold text-foreground font-mono">1,420</span>
+            </div>
+          </div>
+
+          <div className="rounded-xl border bg-background/95 backdrop-blur-md p-4 shadow-xl border-border/80 text-xs space-y-2 w-56">
+            <div className="font-semibold text-foreground border-b pb-1.5 flex justify-between items-center">
+              <span>Performance</span>
+              <span className="text-[10px] text-blue-500 bg-blue-500/10 px-1.5 py-0.5 rounded font-mono">Live</span>
+            </div>
+            <div className="flex justify-between items-center text-muted-foreground">
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-purple-500" /> Server Latency</span>
+              <span className="font-bold text-foreground font-mono">24ms</span>
+            </div>
+            <div className="flex justify-between items-center text-muted-foreground">
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500" /> Error Rate</span>
+              <span className="font-bold text-foreground font-mono">0.01%</span>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+  };
+
+  // Gallery items for each category
   const chartsData: Record<string, ChartItem[]> = {
     "Area Charts": [
       {
@@ -58,53 +391,12 @@ export default function ChartsPage() {
         description: "Showing total visitors for the last 6 months",
         trending: "Trending up by 5.2% this month",
         period: "January - June 2026",
-        code: `import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";
-
-const data = [
-  { month: "Jan", desktop: 186 },
-  { month: "Feb", desktop: 305 },
-  { month: "Mar", desktop: 237 },
-  { month: "Apr", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "Jun", desktop: 214 },
-];
-
-export function AreaChartDefault() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <AreaChart data={data}>
-        <defs>
-          <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
-            <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.1}/>
-          </linearGradient>
-        </defs>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Area type="natural" dataKey="desktop" fill="url(#fillDesktop)" stroke="var(--primary)" />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";\n\nexport function AreaChartDefault() {\n  return <AreaChart data={data}><Area dataKey="desktop" fill="#3b82f6" /></AreaChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex items-end">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
-              <defs>
-                <linearGradient id="areaGrad1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.05" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M0,38 C20,15 35,45 50,28 C65,12 80,30 100,18 L100,50 L0,50 Z"
-                fill="url(#areaGrad1)"
-              />
-              <path
-                d="M0,38 C20,15 35,45 50,28 C65,12 80,30 100,18"
-                fill="none"
-                stroke="#3b82f6"
-                strokeWidth="2"
-              />
+              <path d="M0,38 C20,15 35,45 50,28 C65,12 80,30 100,18 L100,50 L0,50 Z" fill="#3b82f6" fillOpacity="0.25" />
+              <path d="M0,38 C20,15 35,45 50,28 C65,12 80,30 100,18" fill="none" stroke="#3b82f6" strokeWidth="2" />
             </svg>
           </div>
         ),
@@ -116,32 +408,11 @@ export function AreaChartDefault() {
         description: "Linear slope area graph across 6 months",
         trending: "Trending up by 8.4% this month",
         period: "January - June 2026",
-        code: `import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";
-
-const data = [
-  { month: "Jan", desktop: 140 },
-  { month: "Feb", desktop: 290 },
-  { month: "Mar", desktop: 120 },
-  { month: "Apr", desktop: 280 },
-  { month: "May", desktop: 210 },
-  { month: "Jun", desktop: 340 },
-];
-
-export function AreaChartLinear() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <AreaChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Area type="linear" dataKey="desktop" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Area, AreaChart } from "recharts";\n\nexport function AreaChartLinear() {\n  return <AreaChart data={data}><Area type="linear" dataKey="desktop" fill="#3b82f6" /></AreaChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex items-end">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
-              <polygon points="0,35 20,12 40,38 60,18 80,24 100,8 100,50 0,50" fill="#3b82f6" fillOpacity="0.2" />
+              <polygon points="0,35 20,12 40,38 60,18 80,24 100,8 100,50 0,50" fill="#3b82f6" fillOpacity="0.25" />
               <polyline points="0,35 20,12 40,38 60,18 80,24 100,8" fill="none" stroke="#3b82f6" strokeWidth="2" />
             </svg>
           </div>
@@ -154,33 +425,12 @@ export function AreaChartLinear() {
         description: "Discrete stepped area graph overview",
         trending: "Trending up by 4.1% this month",
         period: "January - June 2026",
-        code: `import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";
-
-export function AreaChartStep() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <AreaChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Area type="step" dataKey="desktop" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Area, AreaChart } from "recharts";\n\nexport function AreaChartStep() {\n  return <AreaChart data={data}><Area type="step" dataKey="desktop" fill="#3b82f6" /></AreaChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex items-end">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
-              <path
-                d="M0,35 L16.6,35 L16.6,15 L33.3,15 L33.3,28 L50,28 L50,42 L66.6,42 L66.6,22 L83.3,22 L83.3,12 L100,12 L100,50 L0,50 Z"
-                fill="#3b82f6"
-                fillOpacity="0.2"
-              />
-              <path
-                d="M0,35 L16.6,35 L16.6,15 L33.3,15 L33.3,28 L50,28 L50,42 L66.6,42 L66.6,22 L83.3,22 L83.3,12 L100,12"
-                fill="none"
-                stroke="#3b82f6"
-                strokeWidth="2"
-              />
+              <path d="M0,35 L16.6,35 L16.6,15 L33.3,15 L33.3,28 L50,28 L50,42 L66.6,42 L66.6,22 L83.3,22 L83.3,12 L100,12 L100,50 L0,50 Z" fill="#3b82f6" fillOpacity="0.25" />
+              <path d="M0,35 L16.6,35 L16.6,15 L33.3,15 L33.3,28 L50,28 L50,42 L66.6,42 L66.6,22 L83.3,22 L83.3,12 L100,12" fill="none" stroke="#3b82f6" strokeWidth="2" />
             </svg>
           </div>
         ),
@@ -192,46 +442,12 @@ export function AreaChartStep() {
         description: "Showing comparison between Desktop and Mobile",
         trending: "Trending up by 12.3% this month",
         period: "January - June 2026",
-        code: `import { Area, AreaChart, ResponsiveContainer, XAxis, Legend, Tooltip } from "recharts";
-
-export function AreaChartLegend() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <AreaChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Legend />
-        <Area type="monotone" dataKey="desktop" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.3} />
-        <Area type="monotone" dataKey="mobile" stroke="#10b981" fill="#10b981" fillOpacity={0.3} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Area, AreaChart, Legend } from "recharts";\n\nexport function AreaChartLegend() {\n  return <AreaChart data={data}><Legend /><Area dataKey="desktop" fill="#3b82f6" /><Area dataKey="mobile" fill="#10b981" /></AreaChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex flex-col justify-between">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full flex-1">
-              <path
-                d="M0,45 C20,25 35,48 50,32 C65,18 80,35 100,20 L100,50 L0,50 Z"
-                fill="#3b82f6"
-                fillOpacity="0.25"
-              />
-              <path
-                d="M0,45 C20,25 35,48 50,32 C65,18 80,35 100,20"
-                fill="none"
-                stroke="#3b82f6"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M0,48 C20,38 35,42 50,22 C65,10 80,24 100,10 L100,50 L0,50 Z"
-                fill="#10b981"
-                fillOpacity="0.25"
-              />
-              <path
-                d="M0,48 C20,38 35,42 50,22 C65,10 80,24 100,10"
-                fill="none"
-                stroke="#10b981"
-                strokeWidth="1.5"
-              />
+              <path d="M0,45 C20,25 35,48 50,32 C65,18 80,35 100,20 L100,50 L0,50 Z" fill="#3b82f6" fillOpacity="0.25" stroke="#3b82f6" strokeWidth="1.5" />
+              <path d="M0,48 C20,38 35,42 50,22 C65,10 80,24 100,10 L100,50 L0,50 Z" fill="#10b981" fillOpacity="0.25" stroke="#10b981" strokeWidth="1.5" />
             </svg>
             <div className="flex items-center justify-center gap-4 text-xs font-medium pt-2">
               <div className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-blue-500" /> Desktop</div>
@@ -247,77 +463,28 @@ export function AreaChartLegend() {
         description: "Layered stacked distribution by device",
         trending: "Trending up by 9.7% this month",
         period: "January - June 2026",
-        code: `import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";
-
-export function AreaChartStacked() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <AreaChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Area type="monotone" dataKey="mobile" stackId="1" stroke="#10b981" fill="#10b981" fillOpacity={0.5} />
-        <Area type="monotone" dataKey="desktop" stackId="1" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.5} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Area, AreaChart } from "recharts";\n\nexport function AreaChartStacked() {\n  return <AreaChart data={data}><Area stackId="1" dataKey="mobile" fill="#10b981" /><Area stackId="1" dataKey="desktop" fill="#3b82f6" /></AreaChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex items-end">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
-              <path
-                d="M0,30 C25,18 45,35 70,22 C85,15 95,20 100,14 L100,50 L0,50 Z"
-                fill="#3b82f6"
-                fillOpacity="0.4"
-              />
-              <path
-                d="M0,42 C25,32 45,45 70,36 C85,28 95,34 100,28 L100,50 L0,50 Z"
-                fill="#10b981"
-                fillOpacity="0.5"
-              />
+              <path d="M0,30 C25,18 45,35 70,22 C85,15 95,20 100,14 L100,50 L0,50 Z" fill="#3b82f6" fillOpacity="0.4" />
+              <path d="M0,42 C25,32 45,45 70,36 C85,28 95,34 100,28 L100,50 L0,50 Z" fill="#10b981" fillOpacity="0.5" />
             </svg>
           </div>
         ),
       },
       {
-        id: "area-expanded",
+        id: "area-gradient",
         title: "Area Chart - Gradient Sweep",
         category: "Area Charts",
-        description: "Smooth multi-stop gradient area visualization",
+        description: "Multi-stop gradient area visualization",
         trending: "Trending up by 15.1% this month",
         period: "January - June 2026",
-        code: `import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";
-
-export function AreaChartGradient() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <AreaChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Area type="monotone" dataKey="desktop" stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.3} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Area, AreaChart } from "recharts";\n\nexport function AreaChartGradient() {\n  return <AreaChart data={data}><Area dataKey="desktop" fill="#8b5cf6" fillOpacity={0.3} /></AreaChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex items-end">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
-              <defs>
-                <linearGradient id="purpleGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#3b82f6" />
-                  <stop offset="100%" stopColor="#8b5cf6" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M0,42 C20,30 35,46 55,20 C75,8 85,25 100,12 L100,50 L0,50 Z"
-                fill="url(#purpleGrad)"
-                fillOpacity="0.3"
-              />
-              <path
-                d="M0,42 C20,30 35,46 55,20 C75,8 85,25 100,12"
-                fill="none"
-                stroke="url(#purpleGrad)"
-                strokeWidth="2"
-              />
+              <path d="M0,42 C20,30 35,46 55,20 C75,8 85,25 100,12 L100,50 L0,50 Z" fill="#8b5cf6" fillOpacity="0.3" stroke="#8b5cf6" strokeWidth="2" />
             </svg>
           </div>
         ),
@@ -326,36 +493,13 @@ export function AreaChartGradient() {
 
     "Bar Charts": [
       {
-        id: "bar-default",
-        title: "Bar Chart - Multiple",
+        id: "bar-multiple",
+        title: "Bar Chart - Multiple Grouped",
         category: "Bar Charts",
         description: "Desktop vs Mobile monthly activity",
         trending: "Trending up by 18.2% this quarter",
         period: "January - June 2026",
-        code: `import { Bar, BarChart, ResponsiveContainer, XAxis, Tooltip, Legend } from "recharts";
-
-const data = [
-  { month: "Jan", desktop: 186, mobile: 80 },
-  { month: "Feb", desktop: 305, mobile: 200 },
-  { month: "Mar", desktop: 237, mobile: 120 },
-  { month: "Apr", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "Jun", desktop: 214, mobile: 140 },
-];
-
-export function BarChartMultiple() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="desktop" fill="#3b82f6" radius={4} />
-        <Bar dataKey="mobile" fill="#10b981" radius={4} />
-      </BarChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Bar, BarChart } from "recharts";\n\nexport function BarChartMultiple() {\n  return <BarChart data={data}><Bar dataKey="desktop" fill="#3b82f6" /><Bar dataKey="mobile" fill="#10b981" /></BarChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full flex items-end justify-between gap-3 px-2 pt-4">
             {[
@@ -367,8 +511,8 @@ export function BarChartMultiple() {
               { d: 85, m: 55 },
             ].map((bar, i) => (
               <div key={i} className="flex-1 flex items-end justify-center gap-1 h-full">
-                <div style={{ height: `${bar.d}%` }} className="w-1/2 bg-blue-500 rounded-t-sm hover:brightness-110 transition-all" />
-                <div style={{ height: `${bar.m}%` }} className="w-1/2 bg-emerald-500 rounded-t-sm hover:brightness-110 transition-all" />
+                <div style={{ height: `${bar.d}%` }} className="w-1/2 bg-blue-500 rounded-t-sm" />
+                <div style={{ height: `${bar.m}%` }} className="w-1/2 bg-emerald-500 rounded-t-sm" />
               </div>
             ))}
           </div>
@@ -381,20 +525,7 @@ export function BarChartMultiple() {
         description: "Stacked volume distribution over 6 months",
         trending: "Trending up by 11.5% this month",
         period: "January - June 2026",
-        code: `import { Bar, BarChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";
-
-export function BarChartStacked() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Bar dataKey="desktop" stackId="a" fill="#3b82f6" />
-        <Bar dataKey="mobile" stackId="a" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-      </BarChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Bar, BarChart } from "recharts";\n\nexport function BarChartStacked() {\n  return <BarChart data={data}><Bar dataKey="desktop" stackId="a" fill="#3b82f6" /><Bar dataKey="mobile" stackId="a" fill="#8b5cf6" /></BarChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full flex items-end justify-between gap-4 px-2 pt-4">
             {[60, 85, 70, 45, 95, 80].map((total, i) => (
@@ -413,27 +544,41 @@ export function BarChartStacked() {
         description: "Horizontal performance metrics by category",
         trending: "Trending up by 7.8% this month",
         period: "January - June 2026",
-        code: `import { Bar, BarChart, ResponsiveContainer, YAxis, Tooltip } from "recharts";
-
-export function BarChartHorizontal() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={data} layout="vertical">
-        <YAxis dataKey="month" type="category" />
-        <Tooltip />
-        <Bar dataKey="desktop" fill="#3b82f6" radius={4} />
-      </BarChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Bar, BarChart } from "recharts";\n\nexport function BarChartHorizontal() {\n  return <BarChart data={data} layout="vertical"><Bar dataKey="desktop" fill="#3b82f6" /></BarChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full flex flex-col justify-between py-2 space-y-2">
             {[85, 65, 92, 45, 78].map((w, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className="text-[10px] text-muted-foreground w-8">Cat {i + 1}</span>
-                <div className="flex-1 bg-muted/40 h-4 rounded-full overflow-hidden">
-                  <div style={{ width: `${w}%` }} className="bg-blue-500 h-full rounded-full transition-all duration-500" />
+                <div className="flex-1 bg-muted/40 h-3 rounded-full overflow-hidden">
+                  <div style={{ width: `${w}%` }} className="bg-blue-500 h-full rounded-full" />
                 </div>
+              </div>
+            ))}
+          </div>
+        ),
+      },
+      {
+        id: "bar-negative",
+        title: "Bar Chart - Negative Values",
+        category: "Bar Charts",
+        description: "Profit and loss variance visualization",
+        trending: "Net gain +14.6% this quarter",
+        period: "January - June 2026",
+        code: `import { Bar, BarChart, ReferenceLine } from "recharts";\n\nexport function BarChartNegative() {\n  return <BarChart data={data}><ReferenceLine y={0} /><Bar dataKey="profit" fill="#10b981" /></BarChart>;\n}`,
+        renderChart: () => (
+          <div className="w-full h-full flex items-center justify-between gap-3 px-2">
+            {[40, -25, 60, -15, 80, 50].map((val, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center justify-center h-full">
+                {val > 0 ? (
+                  <div className="h-1/2 flex items-end w-full justify-center">
+                    <div style={{ height: `${val * 1.8}%` }} className="w-4 bg-emerald-500 rounded-t-sm" />
+                  </div>
+                ) : (
+                  <div className="h-1/2 flex items-start w-full justify-center">
+                    <div style={{ height: `${Math.abs(val) * 1.8}%` }} className="w-4 bg-rose-500 rounded-b-sm" />
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -444,68 +589,53 @@ export function BarChartHorizontal() {
     "Line Charts": [
       {
         id: "line-default",
-        title: "Line Chart - Interactive",
+        title: "Line Chart - Default Curve",
         category: "Line Charts",
-        description: "Continuous trend metric monitoring",
+        description: "Continuous trend monitoring",
         trending: "Trending up by 14.2% this month",
         period: "January - June 2026",
-        code: `import { Line, LineChart, ResponsiveContainer, XAxis, Tooltip, Dots } from "recharts";
-
-export function LineChartDefault() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <LineChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Line type="monotone" dataKey="desktop" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} />
-      </LineChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Line, LineChart } from "recharts";\n\nexport function LineChartDefault() {\n  return <LineChart data={data}><Line type="monotone" dataKey="desktop" stroke="#3b82f6" /></LineChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex items-end">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
-              <path
-                d="M0,35 C20,15 35,45 50,25 C65,12 80,32 100,10"
-                fill="none"
-                stroke="#3b82f6"
-                strokeWidth="2.5"
-              />
-              <circle cx="20" cy="22" r="2.5" fill="#3b82f6" />
-              <circle cx="50" cy="25" r="2.5" fill="#3b82f6" />
-              <circle cx="80" cy="24" r="2.5" fill="#3b82f6" />
-              <circle cx="100" cy="10" r="2.5" fill="#3b82f6" />
+              <path d="M0,35 C20,15 35,45 50,25 C65,12 80,32 100,10" fill="none" stroke="#3b82f6" strokeWidth="2.5" />
+              <circle cx="20" cy="22" r="2" fill="#3b82f6" />
+              <circle cx="50" cy="25" r="2" fill="#3b82f6" />
+              <circle cx="80" cy="24" r="2" fill="#3b82f6" />
+              <circle cx="100" cy="10" r="2" fill="#3b82f6" />
             </svg>
           </div>
         ),
       },
       {
         id: "line-multiple",
-        title: "Line Chart - Multiple",
+        title: "Line Chart - Multiple Series",
         category: "Line Charts",
         description: "Multi-series line comparison",
         trending: "Trending up by 6.3% this month",
         period: "January - June 2026",
-        code: `import { Line, LineChart, ResponsiveContainer, XAxis, Tooltip, Legend } from "recharts";
-
-export function LineChartMultiple() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <LineChart data={data}>
-        <XAxis dataKey="month" />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="desktop" stroke="#3b82f6" strokeWidth={2} />
-        <Line type="monotone" dataKey="mobile" stroke="#10b981" strokeWidth={2} />
-      </LineChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Line, LineChart } from "recharts";\n\nexport function LineChartMultiple() {\n  return <LineChart data={data}><Line dataKey="desktop" stroke="#3b82f6" /><Line dataKey="mobile" stroke="#10b981" /></LineChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full relative flex items-end">
             <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
               <path d="M0,38 C25,18 45,40 70,22 C85,15 100,8" fill="none" stroke="#3b82f6" strokeWidth="2" />
-              <path d="M0,45 C25,35 45,22 70,38 C85,25 100,18" fill="none" stroke="#10b981" strokeWidth="2" />
+              <path d="M0,45 C25,35 45,22 70,38 C85,25 100,16" fill="none" stroke="#10b981" strokeWidth="2" />
+            </svg>
+          </div>
+        ),
+      },
+      {
+        id: "line-step",
+        title: "Line Chart - Step",
+        category: "Line Charts",
+        description: "Stepped line changes over intervals",
+        trending: "Stable with +3.8% gain",
+        period: "January - June 2026",
+        code: `import { Line, LineChart } from "recharts";\n\nexport function LineChartStep() {\n  return <LineChart data={data}><Line type="step" dataKey="desktop" stroke="#3b82f6" /></LineChart>;\n}`,
+        renderChart: () => (
+          <div className="w-full h-full relative flex items-end">
+            <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full">
+              <path d="M0,40 L20,40 L20,20 L40,20 L40,32 L60,32 L60,15 L80,15 L80,25 L100,25" fill="none" stroke="#3b82f6" strokeWidth="2" />
             </svg>
           </div>
         ),
@@ -520,42 +650,34 @@ export function LineChartMultiple() {
         description: "Traffic source breakdown by browser",
         trending: "Chrome dominates with 58.2%",
         period: "Current Quarter",
-        code: `import { Pie, PieChart, ResponsiveContainer, Cell, Tooltip } from "recharts";
-
-const data = [
-  { name: "Chrome", value: 580, fill: "#3b82f6" },
-  { name: "Safari", value: 240, fill: "#10b981" },
-  { name: "Firefox", value: 120, fill: "#f59e0b" },
-  { name: "Edge", value: 80, fill: "#8b5cf6" },
-];
-
-export function PieChartDonut() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <PieChart>
-        <Tooltip />
-        <Pie data={data} innerRadius={50} outerRadius={80} paddingAngle={4} dataKey="value">
-          {data.map((entry, index) => (
-            <Cell key={index} fill={entry.fill} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Pie, PieChart } from "recharts";\n\nexport function PieChartDonut() {\n  return <PieChart><Pie innerRadius={50} outerRadius={80} data={data} /></PieChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full flex items-center justify-center">
-            <div className="relative w-36 h-36 flex items-center justify-center">
+            <div className="relative w-32 h-32 flex items-center justify-center">
               <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
-                <circle cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" strokeWidth="5" strokeDasharray="58 100" strokeDashoffset="0" />
+                <circle cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" strokeWidth="5" strokeDasharray="58 100" />
                 <circle cx="18" cy="18" r="14" fill="none" stroke="#10b981" strokeWidth="5" strokeDasharray="24 100" strokeDashoffset="-58" />
-                <circle cx="18" cy="18" r="14" fill="none" stroke="#f59e0b" strokeWidth="5" strokeDasharray="12 100" strokeDashoffset="-82" />
-                <circle cx="18" cy="18" r="14" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="6 100" strokeDashoffset="-94" />
+                <circle cx="18" cy="18" r="14" fill="none" stroke="#f59e0b" strokeWidth="5" strokeDasharray="18 100" strokeDashoffset="-82" />
               </svg>
               <div className="absolute text-center">
-                <span className="text-base font-bold">1,020</span>
-                <span className="block text-[9px] text-muted-foreground">Visitors</span>
+                <span className="text-sm font-bold">1,020</span>
               </div>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "pie-simple",
+        title: "Pie Chart - Solid Pie",
+        category: "Pie Charts",
+        description: "Full slice distribution across segments",
+        trending: "Top segment leads with 45%",
+        period: "Current Month",
+        code: `import { Pie, PieChart } from "recharts";\n\nexport function PieChartSolid() {\n  return <PieChart><Pie data={data} /></PieChart>;\n}`,
+        renderChart: () => (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full overflow-hidden flex items-center justify-center bg-blue-500 shadow-md relative">
+              <div className="w-full h-full" style={{ background: "conic-gradient(#3b82f6 0% 45%, #10b981 45% 75%, #f59e0b 75% 90%, #8b5cf6 90% 100%)" }} />
             </div>
           </div>
         ),
@@ -570,30 +692,10 @@ export function PieChartDonut() {
         description: "Multidimensional capability assessment",
         trending: "Performance score rated at 94/100",
         period: "Audited Q1 2026",
-        code: `import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
-
-const data = [
-  { subject: "Speed", A: 120 },
-  { subject: "Reliability", A: 98 },
-  { subject: "Comfort", A: 86 },
-  { subject: "Safety", A: 99 },
-  { subject: "Efficiency", A: 85 },
-];
-
-export function RadarChartDefault() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <RadarChart data={data}>
-        <PolarGrid />
-        <PolarAngleAxis dataKey="subject" />
-        <Radar name="Metrics" dataKey="A" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.5} />
-      </RadarChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { Radar, RadarChart } from "recharts";\n\nexport function RadarChartDefault() {\n  return <RadarChart data={data}><Radar dataKey="A" stroke="#3b82f6" fill="#3b82f6" /></RadarChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full flex items-center justify-center">
-            <svg viewBox="0 0 100 100" className="w-36 h-36">
+            <svg viewBox="0 0 100 100" className="w-32 h-32">
               <polygon points="50,10 90,38 75,85 25,85 10,38" fill="none" stroke="currentColor" strokeOpacity="0.2" />
               <polygon points="50,25 75,42 65,72 35,72 25,42" fill="none" stroke="currentColor" strokeOpacity="0.2" />
               <polygon points="50,15 85,38 70,80 28,75 18,35" fill="#3b82f6" fillOpacity="0.4" stroke="#3b82f6" strokeWidth="1.5" />
@@ -611,28 +713,16 @@ export function RadarChartDefault() {
         description: "Goal completion ring indicator",
         trending: "82% completed towards milestone",
         period: "Current Sprint",
-        code: `import { RadialBarChart, RadialBar, ResponsiveContainer, PolarAngleAxis } from "recharts";
-
-export function RadialChartDefault() {
-  return (
-    <ResponsiveContainer width="100%" height={220}>
-      <RadialBarChart innerRadius="70%" outerRadius="100%" data={[{ value: 82 }]}>
-        <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-        <RadialBar dataKey="value" cornerRadius={10} fill="#3b82f6" />
-      </RadialBarChart>
-    </ResponsiveContainer>
-  );
-}`,
+        code: `import { RadialBarChart, RadialBar } from "recharts";\n\nexport function RadialChartDefault() {\n  return <RadialBarChart data={[{ value: 82 }]}><RadialBar dataKey="value" fill="#3b82f6" /></RadialBarChart>;\n}`,
         renderChart: () => (
           <div className="w-full h-full flex items-center justify-center">
-            <div className="relative w-36 h-36 flex items-center justify-center">
+            <div className="relative w-32 h-32 flex items-center justify-center">
               <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
                 <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeOpacity="0.1" strokeWidth="4" />
                 <circle cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" strokeWidth="4" strokeDasharray="82 100" strokeLinecap="round" />
               </svg>
               <div className="absolute text-center">
-                <span className="text-xl font-bold">82%</span>
-                <span className="block text-[9px] text-muted-foreground">Completed</span>
+                <span className="text-lg font-bold">82%</span>
               </div>
             </div>
           </div>
@@ -648,24 +738,14 @@ export function RadialChartDefault() {
         description: "Interactive tooltip with formatted currency & indicators",
         trending: "Real-time reactive inspection",
         period: "Active Preview",
-        code: `import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-
-export function TooltipPreview() {
-  return (
-    <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
-  );
-}`,
+        code: `import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";\n\nexport function TooltipPreview() {\n  return <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />;\n}`,
         renderChart: () => (
-          <div className="w-full h-full flex flex-col items-center justify-center p-4">
-            <div className="rounded-xl border bg-background/95 backdrop-blur-sm p-3 shadow-xl border-border/80 text-xs space-y-1.5 w-44">
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="rounded-xl border bg-background/95 p-3 shadow-lg border-border/80 text-xs space-y-1 w-40">
               <div className="font-semibold text-foreground border-b pb-1">April 2026</div>
               <div className="flex justify-between items-center text-muted-foreground">
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-blue-500" /> Revenue</span>
-                <span className="font-bold text-foreground">$14,250</span>
-              </div>
-              <div className="flex justify-between items-center text-muted-foreground">
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Growth</span>
-                <span className="font-bold text-emerald-500">+18.4%</span>
+                <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-blue-500" /> Revenue</span>
+                <span className="font-bold text-foreground">$14.2k</span>
               </div>
             </div>
           </div>
@@ -674,6 +754,7 @@ export function TooltipPreview() {
     ],
   };
 
+  const currentFeatured = featuredCharts[selectedCategory] || featuredCharts["Area Charts"];
   const currentCharts = chartsData[selectedCategory] || chartsData["Area Charts"];
 
   return (
@@ -726,11 +807,11 @@ export function TooltipPreview() {
         </div>
       </div>
 
-      {/* Featured Big Interactive Chart */}
+      {/* Category-Specific Featured Interactive Chart */}
       <div className="space-y-4 mb-16">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-            <BarChart2 className="h-4 w-4" /> Featured Interactive Display
+            <BarChart2 className="h-4 w-4" /> Featured {selectedCategory} Display
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -752,30 +833,13 @@ export function TooltipPreview() {
             <button
               onClick={() =>
                 setActiveCodeModal({
-                  id: "featured-main",
-                  title: "Interactive Area Analytics",
-                  category: "Area Charts",
-                  description: "Full interactive Area Chart with dynamic filter and tooltip",
+                  id: `featured-${selectedCategory}`,
+                  title: currentFeatured.title,
+                  category: selectedCategory,
+                  description: currentFeatured.description,
                   trending: "+18.4% growth",
                   period: "Q1 - Q3 2026",
-                  code: `import { ResponsiveContainer, AreaChart, Area, XAxis, Tooltip, Legend } from "recharts";
-
-export function InteractiveAreaAnalytics() {
-  return (
-    <div className="rounded-xl border bg-card p-6 shadow-sm">
-      <h3 className="font-semibold text-lg">Area Chart - Interactive</h3>
-      <ResponsiveContainer width="100%" height={260}>
-        <AreaChart data={data}>
-          <XAxis dataKey="date" />
-          <Tooltip />
-          <Legend />
-          <Area type="monotone" dataKey="desktop" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.25} />
-          <Area type="monotone" dataKey="mobile" stroke="#10b981" fill="#10b981" fillOpacity={0.25} />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}`,
+                  code: currentFeatured.code,
                   renderChart: () => null,
                 })
               }
@@ -789,8 +853,8 @@ export function InteractiveAreaAnalytics() {
         <div className="rounded-xl border bg-card shadow-sm overflow-hidden flex flex-col min-h-[420px]">
           <div className="p-6 pb-0 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-6">
             <div>
-              <h3 className="font-semibold text-lg">Area Chart - Interactive</h3>
-              <p className="text-sm text-muted-foreground">Showing total visitors for {timeRange.toLowerCase()}</p>
+              <h3 className="font-semibold text-lg">{currentFeatured.title}</h3>
+              <p className="text-sm text-muted-foreground">{currentFeatured.description} for {timeRange.toLowerCase()}</p>
             </div>
             
             {/* Interactive Time Filter Dropdown */}
@@ -821,59 +885,7 @@ export function InteractiveAreaAnalytics() {
           </div>
 
           <div className="flex-1 p-6 relative flex flex-col justify-end">
-            {/* Smooth Cubic Bezier Chart Visualization */}
-            <div className="w-full h-64 relative overflow-hidden flex items-end">
-              <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full h-full absolute bottom-0 left-0">
-                <defs>
-                  <linearGradient id="mainAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.05" />
-                  </linearGradient>
-                  <linearGradient id="secAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10b981" stopOpacity="0.35" />
-                    <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28 L100,50 L0,50 Z"
-                  fill="url(#mainAreaGrad)"
-                />
-                <path
-                  d="M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18 L100,50 L0,50 Z"
-                  fill="url(#secAreaGrad)"
-                />
-                <path
-                  d="M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18"
-                  fill="none"
-                  stroke="#10b981"
-                  strokeWidth="1.5"
-                />
-              </svg>
-            </div>
-            <div className="flex justify-between mt-4 text-xs text-muted-foreground border-t pt-4">
-              <span>Apr 6</span>
-              <span>Apr 18</span>
-              <span>Apr 30</span>
-              <span>May 12</span>
-              <span>May 24</span>
-              <span>Jun 5</span>
-              <span>Jun 17</span>
-              <span>Jun 30</span>
-            </div>
-            <div className="flex items-center justify-center gap-6 mt-6 text-sm font-medium">
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Desktop
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Mobile
-              </div>
-            </div>
+            {currentFeatured.render(timeRange)}
           </div>
         </div>
       </div>
