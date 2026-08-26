@@ -1,12 +1,36 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import { ArrowRight, TrendingUp, ShieldCheck, Sparkles, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
+  const [selectedRadio, setSelectedRadio] = useState("option-1");
+  const [switchEnabled, setSwitchEnabled] = useState(true);
+  const [biometricEnabled, setBiometricEnabled] = useState(true);
+  const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
+
+  const chartData = [
+    { month: "Dec", commits: 45, prs: 20 },
+    { month: "Jan", commits: 75, prs: 35 },
+    { month: "Feb", commits: 38, prs: 18 },
+    { month: "Mar", commits: 92, prs: 48 },
+    { month: "Apr", commits: 60, prs: 28 },
+    { month: "May", commits: 85, prs: 42 },
+  ];
+
   return (
     <div className="flex-1">
       <main className="container mx-auto px-4 pt-24 pb-8 flex flex-col items-center max-w-[64rem] text-center">
-        <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-6">
-          <Link href="/docs/installation" className="flex items-center gap-2">
+        <div className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-6">
+          <Link href="/docs/installation" className="flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-primary" />
             New Questionnaire component <span className="ml-1">&rarr;</span>
           </Link>
         </div>
@@ -20,86 +44,200 @@ export default function Home() {
         <div className="space-x-4">
           <Link href="/docs/installation">
             <Button size="lg" className="rounded-full">
-              Build Your Own <span className="ml-2">&rarr;</span>
+              Build Your Own <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>
       </main>
 
-      <section className="container mx-auto px-4 py-8 md:py-12 lg:py-24 max-w-[1200px]">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: Form mock */}
-          <div className="rounded-xl border bg-card text-card-foreground shadow">
-            <div className="p-6 flex flex-col gap-6">
-              <div className="flex gap-2">
-                <Button size="sm" className="rounded-full">Button &rarr;</Button>
-                <Button size="sm" variant="secondary" className="rounded-full">Secondary</Button>
-                <Button size="sm" variant="outline" className="rounded-full">Outline</Button>
+      <section className="container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-[1200px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          
+          {/* Card 1: Interactive Form & Controls */}
+          <div className="rounded-2xl border bg-card text-card-foreground shadow-sm flex flex-col justify-between p-6">
+            <div className="space-y-5">
+              <div className="flex flex-wrap items-center gap-2">
+                <Button size="sm" className="rounded-full">
+                  Button &rarr;
+                </Button>
+                <Button size="sm" variant="secondary" className="rounded-full">
+                  Secondary
+                </Button>
+                <Button size="sm" variant="outline" className="rounded-full">
+                  Outline
+                </Button>
               </div>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <input className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" placeholder="Name" />
-                </div>
-                <div className="space-y-2">
-                  <textarea className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" placeholder="Message" />
-                </div>
+
+              <div className="space-y-3">
+                <Input placeholder="Your Name" defaultValue="Alex Morgan" />
+                <Textarea
+                  placeholder="Leave a message..."
+                  defaultValue="Excited to build with Qalvin UI components!"
+                  rows={2}
+                  className="resize-none"
+                />
               </div>
-              <div className="flex items-center gap-4">
-                <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">Badge</div>
-                <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">Secondary</div>
-                <div className="ml-auto flex gap-2">
-                  <div className="w-4 h-4 rounded-full border-2 border-primary"></div>
-                  <div className="w-4 h-4 rounded-full bg-primary/20"></div>
-                  <div className="w-8 h-4 rounded-full bg-primary flex items-center justify-end px-0.5"><div className="w-3 h-3 bg-background rounded-full"></div></div>
-                </div>
+            </div>
+
+            <div className="pt-5 mt-5 border-t flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Badge variant="default">Badge</Badge>
+                <Badge variant="secondary">Secondary</Badge>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {/* Real Interactive Radio Group */}
+                <RadioGroup
+                  value={selectedRadio}
+                  onValueChange={setSelectedRadio}
+                  className="flex items-center gap-1.5"
+                >
+                  <RadioGroupItem
+                    value="option-1"
+                    aria-label="Option 1"
+                    className="cursor-pointer"
+                  />
+                  <RadioGroupItem
+                    value="option-2"
+                    aria-label="Option 2"
+                    className="cursor-pointer"
+                  />
+                </RadioGroup>
+
+                {/* Real Interactive Switch */}
+                <Switch
+                  checked={switchEnabled}
+                  onCheckedChange={setSwitchEnabled}
+                  aria-label="Toggle feature"
+                  className="cursor-pointer"
+                />
               </div>
             </div>
           </div>
 
-          {/* Card 2: Chart mock */}
-          <div className="rounded-xl border bg-card text-card-foreground shadow">
-            <div className="p-6">
-              <h3 className="font-semibold leading-none tracking-tight mb-2">Contribution History</h3>
-              <p className="text-sm text-muted-foreground mb-6">Last 6 months of activity</p>
-              <div className="flex items-end justify-between h-[200px] gap-2 pt-4">
-                <div className="w-full bg-primary/20 rounded-sm h-[60%] hover:bg-primary/40 transition-colors"></div>
-                <div className="w-full bg-primary/20 rounded-sm h-[80%] hover:bg-primary/40 transition-colors"></div>
-                <div className="w-full bg-primary/20 rounded-sm h-[40%] hover:bg-primary/40 transition-colors"></div>
-                <div className="w-full bg-primary/20 rounded-sm h-[90%] hover:bg-primary/40 transition-colors"></div>
-                <div className="w-full bg-primary/20 rounded-sm h-[50%] hover:bg-primary/40 transition-colors"></div>
+          {/* Card 2: Chart with Legend & Activity */}
+          <div className="rounded-2xl border bg-card text-card-foreground shadow-sm flex flex-col justify-between p-6">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="font-semibold text-base leading-none tracking-tight">
+                  Contribution History
+                </h3>
+                <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                  <TrendingUp className="h-3 w-3" /> +24.8%
+                </span>
               </div>
-              <div className="flex justify-between mt-4 text-xs text-muted-foreground px-2">
-                <span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+              <p className="text-xs text-muted-foreground mb-4">
+                Activity breakdown over the last 6 months
+              </p>
+
+              {/* Chart Bars */}
+              <div className="flex items-end justify-between h-[150px] gap-2 pt-4 px-1">
+                {chartData.map((item, index) => {
+                  const isHovered = hoveredMonth === index;
+                  return (
+                    <div
+                      key={item.month}
+                      onMouseEnter={() => setHoveredMonth(index)}
+                      onMouseLeave={() => setHoveredMonth(null)}
+                      className="flex-1 flex flex-col items-center gap-1 h-full justify-end group cursor-pointer"
+                    >
+                      <div
+                        className={`text-[10px] font-semibold transition-opacity duration-200 ${
+                          isHovered ? "opacity-100 text-foreground" : "opacity-0"
+                        }`}
+                      >
+                        {item.commits}
+                      </div>
+                      <div className="w-full flex items-end justify-center gap-1 h-full">
+                        {/* Commits Bar */}
+                        <div
+                          style={{ height: `${item.commits}%` }}
+                          className="w-1/2 bg-primary rounded-t-sm transition-all duration-300 group-hover:brightness-110"
+                        />
+                        {/* PRs Bar */}
+                        <div
+                          style={{ height: `${item.prs}%` }}
+                          className="w-1/2 bg-emerald-500/80 rounded-t-sm transition-all duration-300 group-hover:bg-emerald-500"
+                        />
+                      </div>
+                      <span className="text-[11px] font-medium text-muted-foreground mt-1">
+                        {item.month}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Chart Legend (Jelas & Muncul) */}
+            <div className="mt-4 pt-3 border-t flex items-center justify-center gap-6 text-xs font-medium">
+              <div className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                <span className="text-muted-foreground">Commits</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                <span className="text-muted-foreground">Pull Requests</span>
               </div>
             </div>
           </div>
 
-          {/* Card 3: QR Code mock */}
-          <div className="rounded-xl border bg-card text-card-foreground shadow flex flex-col items-center justify-center p-6 text-center">
-            <div className="bg-white p-4 rounded-xl mb-6">
-              {/* Simple CSS Grid based QR Code mockup */}
-              <div className="w-40 h-40 grid grid-cols-5 grid-rows-5 gap-1 bg-white">
-                <div className="col-span-2 row-span-2 bg-black rounded-sm border-4 border-white ring-4 ring-black"></div>
-                <div className="col-span-2 row-span-2 col-start-4 bg-black rounded-sm border-4 border-white ring-4 ring-black"></div>
-                <div className="col-span-2 row-span-2 row-start-4 bg-black rounded-sm border-4 border-white ring-4 ring-black"></div>
-                
-                <div className="col-start-3 row-start-1 bg-black"></div>
-                <div className="col-start-3 row-start-2 bg-black"></div>
-                <div className="col-start-3 row-start-3 bg-black"></div>
-                <div className="col-start-1 row-start-3 bg-black"></div>
-                <div className="col-start-2 row-start-3 bg-black"></div>
-                <div className="col-start-4 row-start-3 bg-black"></div>
-                <div className="col-start-5 row-start-3 bg-black"></div>
-                
-                <div className="col-start-4 row-start-4 bg-black"></div>
-                <div className="col-start-4 row-start-5 bg-black"></div>
-                <div className="col-start-5 row-start-5 bg-black"></div>
-                <div className="col-start-3 row-start-5 bg-black"></div>
-                <div className="col-start-3 row-start-4 bg-black"></div>
+          {/* Card 3: Security & Session Verification (Replaces Scan to Connect) */}
+          <div className="rounded-2xl border bg-card text-card-foreground shadow-sm flex flex-col justify-between p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <ShieldCheck className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm leading-none">Security Access</h3>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">Two-Factor Authentication</p>
+                  </div>
+                </div>
+                <Badge variant="outline" className="text-[10px] text-emerald-500 border-emerald-500/30 bg-emerald-500/10">
+                  <CheckCircle2 className="h-3 w-3 mr-1" /> Active
+                </Badge>
+              </div>
+
+              {/* Interactive Passcode Demo */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Verification Code
+                </label>
+                <div className="flex gap-2 justify-between">
+                  {["8", "4", "2", "9", "1", "7"].map((digit, i) => (
+                    <div
+                      key={i}
+                      className="h-10 w-9 rounded-lg border border-input bg-muted/30 flex items-center justify-center font-mono font-bold text-sm shadow-2xs hover:border-primary transition-colors"
+                    >
+                      {digit}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Setting Toggles */}
+              <div className="space-y-2.5 pt-1">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Biometric Authentication</span>
+                  <Switch
+                    checked={biometricEnabled}
+                    onCheckedChange={setBiometricEnabled}
+                    size="sm"
+                    className="cursor-pointer"
+                  />
+                </div>
               </div>
             </div>
-            <p className="text-sm font-medium">Scan to connect your mobile device</p>
+
+            <div className="pt-4 mt-4 border-t">
+              <Button size="sm" className="w-full font-medium">
+                Verify & Continue
+              </Button>
+            </div>
           </div>
+
         </div>
       </section>
     </div>
