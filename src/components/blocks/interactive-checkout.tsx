@@ -1,309 +1,299 @@
 "use client";
 
-import * as React from "react";
 import { useState } from "react";
-import {
-  CreditCard,
-  ShieldCheck,
-  Truck,
-  CheckCircle2,
-  Lock,
-  ArrowRight,
-  ArrowLeft,
-  Sparkles,
-  ShoppingBag,
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Minus, Plus, ShoppingCart, X, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
+import NumberFlow from "@number-flow/react";
 
-export function InteractiveCheckout() {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [cardNumber, setCardNumber] = useState("4242 •••• •••• 4242");
-  const [cardHolder, setCardHolder] = useState("ALVIN AHMAD");
-  const [expiry, setExpiry] = useState("08/29");
-  const [cvv, setCvv] = useState("•••");
-  const [coupon, setCoupon] = useState("");
-  const [discountApplied, setDiscountApplied] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image: string;
+  color: string;
+}
 
-  const basePrice = 129.0;
-  const shipping = 0.0;
-  const discount = discountApplied ? 25.0 : 0.0;
-  const totalPrice = (basePrice - discount + shipping).toFixed(2);
+export interface CartItem extends Product {
+  quantity: number;
+}
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (coupon.trim().toLowerCase() === "qalvin25" || coupon.trim().toLowerCase() === "discount") {
-      setDiscountApplied(true);
-    } else {
-      setDiscountApplied(true);
-    }
+export interface InteractiveCheckoutProps {
+  products?: Product[];
+}
+
+export const defaultProducts: Product[] = [
+  {
+    id: "1",
+    name: "Air Max 90",
+    price: 129.99,
+    category: "Running",
+    image:
+      "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
+    color: "Black/White",
+  },
+  {
+    id: "2",
+    name: "Ultra Boost",
+    price: 179.99,
+    category: "Performance",
+    image:
+      "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
+    color: "Grey/Blue",
+  },
+  {
+    id: "3",
+    name: "Classic Trainer",
+    price: 89.99,
+    category: "Casual",
+    image:
+      "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
+    color: "White/Red",
+  },
+];
+
+function InteractiveCheckout({
+  products = defaultProducts,
+}: InteractiveCheckoutProps) {
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  const addToCart = (product: Product) => {
+    setCart((currentCart) => {
+      const existingItem = currentCart.find((item) => item.id === product.id);
+      if (existingItem) {
+        return currentCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...currentCart, { ...product, quantity: 1 }];
+    });
   };
 
-  const handleCompleteOrder = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      setStep(3);
-    }, 1200);
+  const removeFromCart = (productId: string) => {
+    setCart((currentCart) =>
+      currentCart.filter((item) => item.id !== productId)
+    );
   };
+
+  const updateQuantity = (productId: string, delta: number) => {
+    setCart((currentCart) =>
+      currentCart.map((item) => {
+        if (item.id === productId) {
+          const newQuantity = item.quantity + delta;
+          return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
+        }
+        return item;
+      })
+    );
+  };
+
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
-    <div className="w-full max-w-4xl mx-auto rounded-2xl border border-border/80 bg-card p-6 md:p-8 shadow-xl">
-      {/* Stepper Header */}
-      <div className="flex items-center justify-between border-b pb-6 mb-8">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold shadow-md">
-            <ShoppingBag className="h-5 w-5" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold tracking-tight">Express Checkout</h2>
-            <p className="text-xs text-muted-foreground">Secure 256-bit encrypted checkout</p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div
-            className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all",
-              step >= 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-            )}
-          >
-            1
-          </div>
-          <div className={cn("h-0.5 w-6", step >= 2 ? "bg-primary" : "bg-muted")} />
-          <div
-            className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all",
-              step >= 2 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-            )}
-          >
-            2
-          </div>
-          <div className={cn("h-0.5 w-6", step >= 3 ? "bg-primary" : "bg-muted")} />
-          <div
-            className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all",
-              step === 3 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-            )}
-          >
-            3
-          </div>
-        </div>
-      </div>
-
-      {step === 1 && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Form Side */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                <Truck className="h-4 w-4 text-primary" /> Shipping Details
-              </h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="firstName" className="text-xs">First Name</Label>
-                  <Input id="firstName" defaultValue="Alvin" placeholder="First Name" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="lastName" className="text-xs">Last Name</Label>
-                  <Input id="lastName" defaultValue="Ahmad" placeholder="Last Name" />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-xs">Email Address</Label>
-                <Input id="email" type="email" defaultValue="alvin@qalvinui.com" placeholder="you@domain.com" />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="address" className="text-xs">Shipping Address</Label>
-                <Input id="address" defaultValue="742 Evergreen Terrace, Suite 101" placeholder="Street address" />
-              </div>
-            </div>
-
-            <div className="pt-2">
-              <Button onClick={() => setStep(2)} className="w-full flex items-center justify-center gap-2">
-                Continue to Payment <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Order Summary Side */}
-          <div className="lg:col-span-5 space-y-6 bg-muted/20 p-5 rounded-xl border">
-            <h3 className="text-sm font-semibold text-foreground">Order Summary</h3>
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                UI
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-xs text-foreground truncate">Qalvin UI Pro License</div>
-                <div className="text-[11px] text-muted-foreground">Lifetime Access & Updates</div>
-              </div>
-              <div className="text-xs font-bold">${basePrice.toFixed(2)}</div>
-            </div>
-
-            <form onSubmit={handleApplyCoupon} className="flex gap-2 pt-2">
-              <Input
-                placeholder="Coupon code (try: QALVIN25)"
-                value={coupon}
-                onChange={(e) => setCoupon(e.target.value)}
-                className="h-8 text-xs"
-              />
-              <Button type="submit" size="sm" variant="secondary" className="h-8 text-xs">
-                Apply
-              </Button>
-            </form>
-
-            <div className="space-y-2 border-t pt-4 text-xs">
-              <div className="flex justify-between text-muted-foreground">
-                <span>Subtotal</span>
-                <span>${basePrice.toFixed(2)}</span>
-              </div>
-              {discountApplied && (
-                <div className="flex justify-between text-emerald-500 font-semibold">
-                  <span>Discount (Promo)</span>
-                  <span>-${discount.toFixed(2)}</span>
-                </div>
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex-1 space-y-3">
+          {products.map((product) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className={cn(
+                "group",
+                "p-4 rounded-xl",
+                "bg-white dark:bg-zinc-900",
+                "border border-zinc-200 dark:border-zinc-800",
+                "hover:border-zinc-300 dark:hover:border-zinc-700",
+                "transition-all duration-200"
               )}
-              <div className="flex justify-between text-muted-foreground">
-                <span>Shipping</span>
-                <span className="text-emerald-500 font-medium">Free</span>
-              </div>
-              <div className="flex justify-between font-bold text-sm text-foreground pt-2 border-t">
-                <span>Total Amount</span>
-                <span>${totalPrice}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Card Form */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                <CreditCard className="h-4 w-4 text-primary" /> Payment Method
-              </h3>
-              <div className="space-y-1.5">
-                <Label htmlFor="cardHolder" className="text-xs">Cardholder Name</Label>
-                <Input
-                  id="cardHolder"
-                  value={cardHolder}
-                  onChange={(e) => setCardHolder(e.target.value.toUpperCase() || "CARDHOLDER NAME")}
-                  placeholder="NAME ON CARD"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="cardNumber" className="text-xs">Card Number</Label>
-                <Input
-                  id="cardNumber"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value || "•••• •••• •••• ••••")}
-                  placeholder="1234 5678 9012 3456"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="expiry" className="text-xs">Expiry Date</Label>
-                  <Input
-                    id="expiry"
-                    value={expiry}
-                    onChange={(e) => setExpiry(e.target.value || "MM/YY")}
-                    placeholder="MM/YY"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="cvv" className="text-xs">CVV / CVC</Label>
-                  <Input
-                    id="cvv"
-                    value={cvv}
-                    onChange={(e) => setCvv(e.target.value || "•••")}
-                    placeholder="123"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 pt-2">
-              <Button variant="outline" onClick={() => setStep(1)} className="flex items-center gap-1">
-                <ArrowLeft className="h-4 w-4" /> Back
-              </Button>
-              <Button
-                onClick={handleCompleteOrder}
-                disabled={isProcessing}
-                className="flex-1 flex items-center justify-center gap-2"
-              >
-                {isProcessing ? (
-                  "Processing Secure Payment..."
-                ) : (
-                  <>
-                    <Lock className="h-4 w-4" /> Pay ${totalPrice}
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-
-          {/* Interactive Live Credit Card Visualizer */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="relative h-48 w-full rounded-2xl bg-gradient-to-br from-slate-900 via-neutral-900 to-indigo-950 p-6 text-white shadow-2xl border border-white/10 flex flex-col justify-between overflow-hidden">
-              <div className="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-primary/20 blur-2xl" />
-              <div className="flex justify-between items-center">
-                <div className="h-8 w-11 rounded-md bg-amber-400/80 border border-amber-300 shadow-inner" />
-                <Badge variant="outline" className="border-white/30 text-white/90 text-[10px] font-mono">
-                  VISA
-                </Badge>
-              </div>
-
-              <div className="font-mono text-base tracking-widest text-white/95 truncate">
-                {cardNumber}
-              </div>
-
-              <div className="flex justify-between items-end text-xs">
-                <div>
-                  <div className="text-[9px] uppercase tracking-wider text-white/60">Card Holder</div>
-                  <div className="font-semibold tracking-wide text-white/90 truncate max-w-[150px]">
-                    {cardHolder}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={cn(
+                      "relative w-12 h-12 rounded-lg overflow-hidden",
+                      "bg-zinc-100 dark:bg-zinc-800",
+                      "transition-colors duration-200",
+                      "group-hover:bg-zinc-200 dark:group-hover:bg-zinc-700"
+                    )}
+                  >
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                        {product.name}
+                      </h3>
+                      <span className="px-2 py-0.5 text-xs rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
+                        {product.category}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+                      <span>${product.price}</span>
+                      <span>•</span>
+                      <span>{product.color}</span>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <div className="text-[9px] uppercase tracking-wider text-white/60">Expires</div>
-                  <div className="font-semibold font-mono text-white/90">{expiry}</div>
-                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => addToCart(product)}
+                  className="gap-1.5"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add
+                </Button>
               </div>
-            </div>
-
-            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-              <ShieldCheck className="h-4 w-4 text-emerald-500" />
-              <span>Bank-level encryption with SSL verification</span>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
-      )}
 
-      {step === 3 && (
-        <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
-            <CheckCircle2 className="h-10 w-10" />
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className={cn(
+            "w-full md:w-80 flex flex-col",
+            "p-4 rounded-xl",
+            "bg-white dark:bg-zinc-900",
+            "border border-zinc-200 dark:border-zinc-800",
+            "sticky top-4",
+            "max-h-[32rem]"
+          )}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <ShoppingCart className="w-4 h-4 text-zinc-500" />
+            <h2 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              Cart ({totalItems})
+            </h2>
           </div>
-          <div className="space-y-1">
-            <h3 className="text-2xl font-bold text-foreground">Payment Successful!</h3>
-            <p className="text-xs text-muted-foreground max-w-sm">
-              Your order #QALVIN-2026 has been confirmed. A receipt and license keys have been dispatched to your email.
-            </p>
-          </div>
-          <div className="pt-4">
-            <Button onClick={() => setStep(1)} variant="outline">
-              Make Another Order
+
+          <motion.div
+            className={cn(
+              "flex-1 overflow-y-auto",
+              "min-h-0",
+              "-mx-4 px-4",
+              "space-y-3"
+            )}
+          >
+            <AnimatePresence initial={false} mode="popLayout">
+              {cart.map((item) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{
+                    opacity: { duration: 0.2 },
+                    layout: { duration: 0.2 },
+                  }}
+                  className={cn(
+                    "flex items-center gap-3",
+                    "p-2 rounded-lg",
+                    "bg-zinc-50 dark:bg-zinc-800/50",
+                    "mb-3"
+                  )}
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                        {item.name}
+                      </span>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => removeFromCart(item.id)}
+                        className="p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 cursor-pointer"
+                      >
+                        <X className="w-3 h-3 text-zinc-400" />
+                      </motion.button>
+                    </div>
+                    <div className="flex items-center justify-between mt-1">
+                      <div className="flex items-center gap-1">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => updateQuantity(item.id, -1)}
+                          className="p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 cursor-pointer"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </motion.button>
+                        <motion.span
+                          layout
+                          className="text-xs text-zinc-600 dark:text-zinc-400 w-4 text-center"
+                        >
+                          {item.quantity}
+                        </motion.span>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => updateQuantity(item.id, 1)}
+                          className="p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 cursor-pointer"
+                        >
+                          <Plus className="w-3 h-3" />
+                        </motion.button>
+                      </div>
+                      <motion.span
+                        layout
+                        className="text-xs text-zinc-500 dark:text-zinc-400"
+                      >
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </motion.span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+          <motion.div
+            layout
+            className={cn(
+              "pt-3 mt-3",
+              "border-t border-zinc-200 dark:border-zinc-800",
+              "bg-white dark:bg-zinc-900"
+            )}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                Total
+              </span>
+              <motion.span
+                layout
+                className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
+              >
+                <NumberFlow value={totalPrice} />
+              </motion.span>
+            </div>
+            <Button size="sm" className="w-full gap-2">
+              <CreditCard className="w-4 h-4" />
+              Checkout
             </Button>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
+
+function InteractiveCheckoutDemo() {
+  return <InteractiveCheckout products={defaultProducts} />;
+}
+
+export { InteractiveCheckout, InteractiveCheckoutDemo };

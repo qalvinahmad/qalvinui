@@ -13,6 +13,16 @@ const urbanist = Urbanist({
 export const metadata: Metadata = {
   title: "Qalvin UI - Modern Design System & Components",
   description: "Next-gen accessible, highly customizable UI components built with React and Tailwind CSS.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+      { url: "/icons.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({

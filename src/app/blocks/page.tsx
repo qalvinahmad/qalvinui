@@ -250,9 +250,9 @@ export default function Example() {
             ) : (
               <div className="rounded-2xl border bg-zinc-950 text-zinc-100 p-6 font-mono text-xs overflow-x-auto">
                 <div className="flex justify-between items-center pb-4 border-b border-zinc-800 mb-4">
-                  <span className="text-zinc-400">src/components/blocks/interactive-checkout.tsx</span>
+                  <span className="text-zinc-400">src/components/ui/interactive-checkout.tsx</span>
                   <button
-                    onClick={() => copyToClipboard('import { InteractiveCheckout } from "@/components/blocks/interactive-checkout";\n\nexport default function Page() {\n  return <InteractiveCheckout />;\n}', "code-snippet")}
+                    onClick={() => copyToClipboard('import { InteractiveCheckout, Product } from "@/components/ui/interactive-checkout";\n\nconst defaultProducts: Product[] = [\n  {\n    id: "1",\n    name: "Air Max 90",\n    price: 129.99,\n    category: "Running",\n    image: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",\n    color: "Black/White",\n  },\n  {\n    id: "2",\n    name: "Ultra Boost",\n    price: 179.99,\n    category: "Performance",\n    image: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",\n    color: "Grey/Blue",\n  },\n  {\n    id: "3",\n    name: "Classic Trainer",\n    price: 89.99,\n    category: "Casual",\n    image: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",\n    color: "White/Red",\n  },\n];\n\nexport function InteractiveCheckoutDemo() {\n  return <InteractiveCheckout products={defaultProducts} />;\n}', "code-snippet")}
                     className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-100 bg-zinc-800/80 px-2.5 py-1 rounded"
                   >
                     {copiedId === "code-snippet" ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
@@ -260,14 +260,37 @@ export default function Example() {
                   </button>
                 </div>
                 <pre className="text-zinc-300">
-{`import { InteractiveCheckout } from "@/components/blocks/interactive-checkout";
+{`import { InteractiveCheckout, Product } from "@/components/ui/interactive-checkout";
 
-export default function CheckoutPage() {
-  return (
-    <div className="container mx-auto py-12 px-4">
-      <InteractiveCheckout />
-    </div>
-  );
+const defaultProducts: Product[] = [
+  {
+    id: "1",
+    name: "Air Max 90",
+    price: 129.99,
+    category: "Running",
+    image: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
+    color: "Black/White",
+  },
+  {
+    id: "2",
+    name: "Ultra Boost",
+    price: 179.99,
+    category: "Performance",
+    image: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
+    color: "Grey/Blue",
+  },
+  {
+    id: "3",
+    name: "Classic Trainer",
+    price: 89.99,
+    category: "Casual",
+    image: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
+    color: "White/Red",
+  },
+];
+
+export function InteractiveCheckoutDemo() {
+  return <InteractiveCheckout products={defaultProducts} />;
 }`}
                 </pre>
               </div>
