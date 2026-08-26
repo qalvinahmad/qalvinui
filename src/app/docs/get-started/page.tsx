@@ -24,7 +24,7 @@ export default function GetStartedPage() {
           Run the init command to set up Qalvin UI in your project:
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm">
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui init</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui init</p>
         </div>
         <p className="text-sm text-muted-foreground">
           This will create a <code className="bg-muted px-1.5 py-0.5 rounded">components.json</code> file in your project root and configure the necessary settings.
@@ -38,10 +38,10 @@ export default function GetStartedPage() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Add individual components</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add button card input</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add button card input</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Add all components</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add --all</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add --all</p>
         </div>
       </div>
 

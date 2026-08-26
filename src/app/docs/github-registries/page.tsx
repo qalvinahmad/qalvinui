@@ -23,10 +23,10 @@ export default function GitHubRegistriesPage() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Add a registry from GitHub</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add --registry https://github.com/username/repo button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add --registry https://github.com/username/repo button</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Add multiple components from a registry</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add --registry https://github.com/username/repo button card input</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add --registry https://github.com/username/repo button card input</p>
         </div>
       </div>
 
@@ -57,10 +57,10 @@ export default function GitHubRegistriesPage() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Add the official Qalvin UI registry</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add --registry https://github.com/qalvinahmad/qalvinui button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add --registry https://github.com/qalvinahmad/qalvinui button</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Or use a shorthand with the registry name</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add --registry qalvinahmad/qalvinui button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add --registry qalvinahmad/qalvinui button</p>
         </div>
       </div>
 
@@ -71,13 +71,13 @@ export default function GitHubRegistriesPage() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Initialize a new registry</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui create-registry my-registry</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui create-registry my-registry</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Add components to your registry</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add-to-registry button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add-to-registry button</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Publish to GitHub</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui publish-registry</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui publish-registry</p>
         </div>
       </div>
 

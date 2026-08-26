@@ -65,10 +65,10 @@ export default function RegistryDirectoryPage() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># List all available components</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui list</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui list</p>
           <p className="text-foreground-80"></p>
           <p className="text-foreground/80"># Search for a specific component</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui search button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui search button</p>
         </div>
       </div>
 
@@ -116,13 +116,13 @@ export default function RegistryDirectoryPage() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Install a single component</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add [component-name]</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add [component-name]</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Install multiple components</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add [component1] [component2]</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add [component1] [component2]</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Install with a specific style</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add [component] --style nova</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add [component] --style nova</p>
         </div>
       </div>
     </div>

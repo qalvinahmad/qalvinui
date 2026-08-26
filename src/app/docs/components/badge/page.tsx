@@ -209,10 +209,10 @@ export { Badge, badgeVariants }
                   <TabsTrigger value="bun" className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground bg-transparent px-0 pb-3 pt-2 font-semibold shadow-none">bun</TabsTrigger>
                 </TabsList>
               </div>
-              <TabsContent value="pnpm" className="mt-4"><CodeBlock code="pnpm dlx @qalvinahmad/ui add badge" language="bash" /></TabsContent>
-              <TabsContent value="npm" className="mt-4"><CodeBlock code="npx @qalvinahmad/ui add badge" language="bash" /></TabsContent>
-              <TabsContent value="yarn" className="mt-4"><CodeBlock code="npx @qalvinahmad/ui add badge" language="bash" /></TabsContent>
-              <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @qalvinahmad/ui add badge" language="bash" /></TabsContent>
+              <TabsContent value="pnpm" className="mt-4"><CodeBlock code="pnpm dlx @alvinahmad/ui add badge" language="bash" /></TabsContent>
+              <TabsContent value="npm" className="mt-4"><CodeBlock code="npx @alvinahmad/ui add badge" language="bash" /></TabsContent>
+              <TabsContent value="yarn" className="mt-4"><CodeBlock code="npx @alvinahmad/ui add badge" language="bash" /></TabsContent>
+              <TabsContent value="bun" className="mt-4"><CodeBlock code="bunx @alvinahmad/ui add badge" language="bash" /></TabsContent>
             </Tabs>
           </TabsContent>
           <TabsContent value="manual" className="mt-6 space-y-6">

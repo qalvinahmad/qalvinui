@@ -23,10 +23,10 @@ export default function OpenInV0Page() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Export a component to v0</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui export button --v0</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui export button --v0</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Export multiple components</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui export button card input --v0</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui export button card input --v0</p>
         </div>
       </div>
 
@@ -98,7 +98,7 @@ export function MyComponent() {
 # "Create a pricing card with monthly and yearly toggle"
 
 # 2. Export to v0
-pnpm dlx @qalvinahmad/ui export card --v0
+pnpm dlx @alvinahmad/ui export card --v0
 
 # 3. Open in v0 and refine the prompt
 # v0 will generate the component based on your description

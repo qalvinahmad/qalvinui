@@ -32,7 +32,7 @@ export default function Page() {
           You can install Qalvin UI using your preferred package manager:
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm">
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui init</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui init</p>
         </div>
       </div>
 

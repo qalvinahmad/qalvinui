@@ -14,7 +14,7 @@ export default function Page() {
           Install the CLI globally using your preferred package manager:
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm">
-          <p className="text-foreground/80">pnpm add -g @qalvinahmad/ui</p>
+          <p className="text-foreground/80">pnpm add -g @alvinahmad/ui</p>
         </div>
       </div>
 
@@ -24,7 +24,7 @@ export default function Page() {
           Initialize Qalvin UI in your project:
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm">
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui init</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui init</p>
         </div>
         <p className="text-sm text-muted-foreground">
           This will create a <code className="bg-muted px-1.5 py-0.5 rounded">components.json</code> file in your project root.
@@ -38,13 +38,13 @@ export default function Page() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Add a single component</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add button</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Add multiple components</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add button card input</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add button card input</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Add all components</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add --all</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add --all</p>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export default function Page() {
           Update all components to the latest version:
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm">
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui update</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui update</p>
         </div>
       </div>
 

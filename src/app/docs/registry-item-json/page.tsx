@@ -174,10 +174,10 @@ export default function RegistryItemJsonPage() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Create a registry item from an existing component</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui create-registry-item button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui create-registry-item button</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Validate the registry item</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui validate-registry-item button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui validate-registry-item button</p>
         </div>
       </div>
 

@@ -22,7 +22,7 @@ export default function McpServerPage() {
           Install the MCP server package:
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm">
-          <p className="text-foreground/80">pnpm add @qalvinahmad/mcp-server</p>
+          <p className="text-foreground/80">pnpm add @alvinahmad/mcp-server</p>
         </div>
       </div>
 
@@ -36,7 +36,7 @@ export default function McpServerPage() {
   "mcpServers": {
     "qalvinui": {
       "command": "npx",
-      "args": ["@qalvinahmad/mcp-server"],
+      "args": ["@alvinahmad/mcp-server"],
       "env": {
         "REGISTRY_PATH": "./registry"
       }

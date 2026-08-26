@@ -255,16 +255,16 @@ export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
                 <TabsTrigger value="bun">bun</TabsTrigger>
               </TabsList>
               <TabsContent value="pnpm">
-                <CodeBlock code="pnpm dlx @qalvinahmad/ui add accordion" language="bash" />
+                <CodeBlock code="pnpm dlx @alvinahmad/ui add accordion" language="bash" />
               </TabsContent>
               <TabsContent value="npm">
-                <CodeBlock code="npx @qalvinahmad/ui add accordion" language="bash" />
+                <CodeBlock code="npx @alvinahmad/ui add accordion" language="bash" />
               </TabsContent>
               <TabsContent value="yarn">
-                <CodeBlock code="npx @qalvinahmad/ui add accordion" language="bash" />
+                <CodeBlock code="npx @alvinahmad/ui add accordion" language="bash" />
               </TabsContent>
               <TabsContent value="bun">
-                <CodeBlock code="bunx --bun @qalvinahmad/ui add accordion" language="bash" />
+                <CodeBlock code="bunx --bun @alvinahmad/ui add accordion" language="bash" />
               </TabsContent>
             </Tabs>
           </TabsContent>

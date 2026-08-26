@@ -46,10 +46,10 @@ export default function Page() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># Create a registry item</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui create my-component</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui create my-component</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Publish to registry</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui publish</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui publish</p>
         </div>
       </div>
 
@@ -60,10 +60,10 @@ export default function Page() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># From official registry</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add button</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># From custom registry</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui add --registry https://my-registry.com button</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui add --registry https://my-registry.com button</p>
         </div>
       </div>
     </div>

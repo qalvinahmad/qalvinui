@@ -53,13 +53,13 @@ export default function Page() {
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm space-y-2">
           <p className="text-foreground/80"># List available skills</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui skills list</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui skills list</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Install a skill</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui skills add auth-form</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui skills add auth-form</p>
           <p className="text-foreground/80"></p>
           <p className="text-foreground/80"># Install all skills</p>
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui skills add --all</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui skills add --all</p>
         </div>
       </div>
     </div>

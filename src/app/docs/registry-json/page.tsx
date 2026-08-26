@@ -132,7 +132,7 @@ export default function RegistryJsonPage() {
           Validate your registry.json file:
         </p>
         <div className="rounded-lg border bg-muted/50 p-4 font-mono text-sm">
-          <p className="text-foreground/80">pnpm dlx @qalvinahmad/ui validate-registry</p>
+          <p className="text-foreground/80">pnpm dlx @alvinahmad/ui validate-registry</p>
         </div>
       </div>
     </div>
