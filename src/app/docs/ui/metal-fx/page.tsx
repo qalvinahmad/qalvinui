@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Sparkles, Layers } from "lucide-react";
+import { Check, Copy, Sparkles, Layers, Cpu, ShieldCheck, Zap } from "lucide-react";
 import { MetalFx } from "@/components/ui/metal-fx";
+import type { MetalFxPreset, MetalFxVariant } from "@/components/ui/metal-fx/types";
 import { cn } from "@/lib/utils";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
@@ -31,32 +32,27 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
   );
 }
 
-const PRESETS = [
-  { id: "chrome", label: "Chrome", desc: "Reflective silver liquid mirror" },
-  { id: "gold", label: "24K Gold", desc: "Warm luxury metallic sheen" },
-  { id: "bronze", label: "Bronze", desc: "Deep copper burnished metallic" },
-  { id: "iridescent", label: "Iridescent", desc: "Prismatic oil-slick dispersion" },
+const PRESETS: { id: MetalFxPreset; label: string; desc: string }[] = [
+  { id: "chromatic", label: "Chromatic Liquid", desc: "Prismatic oil-slick and iridescent light dispersion" },
+  { id: "silver", label: "Silver Chrome", desc: "Pure liquid mercury mirror reflections" },
+  { id: "gold", label: "24K Gold", desc: "Warm luxury specular metallic sheen" },
 ];
 
 export default function MetalFxDocPage() {
   const [tab, setTab] = useState<"preview" | "code">("preview");
-  const [preset, setPreset] = useState<string>("chrome");
+  const [preset, setPreset] = useState<MetalFxPreset>("chromatic");
+  const [variant, setVariant] = useState<MetalFxVariant>("button");
+  const [clicks, setClicks] = useState(0);
 
   const usageCode = `import { MetalFx } from "@/components/ui/metal-fx";
 
 export function MetalFxDemo() {
   return (
-    <div className="relative h-64 w-full rounded-2xl overflow-hidden">
-      <MetalFx
-        preset="${preset}"   // "chrome" | "gold" | "bronze" | "iridescent"
-        className="w-full h-full"
-      />
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <h2 className="text-3xl font-extrabold text-white tracking-widest uppercase drop-shadow-md">
-          Future Hardware
-        </h2>
-      </div>
-    </div>
+    <MetalFx preset="${preset}" variant="${variant}">
+      <button className="px-6 py-3 rounded-full bg-zinc-950 text-white font-semibold text-sm border border-zinc-800 shadow-2xl flex items-center gap-2">
+        <span>Initialize Engine</span>
+      </button>
+    </MetalFx>
   );
 }`;
 
@@ -74,7 +70,7 @@ export function MetalFxDemo() {
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Metal FX</h1>
         <p className="text-lg text-muted-foreground">
-          Real-time GPU shader materials simulating liquid mercury, polished chrome, gold, and iridescent surface reflections that react dynamically to pointer movements.
+          Real-time GPU shader materials simulating liquid mercury, polished chrome, and gold surface reflections that react dynamically to cursor movements and lighting.
         </p>
       </div>
 
@@ -104,46 +100,97 @@ export function MetalFxDemo() {
         </div>
 
         {tab === "preview" ? (
-          <div className="rounded-2xl border p-6 bg-card/40 space-y-6">
-            <div className="relative h-72 w-full rounded-2xl overflow-hidden border border-border/50 bg-black shadow-xl">
-              <MetalFx
-                key={preset}
-                preset={preset as any}
-                className="w-full h-full flex flex-col items-center justify-center p-4 text-center"
-              >
-                <div className="flex flex-col items-center justify-center pointer-events-none p-4 text-center">
-                  <span className="text-xs font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-black/60 border border-white/20 text-white/90 mb-2">
-                    WebGL 2.0 Material
-                  </span>
-                  <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg">
-                    Next-Gen Surface
-                  </h3>
-                  <p className="text-xs text-white/70 mt-1 max-w-sm">
-                    Hover and move your mouse across the canvas to interact with the specular light reflections
-                  </p>
-                </div>
-              </MetalFx>
-            </div>
+          <div className="rounded-2xl border p-8 sm:p-12 bg-card/40 space-y-8 flex flex-col items-center justify-center">
+            {/* Stage */}
+            <div className="w-full flex flex-col items-center justify-center py-10 px-6 rounded-2xl bg-zinc-950 border border-zinc-800/80 relative overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-900/60 via-zinc-950 to-black pointer-events-none" />
 
-            {/* Presets */}
-            <div className="space-y-2">
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Select Metal Preset
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {PRESETS.map((p) => (
+              <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-8">
+                {/* Main Action Button with MetalFx */}
+                <MetalFx
+                  key={`${preset}-${variant}`}
+                  preset={preset}
+                  variant={variant}
+                >
                   <button
-                    key={p.id}
-                    onClick={() => setPreset(p.id)}
+                    onClick={() => setClicks((c) => c + 1)}
                     className={cn(
-                      "p-3 rounded-xl border text-left text-xs transition-all cursor-pointer",
-                      preset === p.id
-                        ? "bg-foreground text-background border-foreground shadow-sm font-semibold"
-                        : "bg-muted/30 hover:bg-muted text-muted-foreground hover:text-foreground font-medium"
+                      "transition-all duration-200 cursor-pointer flex items-center justify-center gap-2.5 font-medium shadow-2xl",
+                      variant === "button"
+                        ? "px-8 py-3.5 rounded-full bg-zinc-900 hover:bg-zinc-850 text-white text-sm border border-zinc-800"
+                        : "w-16 h-16 rounded-full bg-zinc-900 text-white text-base border border-zinc-800"
                     )}
                   >
-                    <div>{p.label}</div>
-                    <div className="text-[10px] opacity-75 truncate">{p.desc}</div>
+                    {variant === "button" ? (
+                      <>
+                        <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+                        <span>Interactive Specular ({clicks} clicks)</span>
+                      </>
+                    ) : (
+                      <Zap className="w-6 h-6 text-amber-400" />
+                    )}
+                  </button>
+                </MetalFx>
+
+                {/* Second MetalFx Element to demonstrate shared WebGL loop */}
+                {variant === "button" && (
+                  <MetalFx
+                    key={`${preset}-circle-sample`}
+                    preset={preset}
+                    variant="circle"
+                  >
+                    <button
+                      onClick={() => setClicks((c) => c + 1)}
+                      className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white cursor-pointer hover:scale-105 transition-transform"
+                    >
+                      <Cpu className="w-5 h-5 text-zinc-300" />
+                    </button>
+                  </MetalFx>
+                )}
+              </div>
+
+              <p className="relative z-10 text-xs text-zinc-400 mt-8 text-center max-w-sm">
+                Move your cursor across the button to watch the real-time specular reflections track pointer coordinates.
+              </p>
+            </div>
+
+            {/* Controls */}
+            <div className="w-full space-y-4">
+              <div className="space-y-2">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Preset Material
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {PRESETS.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setPreset(p.id)}
+                      className={cn(
+                        "p-3 rounded-xl border text-left text-xs transition-all cursor-pointer",
+                        preset === p.id
+                          ? "bg-foreground text-background border-foreground shadow-sm font-semibold"
+                          : "bg-muted/30 hover:bg-muted text-muted-foreground hover:text-foreground font-medium"
+                      )}
+                    >
+                      <div>{p.label}</div>
+                      <div className="text-[10px] opacity-75 truncate">{p.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 pt-2 text-xs">
+                <span className="text-muted-foreground font-medium">Shape Variant:</span>
+                {(["button", "circle"] as const).map((v) => (
+                  <button
+                    key={v}
+                    onClick={() => setVariant(v)}
+                    className={cn(
+                      "px-3 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors capitalize",
+                      variant === v ? "bg-foreground text-background" : "bg-muted text-muted-foreground"
+                    )}
+                  >
+                    {v}
                   </button>
                 ))}
               </div>
@@ -176,15 +223,21 @@ export function MetalFxDemo() {
             <tbody className="divide-y text-muted-foreground">
               <tr>
                 <td className="px-4 py-3 font-mono text-foreground font-semibold">preset</td>
-                <td className="px-4 py-3 font-mono text-xs">string</td>
-                <td className="px-4 py-3 font-mono text-xs">"chrome"</td>
-                <td className="px-4 py-3">Metal shader material profile ("chrome", "gold", "bronze", "iridescent").</td>
+                <td className="px-4 py-3 font-mono text-xs">"chromatic" | "silver" | "gold"</td>
+                <td className="px-4 py-3 font-mono text-xs">"chromatic"</td>
+                <td className="px-4 py-3">Metal shader material profile.</td>
               </tr>
               <tr>
-                <td className="px-4 py-3 font-mono text-foreground font-semibold">className</td>
-                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-foreground font-semibold">variant</td>
+                <td className="px-4 py-3 font-mono text-xs">"button" | "circle"</td>
+                <td className="px-4 py-3 font-mono text-xs">"button"</td>
+                <td className="px-4 py-3">Controls sampling scale and border ring profile.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-foreground font-semibold">children</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
                 <td className="px-4 py-3 font-mono text-xs">-</td>
-                <td className="px-4 py-3">Additional Tailwind styling classes for the WebGL canvas wrapper.</td>
+                <td className="px-4 py-3">Single host element wrapped by the metallic shader border.</td>
               </tr>
             </tbody>
           </table>

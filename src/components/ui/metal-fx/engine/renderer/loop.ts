@@ -134,7 +134,9 @@ export function setInstanceVisible(inst: MetalFxInstance, visible: boolean): voi
 
 export function setSharedPreset(name: PresetName, theme: PresetTheme): void {
   const s = ensureSharedRenderer();
-  s.preset = PRESETS[name].modes[theme];
+  const presetConfig = PRESETS[name] || PRESETS.chromatic;
+  const modeTheme = (presetConfig && presetConfig.modes && presetConfig.modes[theme]) ? theme : 'dark';
+  s.preset = (presetConfig && presetConfig.modes) ? presetConfig.modes[modeTheme] : PRESETS.chromatic.modes.dark;
   s.presetDirty = true;
 }
 
