@@ -689,8 +689,6 @@ export default function BlocksPage() {
             )}
           </div>
         )}
-          </div>
-        )}
 
         {/* Block: Dashboard 01 */}
         {(selectedCategory === "Featured" || selectedCategory === "Sidebar") && (

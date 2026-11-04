@@ -28,7 +28,7 @@
     "url": "git+https://github.com/qalvinahmad/qalvinui.git"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "scripts": {
     "dev": "next dev",
