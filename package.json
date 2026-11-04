@@ -1,6 +1,6 @@
 {
   "name": "@alvinahmad/qalvinui",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Modern UI component library built with React, Base UI, and Tailwind CSS",
   "bin": {
     "qalvinui": "cli/index.js",
@@ -34,7 +34,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "publish:ui": "node scripts/publish-ui.js"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
