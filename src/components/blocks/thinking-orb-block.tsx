@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ThinkingOrb } from "@/components/ui/thinking-orb";
+import { ThinkingOrb, type OrbSize } from "@/components/ui/thinking-orb";
 import { Sparkles, Bot, Zap, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,7 @@ export interface ThinkingOrbBlockProps {
 export function ThinkingOrbBlock({ className, forceMode }: ThinkingOrbBlockProps) {
   const [selectedState, setSelectedState] = useState<string>("working");
   const [speed, setSpeed] = useState<number>(1);
-  const [size, setSize] = useState<number>(96);
+  const [size, setSize] = useState<OrbSize>(64);
 
   const isMobile = forceMode === "mobile";
 
@@ -108,18 +108,18 @@ export function ThinkingOrbBlock({ className, forceMode }: ThinkingOrbBlockProps
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground">Size</span>
               <div className="flex gap-1.5">
-                {[64, 96, 128].map((sz) => (
+                {([64, 20] as const).map((sz) => (
                   <button
                     key={sz}
                     onClick={() => setSize(sz)}
                     className={cn(
-                      "px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer",
+                      "px-2.5 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer",
                       size === sz
                         ? "bg-foreground text-background"
                         : "bg-muted text-muted-foreground hover:text-foreground"
                     )}
                   >
-                    {sz}px
+                    {sz === 64 ? "64px (Avatar)" : "20px (Inline)"}
                   </button>
                 ))}
               </div>

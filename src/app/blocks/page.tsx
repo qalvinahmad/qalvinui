@@ -67,7 +67,6 @@ export default function BlocksPage() {
     thinkingOrb: "desktop",
     metalFx: "desktop",
     humanAtlas: "desktop",
-    checkout: "desktop",
     dashboard: "desktop",
     sidebar: "desktop",
     login: "desktop",
