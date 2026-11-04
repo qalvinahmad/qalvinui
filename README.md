@@ -1,21 +1,27 @@
 <div align="center">
 
-# Qalvin UI
+# 💫 Qalvin UI
 
 <p align="center">
-  <strong>The Next-Gen Design System & UI Component Library for Modern React and Next.js Applications.</strong>
+  <strong>The Next-Gen Open Source Design System & Component Library for Modern React & Next.js.</strong>
 </p>
 
 <p align="center">
-  A set of accessible, highly customizable UI components and building blocks crafted with React 19, Base UI, and Tailwind CSS v4. Copy and paste into your apps or install via CLI.
+  A curated collection of accessible, highly customizable UI components, rich animated shaders, and production-ready blocks crafted with <strong>React 19</strong>, <strong>Base UI</strong>, and <strong>Tailwind CSS v4</strong>. Copy and paste into your apps or install instantly via CLI.
 </p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@alvinahmad/qalvinui">
     <img src="https://img.shields.io/npm/v/@alvinahmad/qalvinui.svg?style=for-the-badge&color=2563eb&logo=npm" alt="npm version" />
   </a>
-  <a href="https://github.com/qalvinahmad/qalvinui/actions">
-    <img src="https://img.shields.io/badge/CI-Passing-10b981.svg?style=for-the-badge&logo=github-actions" alt="CI Build" />
+  <a href="https://www.npmjs.com/package/@alvinahmad/qalvinui">
+    <img src="https://img.shields.io/npm/dw/@alvinahmad/qalvinui?style=for-the-badge&logo=npm&color=22c55e" alt="npm weekly downloads" />
+  </a>
+  <a href="https://www.npmjs.com/package/@alvinahmad/qalvinui">
+    <img src="https://img.shields.io/npm/dt/@alvinahmad/qalvinui?style=for-the-badge&logo=npm&color=06b6d4" alt="npm total downloads" />
+  </a>
+  <a href="https://github.com/qalvinahmad/qalvinui/stargazers">
+    <img src="https://img.shields.io/github/stars/qalvinahmad/qalvinui?style=for-the-badge&logo=github&color=eab308" alt="GitHub stars" />
   </a>
   <a href="https://github.com/qalvinahmad/qalvinui/pulls">
     <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge&logo=git" alt="PRs Welcome" />
@@ -38,54 +44,79 @@
   <a href="https://base-ui.com/">
     <img src="https://img.shields.io/badge/Base_UI-1.7-6366f1.svg?style=flat-square" alt="Base UI" />
   </a>
+  <a href="https://www.typescriptlang.org/">
+    <img src="https://img.shields.io/badge/TypeScript-5.0-3178C6.svg?style=flat-square&logo=typescript" alt="TypeScript" />
+  </a>
 </p>
 
 <br />
 
-**[🌐 Explore Documentation & Live Demo](https://qalvinui-a3bv-two.vercel.app/)** · **[Browse Components](https://qalvinui-a3bv-two.vercel.app/components)** · **[Explore Blocks](https://qalvinui-a3bv-two.vercel.app/blocks)** · **[Interactive Charts](https://qalvinui-a3bv-two.vercel.app/charts)**
+**[🌐 Documentation & Showcase](https://qalvinui.vercel.app/)** · **[🧱 Explore Blocks](https://qalvinui.vercel.app/blocks)** · **[🧩 Browse Components](https://qalvinui.vercel.app/components)** · **[📊 Interactive Charts](https://qalvinui.vercel.app/charts)** · **[Report Bug](https://github.com/qalvinahmad/qalvinui/issues)**
 
 </div>
 
 ---
 
-## ✨ Features
+## ⚡ Highlights
 
-- **♿ 100% Accessible**: Built on top of `@base-ui/react` with full ARIA compliance and keyboard navigation.
-- **🎨 Tailwind CSS v4 Ready**: Clean CSS variables, zero runtime CSS-in-JS, and dark mode ready out of the box.
-- **📦 Instant CLI Installer**: Add components and full-page blocks directly to your project in seconds.
-- **🧩 50+ Modern Components**: From essential buttons and inputs to complex comboboxes, data tables, and date pickers.
-- **🧱 Production-Ready Blocks**: Complete layouts including interactive checkout, dashboards, collapsibles, authentication, and shining text.
-- **📊 Rich Interactive Charts**: Area, Bar, Line, Pie, Radar, and Radial charts powered by Recharts.
-- **🚀 Ultra Fast**: Built for Next.js 16 (App Router & Turbopack) and React 19.
+- **♿ 100% Accessible & Keyboard First**: Built on top of `@base-ui/react` primitives adhering to WAI-ARIA standards.
+- **🎨 Tailwind CSS v4 Native**: Utilizes modern `@theme` CSS variables, zero runtime CSS-in-JS, and frictionless dark mode.
+- **📦 Instant Zero-Config CLI**: Add individual components or full-page blocks straight into your repo with a single command.
+- **🧱 Production-Ready Blocks**: Fully responsive layouts including animated interactive checkout, SaaS dashboards, auth screens, and sidebar shells.
+- **🔮 AI & 3D WebGL Shaders**: Next-generation generative canvas effects like **Thinking Orb**, **Metal FX**, **Border Beam**, and **Voice Glow**.
+- **📊 Interactive Data Visualization**: Beautiful chart presets powered by Recharts (Area, Bar, Line, Pie, Radar, Radial).
+- **🚀 Built for the Future**: Full support for React 19 Server Components and Next.js 16 App Router.
 
 ---
 
 ## 🚀 Quick Start & CLI
 
-You can add any component directly into your repository with our official CLI tool:
+Add any component or block directly into your project using the official CLI:
 
-### 1. Add Components
+### 1. Adding Pre-Built Blocks
 
 ```bash
-# Add essential components
-npx @alvinahmad/ui add button
-npx @alvinahmad/ui add dialog
-npx @alvinahmad/ui add radio-group
-npx @alvinahmad/ui add switch
-
-# Add pre-built blocks
+# Animated interactive checkout flow with container queries & dynamic cart
 npx @alvinahmad/ui add interactive-checkout
-npx @alvinahmad/ui add shining-text
+
+# Generative 3D thinking orb canvas block
+npx @alvinahmad/ui add thinking-orb-block
+
+# Specular metal reflection shader block
+npx @alvinahmad/ui add metal-fx-block
+
+# 3D interactive human atlas anatomy block
+npx @alvinahmad/ui add human-atlas-block
+
+# Full admin dashboard & sidebar templates
 npx @alvinahmad/ui add dashboard-01
+npx @alvinahmad/ui add sidebar-07
 ```
 
-### 2. Custom Output Directory
+### 2. Adding Core UI Components
+
+```bash
+npx @alvinahmad/ui add button
+npx @alvinahmad/ui add dialog
+npx @alvinahmad/ui add dropdown-menu
+npx @alvinahmad/ui add tabs
+npx @alvinahmad/ui add thinking-orb
+npx @alvinahmad/ui add metal-fx
+npx @alvinahmad/ui add border-beam
+npx @alvinahmad/ui add voice-glow
+```
+
+*(You can also use `npx @alvinahmad/qalvinui add <name>` interchangeably)*
+
+### 3. Custom Output Directory
+
+Control where components and utility files are installed:
 
 ```bash
 npx @alvinahmad/ui add button --dir src/components/ui --lib src/lib
 ```
 
-### 3. List All Available Components
+### 4. Discover Available Components
 
 ```bash
 npx @alvinahmad/ui list
@@ -93,24 +124,53 @@ npx @alvinahmad/ui list
 
 ---
 
+## 🧩 Component & Block Catalog
+
+| Category | Highlights & Items |
+| :--- | :--- |
+| **🤖 AI & Creative Shaders** | `Thinking Orb`, `Metal FX`, `Border Beam`, `Voice Glow`, `Shining Text` |
+| **🧱 Production Blocks** | `Interactive Checkout`, `Dashboard 01`, `Sidebar 07`, `Login Form`, `Signup Form`, `Human Atlas` |
+| **🔘 Form & Inputs** | `Button`, `Button Group`, `Input`, `Input Group`, `Input OTP`, `Textarea`, `Checkbox`, `Radio Group`, `Switch`, `Slider`, `Select`, `Native Select`, `Field` |
+| **📋 Data & Feedback** | `Card`, `Badge`, `Avatar`, `Table`, `Progress`, `Kbd`, `Separator`, `Skeleton`, `Spinner`, `Empty`, `Item`, `Marker`, `Sonner (Toast)` |
+| **🪟 Overlays & Dialogs** | `Dialog`, `Alert Dialog`, `Alert`, `Drawer`, `Sheet`, `Popover`, `Tooltip`, `Hover Card`, `Context Menu`, `Dropdown Menu` |
+| **🧭 Navigation & Layout** | `Navigation Menu`, `Menubar`, `Tabs`, `Pagination`, `Breadcrumb`, `Collapsible`, `Resizable`, `Scroll Area`, `Scroll Fade` |
+| **📊 Interactive Charts** | `Area Chart`, `Bar Chart`, `Line Chart`, `Pie Chart`, `Radar Chart`, `Radial Chart` |
+
+---
+
 ## 🛠️ Usage Example
 
+Here is how simple it is to use Qalvin UI components in your React 19 / Next.js application:
+
 ```tsx
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { BorderBeam } from "@/components/ui/border-beam";
 
-export default function Example() {
+export default function DemoCard() {
+  const [active, setActive] = useState(true);
+
   return (
-    <div className="flex flex-col gap-4 p-6 border rounded-2xl max-w-sm">
-      <Button variant="default">Click Me</Button>
-      
-      <RadioGroup defaultValue="opt-1" className="flex gap-2">
-        <RadioGroupItem value="opt-1" />
-        <RadioGroupItem value="opt-2" />
-      </RadioGroup>
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground">Pro Subscription</h3>
+            <Badge variant="default">Active</Badge>
+          </div>
+          <p className="text-sm text-muted-foreground">Manage your plan preferences & billing.</p>
+        </div>
+        <Switch checked={active} onCheckedChange={setActive} />
+      </div>
 
-      <Switch defaultChecked />
+      <div className="mt-6 flex justify-end gap-3">
+        <Button variant="outline">Learn More</Button>
+        <Button variant="default">Manage Plan</Button>
+      </div>
+
+      {active && <BorderBeam size={250} duration={12} delay={9} />}
     </div>
   );
 }
@@ -118,43 +178,29 @@ export default function Example() {
 
 ---
 
-## 📦 Component Library Overview
-
-| Category | Components |
-| :--- | :--- |
-| **Form & Inputs** | `Button`, `Input`, `Textarea`, `Checkbox`, `Radio Group`, `Switch`, `Slider`, `Select`, `Input OTP`, `Input Group`, `Field` |
-| **Data & Display** | `Card`, `Badge`, `Avatar`, `Table`, `Data Table`, `Progress`, `Kbd`, `Separator`, `Skeleton`, `Spinner`, `Empty` |
-| **Feedback & Overlays** | `Alert`, `Alert Dialog`, `Dialog`, `Drawer`, `Sheet`, `Popover`, `Tooltip`, `Hover Card`, `Toast (Sonner)`, `Context Menu` |
-| **Navigation & Layout** | `Breadcrumb`, `Navigation Menu`, `Menubar`, `Tabs`, `Pagination`, `Sidebar`, `Collapsible`, `Resizable`, `Scroll Area` |
-| **Special Blocks** | `Interactive Checkout`, `Shining Text`, `Dashboard 01`, `Sidebar 07`, `Login Form`, `Signup Form` |
-| **Charts** | `Area Charts`, `Bar Charts`, `Line Charts`, `Pie / Donut Charts`, `Radar Charts`, `Radial Charts` |
-
----
-
 ## 💻 Local Development
 
-Clone the repository and start the development server:
+Clone the repository and spin up the preview website:
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/qalvinahmad/qalvinui.git
 cd qalvinui
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Start development server
+# 3. Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-### Build & Typecheck
+Visit [http://localhost:3000](http://localhost:3000) to view the documentation and blocks showcase locally.
 
 ```bash
-# Typecheck
-npx tsc --noEmit
+# Run linting
+npm run lint
 
-# Production build
+# Build for production
 npm run build
 ```
 
@@ -162,22 +208,30 @@ npm run build
 
 ## 🤝 Contributing
 
-Contributions are always welcome! If you'd like to contribute:
+We love contributions! Whether it's adding new components, crafting new blocks, improving documentation, or fixing bugs:
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. **Fork** the repository
+2. **Create** your feature branch (`git checkout -b feat/super-block`)
+3. **Commit** your changes (`git commit -m 'feat: add super block'`)
+4. **Push** to the branch (`git push origin feat/super-block`)
+5. **Open** a Pull Request
+
+Please make sure your code follows the existing formatting and adheres to Base UI & Tailwind CSS best practices.
+
+---
+
+## 🌟 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=qalvinahmad/qalvinui&type=Date)](https://star-history.com/#qalvinahmad/qalvinui&Date)
 
 ---
 
 ## 📄 License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for more information.
 
 <br />
 
 <div align="center">
-  <sub>Built with ❤️ by <a href="https://github.com/qalvinahmad">Alvin Ahmad</a> and the open-source community.</sub>
+  <sub>Built with passion by <a href="https://github.com/qalvinahmad">Alvin Ahmad</a> and the open-source community.</sub>
 </div>
