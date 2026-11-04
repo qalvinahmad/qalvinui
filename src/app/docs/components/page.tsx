@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const components = [
   { name: "Accordion", description: "A collapsible content area." },
@@ -42,6 +42,25 @@ export default function Page() {
         <p className="text-lg text-muted-foreground">
           Browse the collection of built-in components. Each component is accessible, customizable, and follows WAI-ARIA patterns.
         </p>
+      </div>
+
+      <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+            <Sparkles className="h-4 w-4" />
+            <span>Looking for AI, 3D WebGL & Motion Effects?</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Explore our new <strong>UI</strong> collection featuring Thinking Orb, Metal FX, Human Atlas, Image FX, and Liquid Gooey.
+          </p>
+        </div>
+        <Link
+          href="/docs/ui"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity whitespace-nowrap self-start sm:self-center"
+        >
+          <span>Explore UI Collection</span>
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

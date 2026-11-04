@@ -24,6 +24,10 @@ export default function DocsLayout({
         "href": "/docs/components"
     },
     {
+        "title": "UI",
+        "href": "/docs/ui"
+    },
+    {
         "title": "Installation",
         "href": "/docs/installation"
     },
@@ -122,6 +126,16 @@ export default function DocsLayout({
     { title: "Typography", href: "/docs/components/typography" }
   ];
 
+  const uiItems = [
+    { title: "Human Atlas", href: "/docs/ui/human-atlas", isNew: true },
+    { title: "Thinking Orb", href: "/docs/ui/thinking-orb", isNew: true },
+    { title: "Metal FX", href: "/docs/ui/metal-fx", isNew: true },
+    { title: "Image FX", href: "/docs/ui/img-fx", isNew: true },
+    { title: "Border Beam", href: "/docs/ui/border-beam", isNew: true },
+    { title: "Voice Glow", href: "/docs/ui/voice-glow", isNew: true },
+    { title: "Liquid Gooey", href: "/docs/ui/liquid-gooey", isNew: true },
+  ];
+
   const registryItems = [
     {
         "title": "Registry",
@@ -204,6 +218,19 @@ export default function DocsLayout({
                 <div className="grid grid-flow-row auto-rows-max text-sm">
                   {components.map((item) => (
                     <NavLink key={item.href} href={item.href}>{item.title}</NavLink>
+                  ))}
+                </div>
+              </div>
+
+              {/* UI */}
+              <div className="py-2">
+                <div className="flex items-center justify-between mb-1 px-2 py-1">
+                  <h4 className="text-sm font-semibold">UI</h4>
+                  <span className="rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-[10px] font-semibold text-[#000000]">New</span>
+                </div>
+                <div className="grid grid-flow-row auto-rows-max text-sm">
+                  {uiItems.map((item) => (
+                    <NavLink key={item.href} href={item.href} isNew={item.isNew}>{item.title}</NavLink>
                   ))}
                 </div>
               </div>

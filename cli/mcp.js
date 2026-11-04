@@ -36,8 +36,8 @@ const SKILLS = {
   },
   "creative-canvas": {
     name: "Creative AI & 3D Shaders",
-    description: "Generative 3D thinking orb, specular metal reflection shaders, glowing border beams, and voice reactivity",
-    components: ["thinking-orb", "thinking-orb-block", "metal-fx", "metal-fx-block", "border-beam", "voice-glow", "human-atlas-block"]
+    description: "Generative 3D thinking orb, specular metal reflection shaders, glowing border beams, image generation mosaic shaders, fluid liquid metaballs, and voice reactivity",
+    components: ["thinking-orb", "thinking-orb-block", "metal-fx", "metal-fx-block", "border-beam", "voice-glow", "human-atlas", "human-atlas-block", "img-fx", "liquid-gooey"]
   },
   "data-table": {
     name: "Data Tables & Grids",
