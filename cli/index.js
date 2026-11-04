@@ -87,6 +87,42 @@ const COMPONENTS = {
   "sidebar-07": { file: "sidebar-07.tsx", folder: "blocks", deps: ["lucide-react"] },
   "login-01": { file: "login-01.tsx", folder: "blocks", deps: ["lucide-react"] },
   "signup-01": { file: "signup-01.tsx", folder: "blocks", deps: ["lucide-react"] },
+
+  // Helpful Aliases
+  "auth-form": { file: "login-01.tsx", folder: "blocks", deps: ["lucide-react"] },
+  "dashboard": { file: "dashboard-01.tsx", folder: "blocks", deps: ["lucide-react"] },
+  "sidebar": { file: "sidebar-07.tsx", folder: "blocks", deps: ["lucide-react"] },
+  "login": { file: "login-01.tsx", folder: "blocks", deps: ["lucide-react"] },
+  "signup": { file: "signup-01.tsx", folder: "blocks", deps: ["lucide-react"] },
+  "checkout": { file: "interactive-checkout.tsx", folder: "blocks", deps: ["@number-flow/react", "framer-motion", "lucide-react"], uiDeps: ["button"] },
+};
+
+const SKILLS = {
+  "auth-form": {
+    name: "Authentication Forms",
+    description: "Pre-built login and signup forms with Base UI and validation",
+    components: ["login-01", "signup-01", "input", "button", "label", "checkbox"]
+  },
+  "dashboard": {
+    name: "Dashboard Layouts",
+    description: "Complete responsive dashboard layout with sidebar, header, and content area",
+    components: ["dashboard-01", "sidebar-07", "card", "button", "avatar", "chart"]
+  },
+  "ecommerce": {
+    name: "E-commerce Components",
+    description: "Product cards, animated shopping cart, and interactive checkout flow",
+    components: ["interactive-checkout", "badge", "button"]
+  },
+  "creative-canvas": {
+    name: "Creative AI & 3D Shaders",
+    description: "Generative 3D thinking orb, specular metal reflection shaders, glowing border beams, and voice reactivity",
+    components: ["thinking-orb", "thinking-orb-block", "metal-fx", "metal-fx-block", "border-beam", "voice-glow", "human-atlas-block"]
+  },
+  "data-table": {
+    name: "Data Tables",
+    description: "Advanced data tables with sorting, filtering, and pagination",
+    components: ["table", "pagination", "badge", "button"]
+  }
 };
 
 const UTILS_FILE = "utils.ts";
@@ -98,13 +134,12 @@ function fetch(url) {
       if (res.statusCode === 301 || res.statusCode === 302) {
         return fetch(res.headers.location).then(resolve).catch(reject);
       }
-      if (res.statusCode >= 400) {
-        return reject(new Error(`HTTP ${res.statusCode} from ${url}`));
+      if (res.statusCode !== 200) {
+        return reject(new Error(`Failed to fetch ${url} (HTTP ${res.statusCode})`));
       }
       let data = "";
       res.on("data", (chunk) => (data += chunk));
       res.on("end", () => resolve(data));
-      res.on("error", reject);
     }).on("error", reject);
   });
 }
@@ -131,8 +166,8 @@ async function downloadComponent(name, isSubDep = false) {
   const comp = COMPONENTS[name];
   if (!comp) {
     console.error(`\x1b[31mError: Unknown component or block "${name}"\x1b[0m`);
-    console.log(`Available items: ${Object.keys(COMPONENTS).join(", ")}`);
-    process.exit(1);
+    console.log("Run `list` to see all available components and blocks.");
+    return;
   }
 
   const folder = comp.folder || "ui";
@@ -220,7 +255,7 @@ async function downloadComponent(name, isSubDep = false) {
     .split("-")
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join("");
-  console.log(`  import { ${importName} } from "@/components/${folder}/${name}";`);
+  console.log(`  import { ${importName} } from "@/components/${folder}/${name}";\n`);
 }
 
 function getExistingDeps() {
@@ -244,13 +279,115 @@ async function listComponents() {
   console.log(`\nTotal: ${Object.keys(COMPONENTS).length} components/blocks\n`);
 }
 
+function listSkills() {
+  console.log("\n\x1b[1mAvailable Skills & Design Patterns:\x1b[0m\n");
+  for (const [key, skill] of Object.entries(SKILLS)) {
+    console.log(`  \x1b[35m${key}\x1b[0m - ${skill.name}`);
+    console.log(`    ${skill.description}`);
+    console.log(`    \x1b[90mComponents: ${skill.components.join(", ")}\x1b[0m\n`);
+  }
+  console.log("Install a skill with: npx @alvinahmad/ui skills add <skill-name>\n");
+}
+
+async function installSkill(skillName) {
+  if (skillName === "--all" || skillName === "all") {
+    console.log("\nInstalling all available skills...");
+    const allComponents = new Set();
+    for (const skill of Object.values(SKILLS)) {
+      skill.components.forEach((c) => allComponents.add(c));
+    }
+    for (const comp of allComponents) {
+      await downloadComponent(comp);
+    }
+    console.log("\x1b[32mSuccessfully installed all skills!\x1b[0m\n");
+    return;
+  }
+
+  const skill = SKILLS[skillName];
+  if (!skill) {
+    console.error(`\x1b[31mError: Unknown skill "${skillName}"\x1b[0m`);
+    console.log(`Available skills: ${Object.keys(SKILLS).join(", ")}`);
+    return;
+  }
+
+  console.log(`\nInstalling skill: \x1b[1m${skill.name}\x1b[0m...`);
+  for (const comp of skill.components) {
+    await downloadComponent(comp);
+  }
+  console.log(`\x1b[32mSuccessfully installed skill "${skillName}"!\x1b[0m\n`);
+}
+
+function initProject() {
+  const targetConfig = path.join(process.cwd(), "components.json");
+  const config = {
+    "$schema": "https://qalvinahmad.com/schema.json",
+    "style": "nova",
+    "rsc": true,
+    "tsx": true,
+    "tailwind": {
+      "config": "tailwind.config.ts",
+      "css": "src/app/globals.css",
+      "baseColor": "neutral",
+      "cssVariables": true,
+      "prefix": ""
+    },
+    "aliases": {
+      "components": "@/components",
+      "utils": "@/lib/utils",
+      "ui": "@/components/ui",
+      "blocks": "@/components/blocks"
+    }
+  };
+
+  if (fs.existsSync(targetConfig)) {
+    console.log(`\x1b[33mConfiguration components.json already exists in ${process.cwd()}\x1b[0m`);
+  } else {
+    fs.writeFileSync(targetConfig, JSON.stringify(config, null, 2) + "\n");
+    console.log(`\x1b[32mCreated\x1b[0m components.json`);
+  }
+
+  const libDir = getLibDir();
+  const utilsPath = path.join(libDir, UTILS_FILE);
+  if (!fs.existsSync(utilsPath)) {
+    fs.mkdirSync(libDir, { recursive: true });
+    const localUtils = path.join(__dirname, "..", "src", "lib", UTILS_FILE);
+    if (fs.existsSync(localUtils)) {
+      fs.writeFileSync(utilsPath, fs.readFileSync(localUtils, "utf-8"));
+      console.log(`\x1b[32mCreated\x1b[0m ${path.relative(process.cwd(), utilsPath)}`);
+    }
+  }
+
+  console.log(`\n\x1b[32mSuccess!\x1b[0m Initialized Qalvin UI in your project.`);
+  console.log(`Run \x1b[36mnpx @alvinahmad/ui add button\x1b[0m to add your first component.\n`);
+}
+
+function searchComponents(query) {
+  if (!query) {
+    listComponents();
+    return;
+  }
+  const q = query.toLowerCase();
+  const matched = Object.keys(COMPONENTS).filter((k) => k.toLowerCase().includes(q));
+  console.log(`\nFound ${matched.length} component(s) matching "${query}":\n`);
+  matched.forEach((name) => {
+    console.log(`  \x1b[36m${name}\x1b[0m (${COMPONENTS[name].folder || "ui"})`);
+  });
+  console.log("");
+}
+
 function printHelp() {
   console.log(`
   \x1b[1m@alvinahmad/ui\x1b[0m (or \x1b[1m@alvinahmad/qalvinui\x1b[0m) - Modern UI component library
 
   \x1b[1mUsage:\x1b[0m
+    npx @alvinahmad/ui init                Initialize Qalvin UI configuration
     npx @alvinahmad/ui add <component>    Add a component or block to your project
-    npx @alvinahmad/ui list                List all available components
+    npx @alvinahmad/ui add --all          Add all available components & blocks
+    npx @alvinahmad/ui list                List all available components & blocks
+    npx @alvinahmad/ui search <query>      Search components by name
+    npx @alvinahmad/ui skills list         List available UI design pattern skills
+    npx @alvinahmad/ui skills add <skill>  Install a skill pattern (e.g. auth-form, dashboard)
+    npx @alvinahmad/ui mcp                 Start Model Context Protocol server for AI tools
     npx @alvinahmad/ui --help              Show this help message
 
   \x1b[1mOptions:\x1b[0m
@@ -260,7 +397,8 @@ function printHelp() {
   \x1b[1mExamples:\x1b[0m
     npx @alvinahmad/ui add button
     npx @alvinahmad/ui add interactive-checkout
-    npx @alvinahmad/ui add shining-text
+    npx @alvinahmad/ui skills add auth-form
+    npx @alvinahmad/ui mcp
   `);
 }
 
@@ -274,12 +412,57 @@ async function main() {
 
   const command = args[0];
 
-  if (command === "list") {
+  if (command === "mcp" || command === "mcp-server") {
+    const { startServer } = require("./mcp");
+    startServer();
+    return;
+  }
+
+  if (command === "init") {
+    initProject();
+    return;
+  }
+
+  if (command === "list" || command === "ls") {
     await listComponents();
     return;
   }
 
+  if (command === "search") {
+    searchComponents(args[1]);
+    return;
+  }
+
+  if (command === "skills" || command === "skill") {
+    const subCommand = args[1] || "list";
+    if (subCommand === "list" || subCommand === "ls") {
+      listSkills();
+      return;
+    }
+    if (subCommand === "add" || subCommand === "install") {
+      const skillName = args[2];
+      if (!skillName) {
+        console.error("\x1b[31mError: No skill specified.\x1b[0m Usage: npx @alvinahmad/ui skills add <skill-name>");
+        return;
+      }
+      await installSkill(skillName);
+      return;
+    }
+    console.error(`\x1b[31mUnknown skills subcommand: ${subCommand}\x1b[0m`);
+    console.log("Usage: npx @alvinahmad/ui skills list | skills add <skill-name>");
+    return;
+  }
+
   if (command === "add") {
+    if (args.includes("--all")) {
+      console.log("\nInstalling all available components and blocks...\n");
+      for (const name of Object.keys(COMPONENTS)) {
+        await downloadComponent(name);
+      }
+      console.log("\x1b[32mSuccessfully installed all components!\x1b[0m\n");
+      return;
+    }
+
     const components = [];
     for (let i = 1; i < args.length; i++) {
       if (args[i] === "--dir" || args[i] === "-d" || args[i] === "--lib" || args[i] === "-l") {
