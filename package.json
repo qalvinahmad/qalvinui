@@ -1,13 +1,15 @@
 {
   "name": "@alvinahmad/qalvinui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Modern UI component library built with React, Base UI, and Tailwind CSS",
   "bin": {
-    "qalvinui": "./cli/index.js"
+    "qalvinui": "cli/index.js",
+    "ui": "cli/index.js"
   },
   "files": [
     "cli/**",
     "src/components/ui/**",
+    "src/components/blocks/**",
     "src/lib/**"
   ],
   "keywords": [
@@ -22,7 +24,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/qalvinahmad/qalvinui.git"
+    "url": "git+https://github.com/qalvinahmad/qalvinui.git"
   },
   "engines": {
     "node": ">=14"
@@ -41,6 +43,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.4.0",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.4.7",
     "input-otp": "^1.5.0",
     "lucide-react": "^1.29.0",
     "motion": "^13.1.1",

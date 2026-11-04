@@ -37,7 +37,12 @@ const COMPONENTS = {
   "input": { file: "input.tsx", folder: "ui", deps: [] },
   "input-group": { file: "input-group.tsx", folder: "ui", deps: ["@base-ui/react"] },
   "input-otp": { file: "input-otp.tsx", folder: "ui", deps: ["input-otp"] },
-  "interactive-checkout": { file: "interactive-checkout.tsx", folder: "blocks", deps: ["framer-motion", "lucide-react", "@number-flow/react"] },
+  "interactive-checkout": {
+    file: "interactive-checkout.tsx",
+    folder: "blocks",
+    deps: ["@number-flow/react", "framer-motion", "lucide-react"],
+    uiDeps: ["button"],
+  },
   "item": { file: "item.tsx", folder: "ui", deps: ["@base-ui/react"] },
   "kbd": { file: "kbd.tsx", folder: "ui", deps: [] },
   "label": { file: "label.tsx", folder: "ui", deps: [] },
@@ -71,6 +76,13 @@ const COMPONENTS = {
   "toggle": { file: "toggle.tsx", folder: "ui", deps: ["@base-ui/react"] },
   "toggle-group": { file: "toggle-group.tsx", folder: "ui", deps: ["@base-ui/react"] },
   "tooltip": { file: "tooltip.tsx", folder: "ui", deps: ["@base-ui/react"] },
+  "thinking-orb": { file: "thinking-orb.tsx", folder: "ui", deps: [] },
+  "metal-fx": { file: "metal-fx.tsx", folder: "ui", deps: [] },
+  "border-beam": { file: "border-beam.tsx", folder: "ui", deps: [] },
+  "voice-glow": { file: "voice-glow.tsx", folder: "ui", deps: [] },
+  "thinking-orb-block": { file: "thinking-orb-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["thinking-orb"] },
+  "metal-fx-block": { file: "metal-fx-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["metal-fx"] },
+  "human-atlas-block": { file: "human-atlas-block.tsx", folder: "blocks", deps: ["lucide-react", "three"] },
   "dashboard-01": { file: "dashboard-01.tsx", folder: "blocks", deps: ["lucide-react"] },
   "sidebar-07": { file: "sidebar-07.tsx", folder: "blocks", deps: ["lucide-react"] },
   "login-01": { file: "login-01.tsx", folder: "blocks", deps: ["lucide-react"] },
@@ -101,6 +113,8 @@ function getOutputDir(folder = "ui") {
   const args = process.argv.slice(2);
   const idx = args.indexOf("--dir");
   if (idx !== -1 && args[idx + 1]) return args[idx + 1];
+  const shortIdx = args.indexOf("-d");
+  if (shortIdx !== -1 && args[shortIdx + 1]) return args[shortIdx + 1];
   return path.join(process.cwd(), "components", folder);
 }
 
@@ -108,10 +122,12 @@ function getLibDir() {
   const args = process.argv.slice(2);
   const idx = args.indexOf("--lib");
   if (idx !== -1 && args[idx + 1]) return args[idx + 1];
+  const shortIdx = args.indexOf("-l");
+  if (shortIdx !== -1 && args[shortIdx + 1]) return args[shortIdx + 1];
   return path.join(process.cwd(), "lib");
 }
 
-async function downloadComponent(name) {
+async function downloadComponent(name, isSubDep = false) {
   const comp = COMPONENTS[name];
   if (!comp) {
     console.error(`\x1b[31mError: Unknown component or block "${name}"\x1b[0m`);
@@ -126,16 +142,27 @@ async function downloadComponent(name) {
   fs.mkdirSync(outputDir, { recursive: true });
   fs.mkdirSync(libDir, { recursive: true });
 
-  // Try downloading component file from folder, with fallback
+  // 1. Try local package file first
   let componentCode;
-  try {
-    const primaryUrl = `${GITHUB_RAW}/${GITHUB_REPO}/main/src/components/${folder}/${comp.file}`;
-    console.log(`Downloading ${name}...`);
-    componentCode = await fetch(primaryUrl);
-  } catch (err) {
-    const altFolder = folder === "ui" ? "blocks" : "ui";
-    const altUrl = `${GITHUB_RAW}/${GITHUB_REPO}/main/src/components/${altFolder}/${comp.file}`;
-    componentCode = await fetch(altUrl);
+  const localCandidates = [
+    path.join(__dirname, "..", "src", "components", folder, comp.file),
+    path.join(__dirname, "..", "src", "components", folder === "ui" ? "blocks" : "ui", comp.file),
+  ];
+  const localFound = localCandidates.find((p) => fs.existsSync(p));
+
+  if (localFound) {
+    componentCode = fs.readFileSync(localFound, "utf-8");
+  } else {
+    // 2. Fall back to downloading from GitHub
+    try {
+      const primaryUrl = `${GITHUB_RAW}/${GITHUB_REPO}/main/src/components/${folder}/${comp.file}`;
+      console.log(`Downloading ${name}...`);
+      componentCode = await fetch(primaryUrl);
+    } catch (err) {
+      const altFolder = folder === "ui" ? "blocks" : "ui";
+      const altUrl = `${GITHUB_RAW}/${GITHUB_REPO}/main/src/components/${altFolder}/${comp.file}`;
+      componentCode = await fetch(altUrl);
+    }
   }
 
   const outPath = path.join(outputDir, comp.file);
@@ -145,15 +172,38 @@ async function downloadComponent(name) {
   // Download utils.ts if it doesn't exist
   const utilsPath = path.join(libDir, UTILS_FILE);
   if (!fs.existsSync(utilsPath)) {
-    try {
-      const utilsUrl = `${GITHUB_RAW}/${GITHUB_REPO}/main/src/lib/${UTILS_FILE}`;
-      const utilsCode = await fetch(utilsUrl);
-      fs.writeFileSync(utilsPath, utilsCode);
+    const localUtils = path.join(__dirname, "..", "src", "lib", UTILS_FILE);
+    if (fs.existsSync(localUtils)) {
+      fs.writeFileSync(utilsPath, fs.readFileSync(localUtils, "utf-8"));
       console.log(`\x1b[32mCreated\x1b[0m ${path.relative(process.cwd(), utilsPath)}`);
-    } catch (e) {
-      // Ignore if utils already exists
+    } else {
+      try {
+        const utilsUrl = `${GITHUB_RAW}/${GITHUB_REPO}/main/src/lib/${UTILS_FILE}`;
+        const utilsCode = await fetch(utilsUrl);
+        fs.writeFileSync(utilsPath, utilsCode);
+        console.log(`\x1b[32mCreated\x1b[0m ${path.relative(process.cwd(), utilsPath)}`);
+      } catch (e) {
+        // Ignore if failed
+      }
     }
   }
+
+  // Handle required sub-components (uiDeps)
+  if (comp.uiDeps && comp.uiDeps.length > 0) {
+    for (const depName of comp.uiDeps) {
+      const depComp = COMPONENTS[depName];
+      if (depComp) {
+        const depDir = getOutputDir(depComp.folder || "ui");
+        const depPath = path.join(depDir, depComp.file);
+        if (!fs.existsSync(depPath)) {
+          console.log(`\x1b[36mInstalling required dependency component: ${depName}...\x1b[0m`);
+          await downloadComponent(depName, true);
+        }
+      }
+    }
+  }
+
+  if (isSubDep) return;
 
   // Report dependencies
   if (comp.deps && comp.deps.length > 0) {
@@ -196,7 +246,7 @@ async function listComponents() {
 
 function printHelp() {
   console.log(`
-  \x1b[1m@alvinahmad/ui\x1b[0m - Modern UI component library
+  \x1b[1m@alvinahmad/ui\x1b[0m (or \x1b[1m@alvinahmad/qalvinui\x1b[0m) - Modern UI component library
 
   \x1b[1mUsage:\x1b[0m
     npx @alvinahmad/ui add <component>    Add a component or block to your project
@@ -204,8 +254,8 @@ function printHelp() {
     npx @alvinahmad/ui --help              Show this help message
 
   \x1b[1mOptions:\x1b[0m
-    --dir <path>    Output directory for components (default: ./components/ui or ./components/blocks)
-    --lib <path>    Output directory for lib/utils (default: ./lib)
+    --dir, -d <path>    Output directory for components (default: ./components/ui or ./components/blocks)
+    --lib, -l <path>    Output directory for lib/utils (default: ./lib)
 
   \x1b[1mExamples:\x1b[0m
     npx @alvinahmad/ui add button
@@ -230,7 +280,17 @@ async function main() {
   }
 
   if (command === "add") {
-    const components = args.slice(1).filter((a) => !a.startsWith("--"));
+    const components = [];
+    for (let i = 1; i < args.length; i++) {
+      if (args[i] === "--dir" || args[i] === "-d" || args[i] === "--lib" || args[i] === "-l") {
+        i++; // skip next arg
+      } else if (args[i].startsWith("--")) {
+        // ignore other flags
+      } else {
+        components.push(args[i]);
+      }
+    }
+
     if (components.length === 0) {
       console.error("\x1b[31mError: No component specified\x1b[0m");
       console.log("Usage: npx @alvinahmad/ui add <component>");
