@@ -109,19 +109,20 @@ export function MetalFxDemo() {
               <MetalFx
                 key={preset}
                 preset={preset as any}
-                className="w-full h-full"
-              />
-              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-4 text-center">
-                <span className="text-xs font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-black/60 border border-white/20 text-white/90 mb-2">
-                  WebGL 2.0 Material
-                </span>
-                <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg">
-                  Next-Gen Surface
-                </h3>
-                <p className="text-xs text-white/70 mt-1 max-w-sm">
-                  Hover and move your mouse across the canvas to interact with the specular light reflections
-                </p>
-              </div>
+                className="w-full h-full flex flex-col items-center justify-center p-4 text-center"
+              >
+                <div className="flex flex-col items-center justify-center pointer-events-none p-4 text-center">
+                  <span className="text-xs font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-black/60 border border-white/20 text-white/90 mb-2">
+                    WebGL 2.0 Material
+                  </span>
+                  <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg">
+                    Next-Gen Surface
+                  </h3>
+                  <p className="text-xs text-white/70 mt-1 max-w-sm">
+                    Hover and move your mouse across the canvas to interact with the specular light reflections
+                  </p>
+                </div>
+              </MetalFx>
             </div>
 
             {/* Presets */}

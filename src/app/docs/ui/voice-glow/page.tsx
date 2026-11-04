@@ -92,8 +92,7 @@ export function VoiceGlowDemo() {
 
         {tab === "preview" ? (
           <div className="rounded-2xl border p-12 bg-card/40 flex flex-col items-center justify-center gap-6">
-            <div className="relative flex flex-col items-center justify-center min-h-[220px] w-full max-w-md">
-              <VoiceBeam />
+            <VoiceBeam className="relative flex flex-col items-center justify-center min-h-[220px] w-full max-w-md p-6">
               <div className="z-10 flex flex-col items-center gap-3">
                 <div className="p-4 rounded-full bg-primary text-primary-foreground shadow-2xl flex items-center justify-center animate-pulse">
                   <Mic className="h-6 w-6" />
@@ -106,7 +105,7 @@ export function VoiceGlowDemo() {
                   <p className="text-xs text-muted-foreground">Ambient acoustic radiation wave</p>
                 </div>
               </div>
-            </div>
+            </VoiceBeam>
           </div>
         ) : (
           <CodeBlock code={usageCode} />

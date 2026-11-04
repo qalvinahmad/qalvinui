@@ -32,12 +32,12 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
 }
 
 const STATES: { id: OrbState; label: string; desc: string }[] = [
-  { id: "idle", label: "Idle", desc: "Slow pulsing breathing state awaiting user interaction" },
-  { id: "thinking", label: "Thinking", desc: "Rapid dynamic swirl indicating inference" },
-  { id: "working", label: "Working", desc: "Complex dual vortex indicating multi-step reasoning" },
-  { id: "listening", label: "Listening", desc: "Sound-wave reactive particle aura" },
-  { id: "complete", label: "Complete", desc: "Harmonic bloom showing verified output" },
-  { id: "error", label: "Error", desc: "Chaotic red scatter for error boundaries" },
+  { id: "working", label: "Working", desc: "Particles flowing on tilted dual orbits" },
+  { id: "searching", label: "Searching", desc: "Scan meridian sweeps a dotted globe" },
+  { id: "solving", label: "Solving", desc: "Bands scramble in quarter turns then align" },
+  { id: "listening", label: "Listening", desc: "Waveform rolls through latitude rings" },
+  { id: "connecting", label: "Connecting", desc: "Constellation network wires itself" },
+  { id: "breathing", label: "Breathing", desc: "Face-on harmonic ring slowly morphing" },
 ];
 
 export default function ThinkingOrbDocPage() {

@@ -92,16 +92,17 @@ export function BorderBeamDemo() {
 
         {tab === "preview" ? (
           <div className="rounded-2xl border p-10 bg-card/40 flex items-center justify-center">
-            <div className="relative flex h-52 w-full max-w-md flex-col items-center justify-center overflow-hidden rounded-2xl border bg-background/80 backdrop-blur-md p-6 shadow-xl">
-              <span className="text-2xl font-bold tracking-tight">Enterprise Pro</span>
-              <p className="text-xs text-muted-foreground text-center mt-2 max-w-xs">
-                Active pulse beam running along the perimeter of the component.
-              </p>
-              <div className="mt-4 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-                Laser Highlight
+            <BorderBeam size="md" className="max-w-md w-full">
+              <div className="relative flex h-52 w-full flex-col items-center justify-center overflow-hidden rounded-2xl border bg-background/80 backdrop-blur-md p-6 shadow-xl">
+                <span className="text-2xl font-bold tracking-tight">Enterprise Pro</span>
+                <p className="text-xs text-muted-foreground text-center mt-2 max-w-xs">
+                  Active pulse beam running along the perimeter of the component.
+                </p>
+                <div className="mt-4 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+                  Laser Highlight
+                </div>
               </div>
-              <BorderBeam />
-            </div>
+            </BorderBeam>
           </div>
         ) : (
           <CodeBlock code={usageCode} />

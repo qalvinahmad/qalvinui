@@ -108,7 +108,13 @@ export function ImageGenerationDemo() {
                   preset={preset as any}
                   theme="auto"
                   className="w-full h-full"
-                />
+                >
+                  <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-zinc-900/60">
+                    <Sparkles className="w-10 h-10 text-purple-400 mb-2 animate-pulse" />
+                    <span className="text-sm font-semibold text-white">AI Neural Canvas</span>
+                    <span className="text-xs text-zinc-400 mt-1">Ready for generation</span>
+                  </div>
+                </ImageGeneration>
               </div>
 
               <div className="max-w-xs space-y-3">
