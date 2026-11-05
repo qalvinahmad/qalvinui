@@ -1226,3 +1226,114 @@ export const STICKY_SLIDES_CONFIG: SlideData[] = [
 </div>`,
   },
 ];
+
+export const chatFiles: FileTab[] = [
+  {
+    name: "chat-01.tsx",
+    path: "src/components/blocks/chat-01.tsx",
+    description: "Complete responsive chat UI block with multi-user conversation history, delivery status receipts, thread reply, reaction chips, and interactive composer.",
+    code: `"use client";
+
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Send,
+  Smile,
+  Paperclip,
+  Check,
+  CheckCheck,
+  Clock,
+  AlertCircle,
+  CornerUpLeft,
+  Trash2,
+  ChevronDown,
+  ArrowDown,
+  Users,
+  Forward,
+} from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+export type MemberId = "maya" | "jordan" | "alex" | "you";
+
+export interface ChatMember {
+  role: "host" | "co-host" | "guest";
+  name: string;
+  handle: string;
+  initials: string;
+  avatarColor: string;
+}
+
+export const CHAT_MEMBERS: Record<MemberId, ChatMember> = {
+  maya: {
+    role: "host",
+    name: "Maya Chen",
+    handle: "Maya",
+    initials: "MC",
+    avatarColor: "bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30",
+  },
+  jordan: {
+    role: "co-host",
+    name: "Jordan Lee",
+    handle: "Jordan",
+    initials: "JL",
+    avatarColor: "bg-violet-500/20 text-violet-600 dark:text-violet-400 border border-violet-500/30",
+  },
+  alex: {
+    role: "guest",
+    name: "Alex Morgan",
+    handle: "Alex",
+    initials: "AM",
+    avatarColor: "bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30",
+  },
+  you: {
+    role: "co-host",
+    name: "Sam Rivera",
+    handle: "You",
+    initials: "SR",
+    avatarColor: "bg-primary text-primary-foreground",
+  },
+};
+
+export const CHAT_EMOJIS = [
+  { emoji: "👍", label: "Thumbs up" },
+  { emoji: "❤️", label: "Heart" },
+  { emoji: "😂", label: "Laugh" },
+  { emoji: "😮", label: "Surprised" },
+  { emoji: "🙏", label: "Thanks" },
+];
+
+export interface ChatReaction {
+  emoji: string;
+  members: MemberId[];
+}
+
+export interface ChatMessage {
+  id: number;
+  author: MemberId;
+  text: string;
+  dateLabel: string;
+  time: string;
+  replyTo?: number;
+  reactions: ChatReaction[];
+  deletedReason?: "sender" | "moderator";
+  forwarded?: boolean;
+  delivery?: "sending" | "sent" | "delivered" | "read" | "failed";
+}
+
+export function ChatBlock() {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [inputText, setInputText] = useState("");
+  const [replyingTo, setReplyingTo] = useState<ChatMessage | null>(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className="w-full max-w-4xl mx-auto rounded-2xl border border-border bg-card shadow-xl overflow-hidden flex flex-col h-[640px]">
+      {/* Interactive Chat Block implementation */}
+    </div>
+  );
+}`,
+  },
+];

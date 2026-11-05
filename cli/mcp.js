@@ -13,12 +13,26 @@ const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
 
-const PKG_VERSION = "0.2.0";
+const PKG_VERSION = (() => {
+  try {
+    const pkg = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf-8")
+    );
+    return typeof pkg.version === "string" ? pkg.version : "0.2.3";
+  } catch {
+    return "0.2.3";
+  }
+})();
 
 // Import components registry from cli/index.js or define local map
 const COMPONENTS_FILE = path.join(__dirname, "index.js");
 
 const SKILLS = {
+  "chat": {
+    name: "Chat Interface",
+    description: "Composable real-time messaging UI with delivery receipts, message replies, and reaction chips",
+    components: ["chat-01", "avatar", "button", "badge", "scroll-area"]
+  },
   "auth-form": {
     name: "Authentication Forms",
     description: "Complete login and signup forms with Base UI and validation",

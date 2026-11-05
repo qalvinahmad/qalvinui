@@ -1,29 +1,45 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { ComponentCard } from "@/components/ui/component-card";
 
 const components = [
   { name: "Accordion", description: "A collapsible content area." },
   { name: "Alert", description: "Displays a callout for important information." },
   { name: "Alert Dialog", description: "A modal dialog that interrupts the user with important content." },
+  { name: "Autocomplete", description: "An input that suggests options as you type." },
   { name: "Avatar", description: "An image element with a fallback for representing the user." },
   { name: "Badge", description: "Displays a badge or a component that looks like a badge." },
+  { name: "Breadcrumb", description: "Displays the path to the current resource using a hierarchy of links." },
   { name: "Button", description: "Displays a button or a component that looks like a button." },
   { name: "Calendar", description: "A date field component that allows users to enter and edit date." },
   { name: "Card", description: "Displays a card with header, content, and footer." },
   { name: "Checkbox", description: "A control that allows the user to toggle between checked and not checked." },
+  { name: "Checkbox Group", description: "A set of checkboxes grouped together with shared validation." },
   { name: "Collapsible", description: "An interactive component which expands/collapses a panel." },
+  { name: "Composer", description: "A rich input composer for messages, attachments, and actions." },
   { name: "Dialog", description: "A window overlaid on the primary content." },
   { name: "Drawer", description: "A panel that slides out from the edge of the screen." },
   { name: "Dropdown Menu", description: "Displays a menu to the user triggered by a button." },
+  { name: "Fieldset", description: "Groups related form controls under a common legend." },
+  { name: "Form", description: "Accessible form container with validation handling." },
+  { name: "Frame", description: "A structured panel frame container with header, panel, and footer." },
+  { name: "Group", description: "A component for visually grouping a series of controls." },
   { name: "Input", description: "A form control for entering text." },
   { name: "Label", description: "Renders an accessible label associated with form controls." },
+  { name: "Menu", description: "Displays a nested menu with items, checkboxes, radios, and shortcuts." },
+  { name: "Meter", description: "A graphical display of a numeric value within a range." },
+  { name: "Number Field", description: "A numeric input with increment, decrement, and scrub capabilities." },
+  { name: "OTP Field", description: "One-time passcode input with segmented digit inputs." },
   { name: "Popover", description: "Displays rich content in a portal, triggered by a button." },
+  { name: "Preview Card", description: "For displaying rich popover preview content on hover." },
   { name: "Progress", description: "Shows completion progress of a task." },
+  { name: "Segmented Control", description: "A linear set of mutually exclusive options." },
   { name: "Select", description: "Displays a list of options for the user to pick from." },
   { name: "Separator", description: "Visually or semantically separates content." },
   { name: "Sheet", description: "A window overlaid on the primary content that slides from the edge." },
   { name: "Skeleton", description: "Use to show a placeholder while content is loading." },
   { name: "Slider", description: "A slider component for selecting a value from a range." },
+  { name: "Spinner", description: "An animated loading spinner indicator." },
   { name: "Switch", description: "A control that allows the user to toggle between on and off." },
   { name: "Table", description: "A responsive table component." },
   { name: "Tabs", description: "A set of layered sections of content, known as tab panels." },
@@ -36,10 +52,10 @@ const components = [
 
 export default function Page() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight mb-2">Components</h1>
-        <p className="text-lg text-muted-foreground">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">Components</h1>
+        <p className="text-base sm:text-lg text-muted-foreground max-w-3xl">
           Browse the collection of built-in components. Each component is accessible, customizable, and follows WAI-ARIA patterns.
         </p>
       </div>
@@ -51,7 +67,7 @@ export default function Page() {
             <span>Looking for AI, 3D WebGL & Motion Effects?</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            Explore our new <strong>UI</strong> collection featuring Thinking Orb, Metal FX, Human Atlas, Image FX, and Liquid Gooey.
+            Explore our specialized <strong>UI</strong> collection featuring Sticky Slides, Thinking Orb, Metal FX, Image FX, and Liquid Gooey.
           </p>
         </div>
         <Link
@@ -63,21 +79,20 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {components.map((component) => (
-          <Link
-            key={component.name}
-            href={`/docs/components/${component.name.toLowerCase().replace(/\s+/g, "-")}`}
-            className="group flex items-center justify-between rounded-lg border p-4 hover:bg-muted/50 transition-colors"
-          >
-            <div className="space-y-1">
-              <h3 className="font-medium leading-none group-hover:text-foreground">{component.name}</h3>
-              <p className="text-sm text-muted-foreground">{component.description}</p>
-            </div>
-            <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-          </Link>
-        ))}
+      {/* Grid of reusable Coss-styled component cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+        {components.map((component) => {
+          const slug = component.name.toLowerCase().replace(/\s+/g, "-");
+          return (
+            <ComponentCard
+              key={component.name}
+              name={component.name}
+              description={component.description}
+              href={`/docs/components/${slug}`}
+            />
+          );
+        })}
       </div>
     </div>
-  )
+  );
 }

@@ -39,7 +39,8 @@ export interface GooeyProps extends HTMLAttributes<HTMLDivElement> {
    *  (`blur`, `contrast`, `waviness` and the SVG half of `shadow` are then
    *  yours to reproduce). The input is `SourceGraphic`; the last primitive's
    *  output is what paints. Inset and spread shadows normally read a
-   *  binarised `shape` result — keep that name if you keep them. */
+   *  binarised `shape` result — keep that name if you keep them.
+   *  NOTE: Must contain trusted SVG markup only. */
   filter?: string
 }
 

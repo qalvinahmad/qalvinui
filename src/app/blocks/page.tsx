@@ -23,6 +23,7 @@ import {
   UserPlus,
   Compass,
   Layers,
+  MessageSquare,
 } from "lucide-react";
 import { InteractiveCheckout } from "@/components/blocks/interactive-checkout";
 import { ShiningTextBlock } from "@/components/blocks/shining-text-block";
@@ -33,6 +34,7 @@ import { Signup01 } from "@/components/blocks/signup-01";
 import { ThinkingOrbBlock } from "@/components/blocks/thinking-orb-block";
 import { MetalFxBlock } from "@/components/blocks/metal-fx-block";
 import { StickySlidesBlock } from "@/components/blocks/sticky-slides-block";
+import { ChatBlock } from "@/components/blocks/chat-01";
 import { BlockCodeViewer } from "@/components/blocks/block-code-viewer";
 import {
   checkoutFiles,
@@ -44,6 +46,7 @@ import {
   thinkingOrbFiles,
   metalFxFiles,
   stickySlidesFiles,
+  chatFiles,
 } from "@/components/blocks/blocks-code-data";
 
 type DeviceMode = "desktop" | "tablet" | "mobile";
@@ -56,6 +59,7 @@ export default function BlocksPage() {
     thinkingOrb: "preview",
     metalFx: "preview",
     stickySlides: "preview",
+    chat: "preview",
     dashboard: "preview",
     sidebar: "preview",
     login: "preview",
@@ -68,6 +72,7 @@ export default function BlocksPage() {
     thinkingOrb: "desktop",
     metalFx: "desktop",
     stickySlides: "desktop",
+    chat: "desktop",
     dashboard: "desktop",
     sidebar: "desktop",
     login: "desktop",
@@ -140,7 +145,7 @@ export default function BlocksPage() {
       {/* Categories Bar */}
       <div id="blocks-grid" className="flex items-center justify-between mb-8 overflow-x-auto pb-2 scroll-mt-20">
         <div className="flex items-center space-x-6 text-sm font-medium">
-          {["Featured", "AI & Agents", "Text & Motion", "Checkout", "3D & Templates", "Sidebar", "Login", "Signup"].map((cat) => (
+          {["Featured", "Chat", "AI & Agents", "Text & Motion", "Checkout", "3D & Templates", "Sidebar", "Login", "Signup"].map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
@@ -686,6 +691,111 @@ export default function BlocksPage() {
               </div>
             ) : (
               <BlockCodeViewer files={stickySlidesFiles} defaultTab="sticky-slides.tsx" />
+            )}
+          </div>
+        )}
+
+        {/* Block: Chat UI (chat-01) */}
+        {(selectedCategory === "Featured" || selectedCategory === "Chat" || selectedCategory === "AI & Agents") && (
+          <div id="chat-block" className="space-y-4 scroll-mt-24">
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="inline-flex items-center rounded-md border bg-muted p-1">
+                  <button
+                    onClick={() => setActiveTab((prev) => ({ ...prev, chat: "preview" }))}
+                    className={`rounded-sm px-3 py-1 text-sm font-medium transition-all cursor-pointer ${
+                      activeTab.chat === "preview"
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Preview
+                  </button>
+                  <button
+                    onClick={() => setActiveTab((prev) => ({ ...prev, chat: "code" }))}
+                    className={`rounded-sm px-3 py-1 text-sm font-medium transition-all cursor-pointer ${
+                      activeTab.chat === "code"
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Code
+                  </button>
+                </div>
+                <span className="text-sm font-medium hidden md:inline-flex items-center gap-2 border-l pl-4 border-border text-foreground">
+                  <MessageSquare className="h-4 w-4 text-muted-foreground" /> Composable Chat UI with delivery receipts, reactions, message replies & typing indicators
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
+                <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
+                  <button
+                    onClick={() => setBlockDevice("chat", "desktop")}
+                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                      deviceMode.chat === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
+                    }`}
+                    title="Desktop View"
+                  >
+                    <Monitor className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => setBlockDevice("chat", "tablet")}
+                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                      deviceMode.chat === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
+                    }`}
+                    title="Tablet View"
+                  >
+                    <Tablet className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => setBlockDevice("chat", "mobile")}
+                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                      deviceMode.chat === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
+                    }`}
+                    title="Mobile View"
+                  >
+                    <Smartphone className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => toggleExpand("chat")}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    title={isExpanded.chat ? "Collapse" : "Expand"}
+                  >
+                    {isExpanded.chat ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
+                  </button>
+                  <button
+                    onClick={() => handleReload("chat")}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    title="Reload Preview"
+                  >
+                    <RotateCw className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 pl-2">
+                  <button
+                    onClick={() => copyToClipboard("npx @alvinahmad/qalvinui add chat-01", "chat-cmd")}
+                    className="inline-flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground font-mono hover:bg-muted/80 transition-colors cursor-pointer"
+                  >
+                    <span className="text-foreground">{">_"}</span> npx @alvinahmad/qalvinui add chat-01
+                    {copiedId === "chat-cmd" ? (
+                      <Check className="h-3.5 w-3.5 text-emerald-500" />
+                    ) : (
+                      <Copy className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Block Content */}
+            {activeTab.chat === "preview" ? (
+              <div className={`rounded-2xl border bg-muted/10 p-4 md:p-8 flex items-center justify-center min-h-[560px] ${isExpanded.chat ? "min-h-[750px]" : ""}`}>
+                <div key={reloadKeys.chat || 0} className={getDeviceContainerClass("chat")}>
+                  <ChatBlock />
+                </div>
+              </div>
+            ) : (
+              <BlockCodeViewer files={chatFiles} defaultTab="chat-01.tsx" />
             )}
           </div>
         )}

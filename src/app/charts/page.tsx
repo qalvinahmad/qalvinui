@@ -78,49 +78,65 @@ export function InteractiveAreaAnalytics() {
     </div>
   );
 }`,
-      render: () => (
-        <div className="w-full h-64 relative overflow-hidden flex flex-col justify-end">
-          <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full flex-1">
-            <defs>
-              <linearGradient id="mainAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02" />
-              </linearGradient>
-              <linearGradient id="secAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#10b981" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28 L100,50 L0,50 Z"
-              fill="url(#mainAreaGrad)"
-            />
-            <path
-              d="M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28"
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18 L100,50 L0,50 Z"
-              fill="url(#secAreaGrad)"
-            />
-            <path
-              d="M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18"
-              fill="none"
-              stroke="#10b981"
-              strokeWidth="1.5"
-            />
-          </svg>
-          <div className="flex justify-between mt-3 text-xs text-muted-foreground border-t pt-3">
-            <span>Apr 6</span><span>Apr 18</span><span>Apr 30</span><span>May 12</span><span>May 24</span><span>Jun 5</span><span>Jun 17</span><span>Jun 30</span>
+      render: (range = "Last 3 months") => {
+        const is7d = range.includes("7");
+        const is30d = range.includes("30");
+        const labels = is7d
+          ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          : is30d
+          ? ["Day 1", "Day 6", "Day 12", "Day 18", "Day 24", "Day 30"]
+          : ["Apr 6", "Apr 18", "Apr 30", "May 12", "May 24", "Jun 5", "Jun 17", "Jun 30"];
+        const d1 = is7d
+          ? "M0,38 C15,20 30,35 45,15 C60,25 75,10 90,14 L100,20 L100,50 L0,50 Z"
+          : is30d
+          ? "M0,42 C20,28 40,32 60,16 C80,24 90,12 100,8 L100,50 L0,50 Z"
+          : "M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28 L100,50 L0,50 Z";
+        const l1 = is7d
+          ? "M0,38 C15,20 30,35 45,15 C60,25 75,10 90,14 L100,20"
+          : is30d
+          ? "M0,42 C20,28 40,32 60,16 C80,24 90,12 100,8"
+          : "M0,45 C15,25 30,48 45,28 C60,15 75,38 90,20 L100,28";
+        const d2 = is7d
+          ? "M0,44 C15,30 30,38 45,22 C60,32 75,18 90,24 L100,30 L100,50 L0,50 Z"
+          : is30d
+          ? "M0,46 C20,36 40,40 60,24 C80,30 90,20 100,16 L100,50 L0,50 Z"
+          : "M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18 L100,50 L0,50 Z";
+        const l2 = is7d
+          ? "M0,44 C15,30 30,38 45,22 C60,32 75,18 90,24 L100,30"
+          : is30d
+          ? "M0,46 C20,36 40,40 60,24 C80,30 90,20 100,16"
+          : "M0,48 C15,35 30,42 45,20 C60,8 75,25 90,12 L100,18";
+
+        return (
+          <div className="w-full h-64 relative overflow-hidden flex flex-col justify-end">
+            <svg viewBox="0 0 100 50" preserveAspectRatio="none" className="w-full flex-1">
+              <defs>
+                <linearGradient id="mainAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02" />
+                </linearGradient>
+                <linearGradient id="secAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+                </linearGradient>
+              </defs>
+              <path d={d1} fill="url(#mainAreaGrad)" />
+              <path d={l1} fill="none" stroke="#3b82f6" strokeWidth="1.5" />
+              <path d={d2} fill="url(#secAreaGrad)" />
+              <path d={l2} fill="none" stroke="#10b981" strokeWidth="1.5" />
+            </svg>
+            <div className="flex justify-between mt-3 text-xs text-muted-foreground border-t pt-3">
+              {labels.map((lbl, idx) => (
+                <span key={idx}>{lbl}</span>
+              ))}
+            </div>
+            <div className="flex items-center justify-center gap-6 mt-4 text-xs font-medium">
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Desktop</div>
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Mobile</div>
+            </div>
           </div>
-          <div className="flex items-center justify-center gap-6 mt-4 text-xs font-medium">
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Desktop</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Mobile</div>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
 
     "Bar Charts": {
@@ -141,10 +157,29 @@ export function InteractiveBarAnalytics() {
     </ResponsiveContainer>
   );
 }`,
-      render: () => (
-        <div className="w-full h-64 flex flex-col justify-end">
-          <div className="flex-1 flex items-end justify-between gap-4 px-4 pt-4">
-            {[
+      render: (range = "Last 3 months") => {
+        const is7d = range.includes("7");
+        const is30d = range.includes("30");
+        const bars = is7d
+          ? [
+              { label: "Mon", d: 82, m: 54 },
+              { label: "Tue", d: 68, m: 45 },
+              { label: "Wed", d: 94, m: 72 },
+              { label: "Thu", d: 85, m: 58 },
+              { label: "Fri", d: 98, m: 76 },
+              { label: "Sat", d: 52, m: 36 },
+              { label: "Sun", d: 64, m: 42 },
+            ]
+          : is30d
+          ? [
+              { label: "Day 1-5", d: 72, m: 50 },
+              { label: "Day 6-10", d: 86, m: 64 },
+              { label: "Day 11-15", d: 80, m: 56 },
+              { label: "Day 16-20", d: 95, m: 72 },
+              { label: "Day 21-25", d: 88, m: 62 },
+              { label: "Day 26-30", d: 100, m: 82 },
+            ]
+          : [
               { label: "Apr 6", d: 75, m: 45 },
               { label: "Apr 18", d: 90, m: 60 },
               { label: "Apr 30", d: 60, m: 35 },
@@ -153,22 +188,28 @@ export function InteractiveBarAnalytics() {
               { label: "Jun 5", d: 88, m: 58 },
               { label: "Jun 17", d: 70, m: 40 },
               { label: "Jun 30", d: 100, m: 75 },
-            ].map((bar, idx) => (
-              <div key={idx} className="flex-1 flex flex-col items-center gap-1 h-full justify-end group cursor-pointer">
-                <div className="w-full flex items-end justify-center gap-1.5 h-full">
-                  <div style={{ height: `${bar.d}%` }} className="w-1/2 bg-blue-500 rounded-t-sm group-hover:brightness-110 transition-all duration-300 shadow-2xs" />
-                  <div style={{ height: `${bar.m}%` }} className="w-1/2 bg-emerald-500 rounded-t-sm group-hover:brightness-110 transition-all duration-300 shadow-2xs" />
+            ];
+
+        return (
+          <div className="w-full h-64 flex flex-col justify-end">
+            <div className="flex-1 flex items-end justify-between gap-4 px-4 pt-4">
+              {bars.map((bar, idx) => (
+                <div key={idx} className="flex-1 flex flex-col items-center gap-1 h-full justify-end group cursor-pointer">
+                  <div className="w-full flex items-end justify-center gap-1.5 h-full">
+                    <div style={{ height: `${bar.d}%` }} className="w-1/2 bg-blue-500 rounded-t-sm group-hover:brightness-110 transition-all duration-300 shadow-2xs" />
+                    <div style={{ height: `${bar.m}%` }} className="w-1/2 bg-emerald-500 rounded-t-sm group-hover:brightness-110 transition-all duration-300 shadow-2xs" />
+                  </div>
+                  <span className="text-[11px] text-muted-foreground mt-2">{bar.label}</span>
                 </div>
-                <span className="text-[11px] text-muted-foreground mt-2">{bar.label}</span>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex items-center justify-center gap-6 mt-4 border-t pt-3 text-xs font-medium">
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Desktop</div>
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Mobile</div>
+            </div>
           </div>
-          <div className="flex items-center justify-center gap-6 mt-4 border-t pt-3 text-xs font-medium">
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Desktop</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Mobile</div>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
 
     "Line Charts": {
@@ -189,30 +230,42 @@ export function InteractiveLineAnalytics() {
     </ResponsiveContainer>
   );
 }`,
-      render: () => (
-        <div className="w-full h-64 flex flex-col justify-end">
-          <svg viewBox="0 0 100 45" preserveAspectRatio="none" className="w-full flex-1">
-            <path d="M0,35 C15,20 30,42 45,18 C60,10 75,28 90,14 L100,8" fill="none" stroke="#3b82f6" strokeWidth="2" />
-            <circle cx="15" cy="27" r="1.5" fill="#3b82f6" />
-            <circle cx="45" cy="18" r="1.5" fill="#3b82f6" />
-            <circle cx="75" cy="24" r="1.5" fill="#3b82f6" />
-            <circle cx="100" cy="8" r="1.5" fill="#3b82f6" />
+      render: (range = "Last 3 months") => {
+        const is7d = range.includes("7");
+        const is30d = range.includes("30");
+        const labels = is7d
+          ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          : is30d
+          ? ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
+          : ["Apr 6", "Apr 18", "Apr 30", "May 12", "May 24", "Jun 5", "Jun 17", "Jun 30"];
 
-            <path d="M0,42 C15,30 30,38 45,26 C60,18 75,34 90,22 L100,16" fill="none" stroke="#10b981" strokeWidth="2" />
-            <circle cx="15" cy="34" r="1.5" fill="#10b981" />
-            <circle cx="45" cy="26" r="1.5" fill="#10b981" />
-            <circle cx="75" cy="30" r="1.5" fill="#10b981" />
-            <circle cx="100" cy="16" r="1.5" fill="#10b981" />
-          </svg>
-          <div className="flex justify-between mt-3 text-xs text-muted-foreground border-t pt-3">
-            <span>Apr 6</span><span>Apr 18</span><span>Apr 30</span><span>May 12</span><span>May 24</span><span>Jun 5</span><span>Jun 17</span><span>Jun 30</span>
+        return (
+          <div className="w-full h-64 flex flex-col justify-end">
+            <svg viewBox="0 0 100 45" preserveAspectRatio="none" className="w-full flex-1">
+              <path d="M0,35 C15,20 30,42 45,18 C60,10 75,28 90,14 L100,8" fill="none" stroke="#3b82f6" strokeWidth="2" />
+              <circle cx="15" cy="27" r="1.5" fill="#3b82f6" />
+              <circle cx="45" cy="18" r="1.5" fill="#3b82f6" />
+              <circle cx="75" cy="24" r="1.5" fill="#3b82f6" />
+              <circle cx="100" cy="8" r="1.5" fill="#3b82f6" />
+
+              <path d="M0,42 C15,30 30,38 45,26 C60,18 75,34 90,22 L100,16" fill="none" stroke="#10b981" strokeWidth="2" />
+              <circle cx="15" cy="34" r="1.5" fill="#10b981" />
+              <circle cx="45" cy="26" r="1.5" fill="#10b981" />
+              <circle cx="75" cy="30" r="1.5" fill="#10b981" />
+              <circle cx="100" cy="16" r="1.5" fill="#10b981" />
+            </svg>
+            <div className="flex justify-between mt-3 text-xs text-muted-foreground border-t pt-3">
+              {labels.map((lbl, idx) => (
+                <span key={idx}>{lbl}</span>
+              ))}
+            </div>
+            <div className="flex items-center justify-center gap-6 mt-4 text-xs font-medium">
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Active Users</div>
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Conversions</div>
+            </div>
           </div>
-          <div className="flex items-center justify-center gap-6 mt-4 text-xs font-medium">
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Active Users</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Conversions</div>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
 
     "Pie Charts": {
@@ -233,28 +286,34 @@ export function InteractivePieAnalytics() {
     </ResponsiveContainer>
   );
 }`,
-      render: () => (
-        <div className="w-full h-64 flex flex-col md:flex-row items-center justify-center gap-8 py-2">
-          <div className="relative w-44 h-44 flex items-center justify-center">
-            <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
-              <circle cx="18" cy="18" r="13" fill="none" stroke="#3b82f6" strokeWidth="5" strokeDasharray="52 100" strokeDashoffset="0" />
-              <circle cx="18" cy="18" r="13" fill="none" stroke="#10b981" strokeWidth="5" strokeDasharray="26 100" strokeDashoffset="-52" />
-              <circle cx="18" cy="18" r="13" fill="none" stroke="#f59e0b" strokeWidth="5" strokeDasharray="14 100" strokeDashoffset="-78" />
-              <circle cx="18" cy="18" r="13" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="8 100" strokeDashoffset="-92" />
-            </svg>
-            <div className="absolute text-center">
-              <span className="text-xl font-bold">48.2k</span>
-              <span className="block text-[10px] text-muted-foreground">Total Sessions</span>
+      render: (range = "Last 3 months") => {
+        const is7d = range.includes("7");
+        const is30d = range.includes("30");
+        const total = is7d ? "14.2k" : is30d ? "58.6k" : "182.4k";
+
+        return (
+          <div className="w-full h-64 flex flex-col md:flex-row items-center justify-center gap-8 py-2">
+            <div className="relative w-44 h-44 flex items-center justify-center">
+              <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                <circle cx="18" cy="18" r="13" fill="none" stroke="#3b82f6" strokeWidth="5" strokeDasharray="52 100" strokeDashoffset="0" />
+                <circle cx="18" cy="18" r="13" fill="none" stroke="#10b981" strokeWidth="5" strokeDasharray="26 100" strokeDashoffset="-52" />
+                <circle cx="18" cy="18" r="13" fill="none" stroke="#f59e0b" strokeWidth="5" strokeDasharray="14 100" strokeDashoffset="-78" />
+                <circle cx="18" cy="18" r="13" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="8 100" strokeDashoffset="-92" />
+              </svg>
+              <div className="absolute text-center">
+                <span className="text-xl font-bold">{total}</span>
+                <span className="block text-[10px] text-muted-foreground">Total Sessions</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Chrome (52%)</div>
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Safari (26%)</div>
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-amber-500" /> Firefox (14%)</div>
+              <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-purple-500" /> Edge (8%)</div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs font-medium">
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Chrome (52%)</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Safari (26%)</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-amber-500" /> Firefox (14%)</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-purple-500" /> Edge (8%)</div>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
 
     "Radar Charts": {

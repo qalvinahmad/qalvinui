@@ -506,9 +506,11 @@ export const VoiceBeam = forwardRef<HTMLDivElement, VoiceBeamProps>(
     // The manual level and the onLevel callback are read through refs so a
     // changing value does not tear the driver down and up every render.
     const levelRef = useRef(level);
-    levelRef.current = level;
     const onLevelRef = useRef(onLevel);
-    onLevelRef.current = onLevel;
+    useEffect(() => {
+      levelRef.current = level;
+      onLevelRef.current = onLevel;
+    }, [level, onLevel]);
 
     useEffect(() => {
       if (!(isActive || isFading) || !isVisible) return;

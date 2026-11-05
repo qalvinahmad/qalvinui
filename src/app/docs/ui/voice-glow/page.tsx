@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Check, Copy, Waves, Mic, MicOff, Radio, Volume2, Sparkles, Send } from "lucide-react";
 import { VoiceBeam } from "@/components/ui/voice-glow";
+import { useMicrophone } from "@/components/ui/voice-glow/useMicrophone";
 import type { VoiceBeamType } from "@/components/ui/voice-glow/types";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
@@ -38,12 +40,14 @@ export default function VoiceGlowDocPage() {
   const [audioLevel, setAudioLevel] = useState(0.65);
   const [voiceType, setVoiceType] = useState<VoiceBeamType>("default");
   const [inputText, setInputText] = useState("");
+  const [useRealMic, setUseRealMic] = useState(false);
+  const mic = useMicrophone();
   const animFrameRef = useRef<number | null>(null);
 
-  // When listening is active and not manually dragged, oscillate audio level to simulate human speech cadence
+  // When listening is active, simulate human speech cadence unless using real microphone
   useEffect(() => {
-    if (!isListening) {
-      setAudioLevel(0);
+    if (!isListening || useRealMic) {
+      if (!useRealMic) setAudioLevel(0);
       return;
     }
 
@@ -60,7 +64,7 @@ export default function VoiceGlowDocPage() {
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [isListening]);
+  }, [isListening, useRealMic]);
 
   const usageCode = `import { VoiceBeam } from "@/components/ui/voice-glow";
 import { Mic } from "lucide-react";
@@ -146,10 +150,11 @@ export function VoiceGlowDemo() {
               <div className="relative z-10 w-full max-w-md flex flex-col items-center gap-6">
                 {/* VoiceBeam Container Wrapping Child Element */}
                 <VoiceBeam
-                  key={voiceType}
+                  key={`${voiceType}-${useRealMic ? "mic" : "sim"}`}
                   type={voiceType}
                   active={isListening}
-                  level={audioLevel}
+                  stream={useRealMic ? mic.stream : null}
+                  level={useRealMic ? undefined : audioLevel}
                   className="w-full"
                 >
                   <div className="relative flex items-center gap-3 px-4 py-3 bg-zinc-900/95 backdrop-blur-md rounded-2xl border border-zinc-800 shadow-2xl">
@@ -170,7 +175,7 @@ export function VoiceGlowDemo() {
                       type="text"
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
-                      placeholder={isListening ? "Listening... speak now or type" : "Voice muted. Click mic to speak..."}
+                      placeholder={isListening ? (useRealMic ? "Listening to mic... speak now" : "Simulating voice... click mic to mute") : "Voice muted. Click mic to speak..."}
                       className="bg-transparent text-sm focus:outline-none flex-1 text-white placeholder:text-zinc-500"
                     />
 
@@ -182,6 +187,33 @@ export function VoiceGlowDemo() {
                     </button>
                   </div>
                 </VoiceBeam>
+
+                {/* Real Mic vs Simulation Toggle */}
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!useRealMic) {
+                        const s = await mic.start();
+                        if (s) {
+                          setUseRealMic(true);
+                          setIsListening(true);
+                          toast.success("Live microphone active! Speak to see reactive waveform.");
+                        } else {
+                          toast.error("Could not access microphone.");
+                        }
+                      } else {
+                        mic.stop();
+                        setUseRealMic(false);
+                        toast.info("Switched to synthesized speech simulation.");
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium cursor-pointer transition-colors"
+                  >
+                    <Radio className={cn("h-3.5 w-3.5", useRealMic && "text-emerald-400 animate-pulse")} />
+                    {useRealMic ? "Live Mic Active (Click to Simulate)" : "Enable Live Microphone"}
+                  </button>
+                </div>
 
                 {/* Status Indicator */}
                 <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">

@@ -62,7 +62,9 @@ export function useMicrophone(options: UseMicrophoneOptions = {}): UseMicrophone
   const [error, setError] = useState<Error | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const constraintsRef = useRef(constraints);
-  constraintsRef.current = constraints;
+  useEffect(() => {
+    constraintsRef.current = constraints;
+  }, [constraints]);
 
   const stop = useCallback(() => {
     const current = streamRef.current;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OnThisPage } from "@/components/docs/on-this-page";
 
 function NavLink({ href, children, isNew = false }: { href: string; children: React.ReactNode, isNew?: boolean }) {
   return (
@@ -61,6 +62,7 @@ export default function DocsLayout({
     { title: "Accordion", href: "/docs/components/accordion" },
     { title: "Alert", href: "/docs/components/alert" },
     { title: "Alert Dialog", href: "/docs/components/alert-dialog" },
+    { title: "Autocomplete", href: "/docs/components/autocomplete", isNew: true },
     { title: "Aspect Ratio", href: "/docs/components/aspect-ratio" },
     { title: "Attachment", href: "/docs/components/attachment" },
     { title: "Avatar", href: "/docs/components/avatar" },
@@ -74,7 +76,9 @@ export default function DocsLayout({
     { title: "Carousel", href: "/docs/components/carousel" },
     { title: "Chart", href: "/docs/components/chart" },
     { title: "Checkbox", href: "/docs/components/checkbox" },
+    { title: "Checkbox Group", href: "/docs/components/checkbox-group", isNew: true },
     { title: "Collapsible", href: "/docs/components/collapsible" },
+    { title: "Composer", href: "/docs/components/composer", isNew: true },
     { title: "Combobox", href: "/docs/components/combobox" },
     { title: "Command", href: "/docs/components/command" },
     { title: "Context Menu", href: "/docs/components/context-menu" },
@@ -86,6 +90,9 @@ export default function DocsLayout({
     { title: "Dropdown Menu", href: "/docs/components/dropdown-menu" },
     { title: "Empty", href: "/docs/components/empty" },
     { title: "Field", href: "/docs/components/field" },
+    { title: "Fieldset", href: "/docs/components/fieldset", isNew: true },
+    { title: "Frame", href: "/docs/components/frame", isNew: true },
+    { title: "Group", href: "/docs/components/group", isNew: true },
     { title: "Hover Card", href: "/docs/components/hover-card" },
     { title: "Input", href: "/docs/components/input" },
     { title: "Input Group", href: "/docs/components/input-group" },
@@ -97,16 +104,22 @@ export default function DocsLayout({
     { title: "Menubar", href: "/docs/components/menubar" },
     { title: "Message", href: "/docs/components/message" },
     { title: "Message Scroller", href: "/docs/components/message-scroller" },
+    { title: "Menu", href: "/docs/components/menu", isNew: true },
+    { title: "Meter", href: "/docs/components/meter", isNew: true },
     { title: "Native Select", href: "/docs/components/native-select" },
+    { title: "Number Field", href: "/docs/components/number-field", isNew: true },
+    { title: "OTP Field", href: "/docs/components/otp-field", isNew: true },
     { title: "Navigation Menu", href: "/docs/components/navigation-menu" },
     { title: "Pagination", href: "/docs/components/pagination" },
     { title: "Popover", href: "/docs/components/popover" },
+    { title: "Preview Card", href: "/docs/components/preview-card", isNew: true },
     { title: "Progress", href: "/docs/components/progress" },
     { title: "Questionnaire", href: "/docs/components/questionnaire" },
     { title: "Radio Group", href: "/docs/components/radio-group" },
     { title: "Resizable", href: "/docs/components/resizable" },
     { title: "Scroll Area", href: "/docs/components/scroll-area" },
     { title: "Scroll Fade", href: "/docs/components/scroll-fade" },
+    { title: "Segmented Control", href: "/docs/components/segmented-control", isNew: true },
     { title: "Select", href: "/docs/components/select" },
     { title: "Separator", href: "/docs/components/separator" },
     { title: "Sheet", href: "/docs/components/sheet" },
@@ -249,9 +262,16 @@ export default function DocsLayout({
           </div>
         </aside>
         
-        <main className="flex-1 w-full min-w-0">
+        <main className="flex-1 w-full min-w-0 max-w-4xl">
           {children}
         </main>
+
+        {/* Right Sidebar: Head Description Tracker ("On This Page") */}
+        <aside className="hidden xl:block w-52 2xl:w-60 shrink-0">
+          <div className="sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pb-10 pl-4 border-l border-border/40">
+            <OnThisPage />
+          </div>
+        </aside>
       </div>
     </div>
   );

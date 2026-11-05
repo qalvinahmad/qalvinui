@@ -106,6 +106,39 @@ export default function CreatePage() {
   const [inputName, setInputName] = useState("");
   const [inputMessage, setInputMessage] = useState("");
   const [copied, setCopied] = useState(false);
+  const [previewScale, setPreviewScale] = useState(1);
+  const [isSecretsModalOpen, setIsSecretsModalOpen] = useState(false);
+  const [secretsList, setSecretsList] = useState([
+    { key: "DATABASE_URL", value: "postgresql://postgres:••••••••@ep-cold-wave.neon.tech/main", visible: false },
+    { key: "NEXT_PUBLIC_APP_URL", value: "https://qalvinui.vercel.app", visible: true },
+    { key: "STRIPE_SECRET_KEY", value: "sk_test_51Mz9••••••••••••••••", visible: false },
+  ]);
+  const [newKey, setNewKey] = useState("");
+  const [newVal, setNewVal] = useState("");
+
+  const trafficData = {
+    "01": [
+      { desktop: 40, mobile: 60, month: "Q1" },
+      { desktop: 65, mobile: 85, month: "Q2" },
+      { desktop: 50, mobile: 75, month: "Q3" },
+      { desktop: 80, mobile: 95, month: "Q4" },
+    ],
+    "02": [
+      { desktop: 55, mobile: 70, month: "Jan" },
+      { desktop: 60, mobile: 80, month: "Feb" },
+      { desktop: 75, mobile: 90, month: "Mar" },
+      { desktop: 85, mobile: 95, month: "Apr" },
+    ],
+    "03": [
+      { desktop: 80, mobile: 40, month: "Desk" },
+      { desktop: 35, mobile: 85, month: "Mob" },
+      { desktop: 50, mobile: 60, month: "Tab" },
+    ],
+  }[trafficTab as "01" | "02" | "03"] || [
+    { desktop: 40, mobile: 60, month: "Q1" },
+    { desktop: 65, mobile: 85, month: "Q2" },
+    { desktop: 50, mobile: 75, month: "Q3" },
+  ];
 
   // Derived style properties
   const currentTheme = themes.find((t) => t.name === activeTheme) || themes[1];
@@ -393,21 +426,52 @@ export const themePreset = {
               {/* Interactive Toolbar */}
               <div className={`border bg-card p-4 shadow-sm flex flex-wrap gap-2 justify-center ${getBorderRadius()}`}>
                 {[
-                  { icon: Copy, label: "Copy" },
-                  { icon: Info, label: "Info" },
-                  { icon: Trash, label: "Delete" },
-                  { icon: Upload, label: "Upload" },
-                  { icon: ShoppingCart, label: "Cart" },
-                  { icon: Minus, label: "Zoom Out" },
-                  { icon: ArrowLeft, label: "Previous" },
-                  { icon: ArrowRight, label: "Next" },
-                  { icon: Check, label: "Done" },
-                  { icon: Search, label: "Search" },
-                  { icon: Settings, label: "Settings" },
-                ].map(({ icon: Icon, label }, i) => (
+                  {
+                    icon: Copy,
+                    label: "Copy Config",
+                    action: () => {
+                      navigator.clipboard.writeText(
+                        JSON.stringify(
+                          { style: activeStyle, baseColor: activeBaseColor, theme: activeTheme, heading: activeHeading },
+                          null,
+                          2
+                        )
+                      );
+                      toast.success("Theme JSON copied to clipboard");
+                    },
+                  },
+                  { icon: Info, label: "Info", action: () => toast.info(`Active style: ${activeStyle}, Font: ${activeHeading}`) },
+                  {
+                    icon: Trash,
+                    label: "Reset",
+                    action: () => {
+                      setSliderValue(60);
+                      setPayoutAmount(2500);
+                      setInputName("");
+                      setInputMessage("");
+                      toast.info("Controls reset to defaults");
+                    },
+                  },
+                  { icon: Upload, label: "Deploy", action: () => toast.success("Theme exported to registry payload") },
+                  { icon: ShoppingCart, label: "Cart", action: () => toast.info("Checkout demo available in Blocks") },
+                  {
+                    icon: Minus,
+                    label: "Zoom",
+                    action: () => {
+                      setPreviewScale((s) => (s === 1 ? 0.95 : 1));
+                      toast.info(`Preview scale: ${previewScale === 1 ? "95%" : "100%"}`);
+                    },
+                  },
+                  { icon: ArrowLeft, label: "Previous Style", action: () => handleShuffle() },
+                  { icon: ArrowRight, label: "Next Style", action: () => handleShuffle() },
+                  { icon: Check, label: "Save", action: () => toast.success("Design system tokens saved") },
+                  { icon: Search, label: "Search", action: () => toast.info("Search documentation: press ⌘K") },
+                  { icon: Settings, label: "Manage Secrets", action: () => setIsSecretsModalOpen(true) },
+                ].map(({ icon: Icon, label, action }, i) => (
                   <button
                     key={i}
-                    onClick={() => toast.info(`Action: ${label}`)}
+                    onClick={action}
+                    title={label}
                     className="h-9 w-9 flex items-center justify-center rounded-xl border bg-background hover:bg-muted text-foreground transition-colors shadow-2xs cursor-pointer active:scale-95"
                   >
                     <Icon className="h-4 w-4" />
@@ -694,22 +758,18 @@ export const themePreset = {
                 <p className="text-xs text-muted-foreground mb-4">8 active synced variables</p>
 
                 <div className="space-y-2 mb-5 font-mono text-xs">
-                  <div className="px-3 py-2 border rounded-xl bg-muted/30 text-foreground flex justify-between items-center">
-                    <span>DATABASE_URL</span>
-                    <span className="text-[10px] text-muted-foreground">postgres://...</span>
-                  </div>
-                  <div className="px-3 py-2 border rounded-xl bg-muted/30 text-foreground flex justify-between items-center">
-                    <span>NEXT_PUBLIC_APP_URL</span>
-                    <span className="text-[10px] text-muted-foreground">https://...</span>
-                  </div>
-                  <div className="px-3 py-2 border rounded-xl bg-muted/30 text-foreground flex justify-between items-center">
-                    <span>STRIPE_SECRET_KEY</span>
-                    <span className="text-[10px] text-muted-foreground">sk_live_...</span>
-                  </div>
+                  {secretsList.map((sec, idx) => (
+                    <div key={idx} className="px-3 py-2 border rounded-xl bg-muted/30 text-foreground flex justify-between items-center">
+                      <span className="font-semibold">{sec.key}</span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {sec.visible ? sec.value : "••••••••••••"}
+                      </span>
+                    </div>
+                  ))}
                 </div>
 
                 <button
-                  onClick={() => toast.info("Opening environment variable secrets manager")}
+                  onClick={() => setIsSecretsModalOpen(true)}
                   className="px-4 py-2 border rounded-xl text-xs font-semibold hover:bg-muted transition-colors cursor-pointer"
                 >
                   Manage Secrets
@@ -722,15 +782,13 @@ export const themePreset = {
                   Traffic channel
                 </h3>
                 <p className="text-xs text-muted-foreground mb-6">
-                  Monthly desktop vs mobile visitors across 3 quarters.
+                  {trafficTab === "01" && "Quarterly desktop vs mobile visitors across 4 quarters."}
+                  {trafficTab === "02" && "Monthly comparison across the active fiscal period."}
+                  {trafficTab === "03" && "Device category telemetry breakdown."}
                 </p>
 
                 <div className="h-32 w-full flex items-end gap-3 mb-4">
-                  {[
-                    { desktop: 40, mobile: 60, month: "Q1" },
-                    { desktop: 65, mobile: 85, month: "Q2" },
-                    { desktop: 50, mobile: 75, month: "Q3" },
-                  ].map((item, idx) => (
+                  {trafficData.map((item, idx) => (
                     <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
                       <div className="flex gap-1.5 items-end h-full w-full justify-center">
                         <div
@@ -760,7 +818,7 @@ export const themePreset = {
                           : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
-                      01 (Monthly)
+                      01 (Quarterly)
                     </button>
                     <button
                       onClick={() => setTrafficTab("02")}
@@ -770,7 +828,17 @@ export const themePreset = {
                           : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
-                      02 (Quarterly)
+                      02 (Monthly)
+                    </button>
+                    <button
+                      onClick={() => setTrafficTab("03")}
+                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        trafficTab === "03"
+                          ? "bg-foreground text-background shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      03 (Devices)
                     </button>
                   </div>
                 </div>
@@ -819,6 +887,114 @@ export const themePreset = {
             </div>
           </div>
         </main>
+
+        {/* Interactive Secrets Manager Modal */}
+        {isSecretsModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-2xs p-4">
+            <div className="w-full max-w-lg rounded-2xl border bg-background p-6 shadow-2xl space-y-5">
+              <div className="flex items-center justify-between border-b pb-3">
+                <div>
+                  <h3 className="font-semibold text-base">Secrets & Environment Variables</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">Manage production encryption keys and database endpoints.</p>
+                </div>
+                <button
+                  onClick={() => setIsSecretsModalOpen(false)}
+                  className="rounded-full p-1 text-muted-foreground hover:bg-muted cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                {secretsList.map((sec, idx) => (
+                  <div key={idx} className="flex items-center justify-between gap-3 p-2.5 rounded-xl border bg-muted/30 text-xs">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-mono font-bold text-foreground truncate">{sec.key}</p>
+                      <p className="font-mono text-[11px] text-muted-foreground truncate">
+                        {sec.visible ? sec.value : "••••••••••••••••••••••••"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSecretsList((prev) =>
+                            prev.map((s, i) => (i === idx ? { ...s, visible: !s.visible } : s))
+                          );
+                        }}
+                        className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground cursor-pointer"
+                        title={sec.visible ? "Hide" : "Show"}
+                      >
+                        <Info className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(sec.value);
+                          toast.success(`Copied ${sec.key}`);
+                        }}
+                        className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground cursor-pointer"
+                        title="Copy"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSecretsList((prev) => prev.filter((_, i) => i !== idx));
+                          toast.error(`Deleted ${sec.key}`);
+                        }}
+                        className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive cursor-pointer"
+                        title="Delete"
+                      >
+                        <Trash className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add New Key */}
+              <div className="pt-2 border-t space-y-3">
+                <span className="text-xs font-semibold text-muted-foreground">Add New Variable</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    value={newKey}
+                    onChange={(e) => setNewKey(e.target.value.toUpperCase())}
+                    placeholder="KEY_NAME"
+                    className="h-8 px-2.5 text-xs rounded-lg border bg-background font-mono"
+                  />
+                  <input
+                    type="text"
+                    value={newVal}
+                    onChange={(e) => setNewVal(e.target.value)}
+                    placeholder="value..."
+                    className="h-8 px-2.5 text-xs rounded-lg border bg-background font-mono"
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!newKey.trim()) {
+                        toast.error("Please enter variable name");
+                        return;
+                      }
+                      setSecretsList((prev) => [...prev, { key: newKey, value: newVal, visible: false }]);
+                      setNewKey("");
+                      setNewVal("");
+                      toast.success(`Variable ${newKey} saved`);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-semibold cursor-pointer"
+                  >
+                    Save Variable
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

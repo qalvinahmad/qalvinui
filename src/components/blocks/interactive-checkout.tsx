@@ -2,19 +2,20 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Minus, Plus, ShoppingCart, X, CreditCard } from "lucide-react";
+import { Minus, Plus, ShoppingCart, X, CreditCard, CheckCircle2, Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import NumberFlow from "@number-flow/react";
+import { toast } from "sonner";
 
 export interface Product {
   id: string;
   name: string;
   price: number;
   category: string;
-  image: string;
   color: string;
+  badge?: string;
+  svgColor?: string;
 }
 
 export interface CartItem extends Product {
@@ -27,295 +28,344 @@ export interface InteractiveCheckoutProps {
   forceMode?: "desktop" | "tablet" | "mobile";
 }
 
+// Inline SVG sneaker illustration for instant zero-dependency rendering
+function SneakerIllustration({ color = "#3b82f6" }: { color?: string }) {
+  return (
+    <div className="w-full h-full flex items-center justify-center bg-muted/40 rounded-lg p-2">
+      <svg viewBox="0 0 100 60" className="w-full h-full max-h-16 drop-shadow-sm">
+        <path
+          d="M10,40 Q25,38 45,35 Q60,25 75,20 Q85,15 90,25 Q95,38 85,45 Q75,48 50,48 L15,48 Q10,48 10,40 Z"
+          fill={color}
+          opacity="0.85"
+        />
+        <path
+          d="M12,48 L88,48 Q92,52 88,54 L12,54 Q8,52 12,48 Z"
+          fill="#18181b"
+        />
+        <path
+          d="M35,35 L45,20 L55,25 L48,37 Z"
+          fill="#ffffff"
+          opacity="0.9"
+        />
+        <circle cx="28" cy="44" r="2" fill="#ffffff" />
+        <circle cx="38" cy="43" r="2" fill="#ffffff" />
+        <circle cx="48" cy="42" r="2" fill="#ffffff" />
+      </svg>
+    </div>
+  );
+}
+
 export const defaultProducts: Product[] = [
   {
     id: "1",
     name: "Air Max 90",
     price: 129.99,
     category: "Running",
-    image:
-      "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
-    color: "Black/White",
+    color: "Electric Blue",
+    svgColor: "#2563eb",
   },
   {
     id: "2",
     name: "Ultra Boost",
     price: 179.99,
     category: "Performance",
-    image:
-      "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
-    color: "Grey/Blue",
+    color: "Emerald Mint",
+    svgColor: "#059669",
   },
   {
     id: "3",
     name: "Classic Trainer",
     price: 89.99,
     category: "Casual",
-    image:
-      "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/shoes-d2GWFGnVlkkUneRD3x2xDbUVHO1qMp",
-    color: "White/Red",
+    color: "Sunset Orange",
+    svgColor: "#ea580c",
   },
 ];
 
 function InteractiveCheckout({
   products = defaultProducts,
   className,
-  forceMode,
 }: InteractiveCheckoutProps) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>([
+    { ...products[0], quantity: 1 },
+    { ...products[1], quantity: 1 },
+  ]);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [checkoutStep, setCheckoutStep] = useState<"review" | "processing" | "success">("review");
+  const [orderId, setOrderId] = useState("");
 
-  const isMobile = forceMode === "mobile";
-  const isDesktop = forceMode === "desktop";
+  const updateQuantity = (id: string, delta: number) => {
+    setItems((prev) =>
+      prev
+        .map((item) => {
+          if (item.id === id) {
+            const newQty = item.quantity + delta;
+            return newQty > 0 ? { ...item, quantity: newQty } : null;
+          }
+          return item;
+        })
+        .filter((item): item is CartItem => item !== null)
+    );
+  };
 
-  const addToCart = (product: Product) => {
-    setCart((currentCart) => {
-      const existingItem = currentCart.find((item) => item.id === product.id);
-      if (existingItem) {
-        return currentCart.map((item) =>
+  const removeItem = (id: string) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const addItem = (product: Product) => {
+    setItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
-      return [...currentCart, { ...product, quantity: 1 }];
+      return [...prev, { ...product, quantity: 1 }];
     });
+    toast.success(`Added ${product.name} to cart`);
   };
 
-  const removeFromCart = (productId: string) => {
-    setCart((currentCart) =>
-      currentCart.filter((item) => item.id !== productId)
-    );
-  };
-
-  const updateQuantity = (productId: string, delta: number) => {
-    setCart((currentCart) =>
-      currentCart.map((item) => {
-        if (item.id === productId) {
-          const newQuantity = item.quantity + delta;
-          return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
-        }
-        return item;
-      })
-    );
-  };
-
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cart.reduce(
+  const totalPrice = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
+  const startCheckout = () => {
+    if (items.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+    setCheckoutStep("review");
+    setIsCheckoutOpen(true);
+  };
+
+  const processPayment = () => {
+    setCheckoutStep("processing");
+    setTimeout(() => {
+      setOrderId(`ORD-${Math.floor(100000 + Math.random() * 900000)}`);
+      setCheckoutStep("success");
+      setItems([]);
+      toast.success("Order confirmed!");
+    }, 1800);
+  };
+
   return (
-    <div className={cn("@container w-full max-w-4xl mx-auto", className)}>
-      <div
-        className={cn(
-          "flex gap-6",
-          isMobile
-            ? "flex-col"
-            : isDesktop
-            ? "flex-col md:flex-row"
-            : "flex-col @[720px]:flex-row"
-        )}
-      >
-        {/* Products List */}
-        <div className="flex-1 space-y-3 min-w-0">
-          {products.map((product) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
-              className={cn(
-                "group",
-                "p-3.5 sm:p-4 rounded-xl",
-                "bg-white dark:bg-zinc-900",
-                "border border-zinc-200 dark:border-zinc-800",
-                "hover:border-zinc-300 dark:hover:border-zinc-700",
-                "transition-all duration-200"
-              )}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div
-                    className={cn(
-                      "relative w-12 h-12 rounded-lg overflow-hidden shrink-0",
-                      "bg-zinc-100 dark:bg-zinc-800",
-                      "transition-colors duration-200",
-                      "group-hover:bg-zinc-200 dark:group-hover:bg-zinc-700"
-                    )}
-                  >
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate max-w-[120px] sm:max-w-none">
-                        {product.name}
-                      </h3>
-                      <span className="px-2 py-0.5 text-[10px] sm:text-xs rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 shrink-0">
-                        {product.category}
-                      </span>
+    <div className={cn("w-full max-w-4xl mx-auto p-4 sm:p-6", className)}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Products catalog list */}
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-lg tracking-tight">Available Gear</h3>
+            <span className="text-xs text-muted-foreground">{products.length} products</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {products.map((prod) => (
+              <div
+                key={prod.id}
+                className="border rounded-xl p-3 bg-card flex flex-col justify-between gap-3 shadow-2xs hover:border-foreground/40 transition-colors"
+              >
+                <div className="h-28 w-full rounded-lg overflow-hidden">
+                  <SneakerIllustration color={prod.svgColor} />
+                </div>
+                <div>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-semibold text-sm">{prod.name}</h4>
+                      <p className="text-xs text-muted-foreground">{prod.category} • {prod.color}</p>
                     </div>
-                    <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
-                      <span className="font-semibold text-zinc-900 dark:text-zinc-100">${product.price}</span>
-                      <span>•</span>
-                      <span className="truncate">{product.color}</span>
-                    </div>
+                    <span className="font-mono text-sm font-semibold">${prod.price}</span>
                   </div>
                 </div>
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => addToCart(product)}
-                  className="gap-1.5 shrink-0"
+                  onClick={() => addItem(prod)}
+                  className="w-full gap-1.5 cursor-pointer"
                 >
-                  <Plus className="w-3.5 h-3.5" />
-                  Add
+                  <Plus className="h-3.5 w-3.5" /> Add to Cart
                 </Button>
               </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* Cart */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className={cn(
-            "flex flex-col",
-            "p-4 rounded-xl",
-            "bg-white dark:bg-zinc-900",
-            "border border-zinc-200 dark:border-zinc-800",
-            isMobile
-              ? "w-full min-w-0"
-              : isDesktop
-              ? "w-full md:w-80 md:sticky md:top-4 max-h-[32rem]"
-              : "w-full @[720px]:w-80 @[720px]:sticky @[720px]:top-4 max-h-[32rem]"
-          )}
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <ShoppingCart className="w-4 h-4 text-zinc-500" />
-            <h2 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-              Cart ({totalItems})
-            </h2>
+        {/* Dynamic Cart Summary */}
+        <div className="border rounded-2xl p-5 bg-card flex flex-col justify-between shadow-xs h-fit space-y-4">
+          <div className="flex items-center justify-between border-b pb-3">
+            <div className="flex items-center gap-2">
+              <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+              <h3 className="font-semibold text-sm">Order Summary</h3>
+            </div>
+            <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded-full font-semibold">
+              {items.reduce((acc, i) => acc + i.quantity, 0)} items
+            </span>
           </div>
 
-          <motion.div
-            className={cn(
-              "flex-1 overflow-y-auto",
-              "min-h-0",
-              "-mx-2 px-2 sm:-mx-4 sm:px-4",
-              "space-y-3"
-            )}
-          >
-            {cart.length === 0 ? (
-              <div className="py-8 text-center text-xs text-muted-foreground">
-                Your cart is empty. Add items to checkout.
-              </div>
-            ) : (
-              <AnimatePresence initial={false} mode="popLayout">
-                {cart.map((item) => (
+          <div className="space-y-3 min-h-[140px] max-h-64 overflow-y-auto pr-1">
+            <AnimatePresence>
+              {items.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-8">
+                  Your bag is empty. Add a product to get started.
+                </p>
+              ) : (
+                items.map((item) => (
                   <motion.div
                     key={item.id}
                     layout
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{
-                      opacity: { duration: 0.2 },
-                      layout: { duration: 0.2 },
-                    }}
-                    className={cn(
-                      "flex items-center gap-3",
-                      "p-2.5 rounded-lg",
-                      "bg-zinc-50 dark:bg-zinc-800/50",
-                      "mb-3"
-                    )}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="flex items-center justify-between gap-3 border-b border-border/50 pb-2 text-xs"
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
-                          {item.name}
-                        </span>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => removeFromCart(item.id)}
-                          className="p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 cursor-pointer shrink-0"
-                        >
-                          <X className="w-3 h-3 text-zinc-400" />
-                        </motion.button>
-                      </div>
-                      <div className="flex items-center justify-between mt-1.5 gap-2">
-                        <div className="flex items-center gap-1 shrink-0">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => updateQuantity(item.id, -1)}
-                            className="p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 cursor-pointer"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </motion.button>
-                          <motion.span
-                            layout
-                            className="text-xs text-zinc-600 dark:text-zinc-400 w-4 text-center font-medium"
-                          >
-                            {item.quantity}
-                          </motion.span>
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => updateQuantity(item.id, 1)}
-                            className="p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 cursor-pointer"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </motion.button>
-                        </div>
-                        <motion.span
-                          layout
-                          className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 shrink-0"
-                        >
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </motion.span>
-                      </div>
+                      <p className="font-medium truncate">{item.name}</p>
+                      <p className="text-muted-foreground">${item.price}</p>
                     </div>
+                    <div className="flex items-center gap-1.5 bg-muted/60 rounded-md p-0.5">
+                      <button
+                        onClick={() => updateQuantity(item.id, -1)}
+                        className="h-5 w-5 flex items-center justify-center hover:bg-background rounded cursor-pointer"
+                      >
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="font-mono font-semibold px-1">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.id, 1)}
+                        className="h-5 w-5 flex items-center justify-center hover:bg-background rounded cursor-pointer"
+                      >
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => removeItem(item.id)}
+                      className="text-muted-foreground hover:text-destructive cursor-pointer p-1"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
                   </motion.div>
-                ))}
-              </AnimatePresence>
-            )}
-          </motion.div>
+                ))
+              )}
+            </AnimatePresence>
+          </div>
 
-          <motion.div
-            layout
-            className={cn(
-              "pt-3 mt-3",
-              "border-t border-zinc-200 dark:border-zinc-800",
-              "bg-white dark:bg-zinc-900"
-            )}
-          >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                Total
-              </span>
-              <motion.span
-                layout
-                className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-              >
-                <NumberFlow value={totalPrice} />
-              </motion.span>
+          <div className="border-t pt-3 space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Subtotal</span>
+              <span className="font-mono font-semibold">${totalPrice.toFixed(2)}</span>
             </div>
-            <Button size="sm" className="w-full gap-2 cursor-pointer">
-              <CreditCard className="w-4 h-4" />
-              Checkout
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Estimated Shipping</span>
+              <span className="font-mono text-xs text-emerald-600 dark:text-emerald-400 font-semibold">FREE</span>
+            </div>
+            <div className="flex justify-between items-center text-base font-bold border-t pt-2">
+              <span>Total</span>
+              <span className="font-mono">${totalPrice.toFixed(2)}</span>
+            </div>
+
+            <Button
+              onClick={startCheckout}
+              disabled={items.length === 0}
+              className="w-full gap-2 mt-2 cursor-pointer"
+            >
+              <CreditCard className="h-4 w-4" />
+              Checkout Now
             </Button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
+
+      {/* Interactive Checkout Modal Flow */}
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="w-full max-w-md rounded-2xl border bg-background p-6 shadow-xl space-y-6"
+          >
+            {checkoutStep === "review" && (
+              <>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-lg">Secure Checkout</h3>
+                  <button
+                    onClick={() => setIsCheckoutOpen(false)}
+                    className="rounded-full p-1 text-muted-foreground hover:bg-muted cursor-pointer"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Payment Method</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button className="border-2 border-primary bg-primary/5 rounded-xl p-3 text-left font-medium text-xs flex flex-col gap-1 cursor-pointer">
+                      <CreditCard className="h-4 w-4 text-primary" />
+                      <span>Credit Card</span>
+                      <span className="text-[10px] text-muted-foreground">•••• 4242</span>
+                    </button>
+                    <button className="border rounded-xl p-3 text-left font-medium text-xs flex flex-col gap-1 hover:bg-muted cursor-pointer">
+                      <span className="font-bold text-sm"> Pay</span>
+                      <span>Apple Pay</span>
+                      <span className="text-[10px] text-muted-foreground">One-click</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-muted/40 rounded-xl space-y-1.5 text-xs">
+                  <div className="flex justify-between font-semibold">
+                    <span>Amount due</span>
+                    <span className="font-mono text-sm">${totalPrice.toFixed(2)}</span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">Includes complimentary express shipping and 30-day money back guarantee.</p>
+                </div>
+
+                <Button onClick={processPayment} className="w-full cursor-pointer gap-2">
+                  Authorize & Pay <ArrowRight className="h-4 w-4" />
+                </Button>
+              </>
+            )}
+
+            {checkoutStep === "processing" && (
+              <div className="py-12 flex flex-col items-center justify-center space-y-4 text-center">
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                <div>
+                  <h4 className="font-semibold text-base">Processing Payment</h4>
+                  <p className="text-xs text-muted-foreground mt-1">Contacting payment provider...</p>
+                </div>
+              </div>
+            )}
+
+            {checkoutStep === "success" && (
+              <div className="py-6 flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="h-14 w-14 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                  <CheckCircle2 className="h-8 w-8" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-xl">Payment Successful!</h4>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Receipt sent to your email. Order reference:
+                  </p>
+                  <p className="font-mono font-bold text-sm mt-1 text-primary">{orderId}</p>
+                </div>
+                <Button
+                  onClick={() => {
+                    setIsCheckoutOpen(false);
+                    setItems([
+                      { ...products[0], quantity: 1 },
+                      { ...products[1], quantity: 1 },
+                    ]);
+                  }}
+                  className="w-full mt-4 cursor-pointer"
+                >
+                  Continue Shopping
+                </Button>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

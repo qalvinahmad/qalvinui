@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { ArrowRight, TrendingUp, ShieldCheck, Sparkles, CheckCircle2 } from "lucide-react";
+import { ComponentCard } from "@/components/ui/component-card";
 
 export default function Home() {
   const [selectedRadio, setSelectedRadio] = useState("option-1");
@@ -238,6 +239,48 @@ export default function Home() {
             </div>
           </div>
 
+        </div>
+
+        {/* Featured Component Cards Grid (Coss.com style) */}
+        <div className="mt-16 sm:mt-24 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Explore the Components</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Precision-engineered primitives and blocks built for modern web applications.
+              </p>
+            </div>
+            <Link
+              href="/docs/components"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+            >
+              <span>View all 30+ components</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            <ComponentCard
+              name="Autocomplete"
+              description="An input that suggests options as you type with async loading and groupings."
+              href="/docs/components/autocomplete"
+            />
+            <ComponentCard
+              name="Accordion"
+              description="A set of collapsible panels with headings and content."
+              href="/docs/components/accordion"
+            />
+            <ComponentCard
+              name="Alert Dialog"
+              description="A modal dialog that interrupts the user with important content."
+              href="/docs/components/alert-dialog"
+            />
+            <ComponentCard
+              name="Thinking Orb"
+              description="Multi-state particle orb visualizing AI reasoning, thinking, and errors."
+              href="/docs/ui/thinking-orb"
+            />
+          </div>
         </div>
       </section>
     </div>
