@@ -22,6 +22,7 @@ import {
   Lock,
   UserPlus,
   Compass,
+  Layers,
 } from "lucide-react";
 import { InteractiveCheckout } from "@/components/blocks/interactive-checkout";
 import { ShiningTextBlock } from "@/components/blocks/shining-text-block";
@@ -31,7 +32,7 @@ import { Login01 } from "@/components/blocks/login-01";
 import { Signup01 } from "@/components/blocks/signup-01";
 import { ThinkingOrbBlock } from "@/components/blocks/thinking-orb-block";
 import { MetalFxBlock } from "@/components/blocks/metal-fx-block";
-import { HumanAtlasBlock } from "@/components/blocks/human-atlas-block";
+import { StickySlidesBlock } from "@/components/blocks/sticky-slides-block";
 import { BlockCodeViewer } from "@/components/blocks/block-code-viewer";
 import {
   checkoutFiles,
@@ -42,7 +43,7 @@ import {
   signupFiles,
   thinkingOrbFiles,
   metalFxFiles,
-  humanAtlasFiles,
+  stickySlidesFiles,
 } from "@/components/blocks/blocks-code-data";
 
 type DeviceMode = "desktop" | "tablet" | "mobile";
@@ -54,7 +55,7 @@ export default function BlocksPage() {
     checkout: "preview",
     thinkingOrb: "preview",
     metalFx: "preview",
-    humanAtlas: "preview",
+    stickySlides: "preview",
     dashboard: "preview",
     sidebar: "preview",
     login: "preview",
@@ -66,7 +67,7 @@ export default function BlocksPage() {
     checkout: "desktop",
     thinkingOrb: "desktop",
     metalFx: "desktop",
-    humanAtlas: "desktop",
+    stickySlides: "desktop",
     dashboard: "desktop",
     sidebar: "desktop",
     login: "desktop",
@@ -584,16 +585,16 @@ export default function BlocksPage() {
           </div>
         )}
 
-        {/* Block: Human Atlas */}
+        {/* Block: Sticky Full Page Slides */}
         {(selectedCategory === "Featured" || selectedCategory === "3D & Templates") && (
-          <div id="human-atlas-block" className="space-y-4 scroll-mt-24">
+          <div id="sticky-slides-block" className="space-y-4 scroll-mt-24">
             <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className="inline-flex items-center rounded-md border bg-muted p-1">
                   <button
-                    onClick={() => setActiveTab((prev) => ({ ...prev, humanAtlas: "preview" }))}
+                    onClick={() => setActiveTab((prev) => ({ ...prev, stickySlides: "preview" }))}
                     className={`rounded-sm px-3 py-1 text-sm font-medium transition-all cursor-pointer ${
-                      activeTab.humanAtlas === "preview"
+                      activeTab.stickySlides === "preview"
                         ? "bg-background text-foreground shadow-sm"
                         : "text-muted-foreground hover:text-foreground"
                     }`}
@@ -601,9 +602,9 @@ export default function BlocksPage() {
                     Preview
                   </button>
                   <button
-                    onClick={() => setActiveTab((prev) => ({ ...prev, humanAtlas: "code" }))}
+                    onClick={() => setActiveTab((prev) => ({ ...prev, stickySlides: "code" }))}
                     className={`rounded-sm px-3 py-1 text-sm font-medium transition-all cursor-pointer ${
-                      activeTab.humanAtlas === "code"
+                      activeTab.stickySlides === "code"
                         ? "bg-background text-foreground shadow-sm"
                         : "text-muted-foreground hover:text-foreground"
                     }`}
@@ -612,48 +613,48 @@ export default function BlocksPage() {
                   </button>
                 </div>
                 <span className="text-sm font-medium hidden md:inline-flex items-center gap-2 border-l pl-4 border-border text-foreground">
-                  <Compass className="h-4 w-4 text-emerald-400" /> Interactive 3D Human Anatomy Studio template with multi-system dissection & orbit controls
+                  <Layers className="h-4 w-4 text-emerald-400" /> Full-page sticky scroll presentation slides with CSS stacking
                 </span>
               </div>
 
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
-                    onClick={() => setBlockDevice("humanAtlas", "desktop")}
+                    onClick={() => setBlockDevice("stickySlides", "desktop")}
                     className={`p-2 rounded-md transition-colors cursor-pointer ${
-                      deviceMode.humanAtlas === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
+                      deviceMode.stickySlides === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
                   >
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => setBlockDevice("humanAtlas", "tablet")}
+                    onClick={() => setBlockDevice("stickySlides", "tablet")}
                     className={`p-2 rounded-md transition-colors cursor-pointer ${
-                      deviceMode.humanAtlas === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
+                      deviceMode.stickySlides === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
                   >
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => setBlockDevice("humanAtlas", "mobile")}
+                    onClick={() => setBlockDevice("stickySlides", "mobile")}
                     className={`p-2 rounded-md transition-colors cursor-pointer ${
-                      deviceMode.humanAtlas === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
+                      deviceMode.stickySlides === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
                   >
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => toggleExpand("humanAtlas")}
+                    onClick={() => toggleExpand("stickySlides")}
                     className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
-                    title={isExpanded.humanAtlas ? "Collapse" : "Expand"}
+                    title={isExpanded.stickySlides ? "Collapse" : "Expand"}
                   >
-                    {isExpanded.humanAtlas ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
+                    {isExpanded.stickySlides ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
-                    onClick={() => handleReload("humanAtlas")}
+                    onClick={() => handleReload("stickySlides")}
                     className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
                     title="Reload Preview"
                   >
@@ -662,11 +663,11 @@ export default function BlocksPage() {
                 </div>
                 <div className="flex items-center gap-2 pl-2">
                   <button
-                    onClick={() => copyToClipboard("npx @alvinahmad/ui add human-atlas-block", "atlas-cmd")}
+                    onClick={() => copyToClipboard("npx @alvinahmad/ui add sticky-slides-block", "slides-cmd")}
                     className="inline-flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground font-mono hover:bg-muted/80 transition-colors cursor-pointer"
                   >
-                    <span className="text-foreground">{">_"}</span> npx @alvinahmad/ui add human-atlas-block
-                    {copiedId === "atlas-cmd" ? (
+                    <span className="text-foreground">{">_"}</span> npx @alvinahmad/ui add sticky-slides-block
+                    {copiedId === "slides-cmd" ? (
                       <Check className="h-3.5 w-3.5 text-emerald-500" />
                     ) : (
                       <Copy className="h-3.5 w-3.5" />
@@ -677,14 +678,14 @@ export default function BlocksPage() {
             </div>
 
             {/* Block Content */}
-            {activeTab.humanAtlas === "preview" ? (
-              <div className={`rounded-2xl border bg-muted/10 p-4 md:p-8 flex items-center justify-center min-h-[560px] ${isExpanded.humanAtlas ? "min-h-[750px]" : ""}`}>
-                <div key={reloadKeys.humanAtlas || 0} className={getDeviceContainerClass("humanAtlas")}>
-                  <HumanAtlasBlock forceMode={deviceMode.humanAtlas} />
+            {activeTab.stickySlides === "preview" ? (
+              <div className={`rounded-2xl border bg-muted/10 p-4 md:p-8 flex items-center justify-center min-h-[560px] ${isExpanded.stickySlides ? "min-h-[750px]" : ""}`}>
+                <div key={reloadKeys.stickySlides || 0} className={getDeviceContainerClass("stickySlides")}>
+                  <StickySlidesBlock forceMode={deviceMode.stickySlides} />
                 </div>
               </div>
             ) : (
-              <BlockCodeViewer files={humanAtlasFiles} defaultTab="human-atlas-block.tsx" />
+              <BlockCodeViewer files={stickySlidesFiles} defaultTab="sticky-slides.tsx" />
             )}
           </div>
         )}

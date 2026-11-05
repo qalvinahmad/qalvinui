@@ -127,7 +127,7 @@ export default function DocsLayout({
   ];
 
   const uiItems = [
-    { title: "Human Atlas", href: "/docs/ui/human-atlas", isNew: true },
+    { title: "Sticky Slides", href: "/docs/ui/sticky-slides", isNew: true },
     { title: "Thinking Orb", href: "/docs/ui/thinking-orb", isNew: true },
     { title: "Metal FX", href: "/docs/ui/metal-fx", isNew: true },
     { title: "Image FX", href: "/docs/ui/img-fx", isNew: true },

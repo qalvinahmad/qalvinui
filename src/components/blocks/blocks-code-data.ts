@@ -1120,39 +1120,109 @@ export default function MetalButtonDemo() {
   },
 ];
 
-export const humanAtlasFiles: FileTab[] = [
+export const stickySlidesFiles: FileTab[] = [
   {
-    name: "human-atlas-block.tsx",
-    path: "src/components/blocks/human-atlas-block.tsx",
-    description: "Interactive 3D Human Anatomy Studio template and block.",
+    name: "sticky-slides.tsx",
+    path: "src/components/ui/sticky-slides.tsx",
+    description: "TypeScript React component with custom slides, indicator dots, and smooth scroll.",
     code: `"use client";
 
 import React, { useState } from "react";
-import { Layers, Activity, Eye, Compass, Info, ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export function HumanAtlasBlock() {
+export interface StickySlideItem {
+  id?: string | number;
+  title: React.ReactNode;
+  subtitle?: React.ReactNode;
+  bgGradient?: string;
+  textColor?: string;
+}
+
+export function StickySlides({ slides, slideHeightClass = "h-screen" }) {
   return (
-    <div className="rounded-3xl border bg-zinc-950 text-zinc-100 p-8 shadow-2xl">
-      <div className="flex items-center gap-2 mb-4">
-        <Activity className="w-5 h-5 text-emerald-400" />
-        <h3 className="text-xl font-bold">3D Human Anatomy Atlas</h3>
-      </div>
-      <p className="text-sm text-zinc-400">
-        WebGL 3D Studio featuring multi-layer anatomical dissection (skeletal, muscular, vascular, organs).
-      </p>
+    <div className="relative w-full">
+      {slides.map((slide, index) => (
+        <div
+          key={slide.id || index}
+          className={cn(
+            "sticky top-0 w-full flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden",
+            slideHeightClass,
+            slide.bgGradient ? \`bg-gradient-to-b \${slide.bgGradient}\` : "bg-background",
+            slide.textColor || "text-foreground"
+          )}
+        >
+          <div className="max-w-xl mx-auto space-y-3">
+            <h2 className="text-3xl sm:text-5xl font-extrabold">{slide.title}</h2>
+            {slide.subtitle && <p className="text-base sm:text-lg opacity-85">{slide.subtitle}</p>}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }`,
   },
   {
-    name: "Install & Setup",
-    path: "Terminal",
-    description: "Dependencies for 3D Three.js rendering.",
-    code: `npm install three @types/three lucide-react
+    name: "sticky-slides.jsx",
+    path: "src/components/ui/sticky-slides.jsx",
+    description: "Pure JavaScript JSX component.",
+    code: `"use client";
 
-# Template features:
-# - GLTF / GLB binary mesh parsing
-# - Raycasting organ coordinate selection
-# - Anatomical layer toggle & exploded view mode`,
+import React from "react";
+
+export function StickySlides({ slides, slideHeightClass = "h-screen" }) {
+  return (
+    <div className="relative w-full">
+      {slides.map((slide, index) => (
+        <div
+          key={slide.id || index}
+          className={\`sticky top-0 w-full flex flex-col items-center justify-center p-6 text-center \${slideHeightClass} bg-gradient-to-b \${slide.bgGradient} \${slide.textColor}\`}
+        >
+          <h2 className="text-4xl font-bold">{slide.title}</h2>
+          {slide.subtitle && <p className="mt-2">{slide.subtitle}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}`,
+  },
+  {
+    name: "sticky-slides.ts",
+    path: "src/components/ui/sticky-slides.ts",
+    description: "TypeScript config definition and HTML renderer.",
+    code: `export interface SlideData {
+  title: string;
+  subtitle?: string;
+  bgGradient: string;
+  textColor?: string;
+}
+
+export const STICKY_SLIDES_CONFIG: SlideData[] = [
+  { title: "The First slide", subtitle: "Scroll Down for next slide", bgGradient: "from-green-200 to-blue-200" },
+  { title: "The Second slide", subtitle: "Scroll Down for next slide", bgGradient: "from-indigo-800 to-purple-800", textColor: "text-white" },
+  { title: "The Third slide", subtitle: "Scroll Down", bgGradient: "from-purple-800 to-pink-800", textColor: "text-white" },
+  { title: "The Fourth slide", bgGradient: "from-blue-200 to-indigo-100", textColor: "text-slate-900" },
+];`,
+  },
+  {
+    name: "sticky-slides.js",
+    path: "src/components/ui/sticky-slides.js",
+    description: "Vanilla HTML + Tailwind CSS implementation.",
+    code: `<div class="relative">
+  <div class="sticky top-0 h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-200 to-blue-200">
+    <h2 class="text-4xl font-bold">The First slide</h2>
+    <p class="mt-2">Scroll Down for next slide</p>
+  </div>
+  <div class="sticky top-0 h-screen flex flex-col items-center justify-center bg-gradient-to-b from-indigo-800 to-purple-800 text-white">
+    <h2 class="text-4xl font-bold">The Second slide</h2>
+    <p class="mt-2">Scroll Down for next slide</p>
+  </div>
+  <div class="sticky top-0 h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-800 to-pink-800 text-white">
+    <h2 class="text-4xl font-bold">The Third slide</h2>
+    <p class="mt-2">Scroll Down</p>
+  </div>
+  <div class="sticky top-0 h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-200 to-indigo-100 text-black">
+    <h2 class="text-4xl font-bold">The Fourth slide</h2>
+  </div>
+</div>`,
   },
 ];

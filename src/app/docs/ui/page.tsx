@@ -5,12 +5,12 @@ import { ArrowRight, Sparkles, Bot, Layers, Waves, Flame, Box, Zap } from "lucid
 
 const uiComponents = [
   {
-    name: "Human Atlas",
-    slug: "human-atlas",
-    description: "3D interactive human anatomy & organ systems explorer with WebGL simulation and exploded views.",
-    tag: "3D & Biology",
+    name: "Sticky Slides",
+    slug: "sticky-slides",
+    description: "Full-viewport sticky stacked presentation slides using pure CSS and Tailwind with gradient transitions.",
+    tag: "Scroll Presentation",
     icon: Layers,
-    color: "text-amber-500",
+    color: "text-emerald-400",
   },
   {
     name: "Thinking Orb",

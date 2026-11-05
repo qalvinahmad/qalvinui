@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     return [
       { source: "/docs/components/thinking-orb", destination: "/docs/ui/thinking-orb", permanent: true },
       { source: "/docs/components/metal-fx", destination: "/docs/ui/metal-fx", permanent: true },
-      { source: "/docs/components/human-atlas", destination: "/docs/ui/human-atlas", permanent: true },
+      { source: "/docs/components/sticky-slides", destination: "/docs/ui/sticky-slides", permanent: true },
       { source: "/docs/components/img-fx", destination: "/docs/ui/img-fx", permanent: true },
       { source: "/docs/components/border-beam", destination: "/docs/ui/border-beam", permanent: true },
       { source: "/docs/components/voice-glow", destination: "/docs/ui/voice-glow", permanent: true },

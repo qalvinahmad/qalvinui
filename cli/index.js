@@ -82,10 +82,10 @@ const COMPONENTS = {
   "voice-glow": { file: "voice-glow.tsx", folder: "ui", deps: [] },
   "img-fx": { file: "img-fx.tsx", folder: "ui", deps: ["three"] },
   "liquid-gooey": { file: "liquid-gooey.tsx", folder: "ui", deps: [] },
-  "human-atlas": { file: "human-atlas.tsx", folder: "ui", deps: ["lucide-react"] },
+  "sticky-slides": { file: "sticky-slides.tsx", folder: "ui", deps: ["lucide-react"] },
   "thinking-orb-block": { file: "thinking-orb-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["thinking-orb"] },
   "metal-fx-block": { file: "metal-fx-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["metal-fx"] },
-  "human-atlas-block": { file: "human-atlas-block.tsx", folder: "blocks", deps: ["lucide-react", "three"] },
+  "sticky-slides-block": { file: "sticky-slides-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["sticky-slides"] },
   "dashboard-01": { file: "dashboard-01.tsx", folder: "blocks", deps: ["lucide-react"] },
   "sidebar-07": { file: "sidebar-07.tsx", folder: "blocks", deps: ["lucide-react"] },
   "login-01": { file: "login-01.tsx", folder: "blocks", deps: ["lucide-react"] },
@@ -119,7 +119,7 @@ const SKILLS = {
   "creative-canvas": {
     name: "Creative AI & 3D Shaders",
     description: "Generative 3D thinking orb, specular metal reflection shaders, glowing border beams, and voice reactivity",
-    components: ["thinking-orb", "thinking-orb-block", "metal-fx", "metal-fx-block", "border-beam", "voice-glow", "human-atlas-block"]
+    components: ["thinking-orb", "thinking-orb-block", "metal-fx", "metal-fx-block", "border-beam", "voice-glow", "sticky-slides-block", "sticky-slides"]
   },
   "data-table": {
     name: "Data Tables",
