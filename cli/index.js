@@ -97,8 +97,8 @@ const COMPONENTS = {
   "img-fx": { file: "img-fx.tsx", folder: "ui", deps: ["three"] },
   "liquid-gooey": { file: "liquid-gooey.tsx", folder: "ui", deps: [] },
   "sticky-slides": { file: "sticky-slides.tsx", folder: "ui", deps: ["lucide-react"] },
-  "human-atlas": { file: "human-atlas.tsx", folder: "ui", deps: ["lucide-react"] },
-  "human-atlas-block": { file: "human-atlas-block.tsx", folder: "blocks", deps: ["lucide-react"] },
+  "use-media-query": { file: "use-media-query.ts", folder: "hooks", deps: [] },
+  "use-copy-to-clipboard": { file: "use-copy-to-clipboard.ts", folder: "hooks", deps: [] },
   "thinking-orb-block": { file: "thinking-orb-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["thinking-orb"] },
   "metal-fx-block": { file: "metal-fx-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["metal-fx"] },
   "sticky-slides-block": { file: "sticky-slides-block.tsx", folder: "blocks", deps: ["lucide-react"], uiDeps: ["sticky-slides"] },
@@ -142,7 +142,7 @@ const SKILLS = {
   "creative-canvas": {
     name: "Creative AI & 3D Shaders",
     description: "Generative 3D thinking orb, specular metal reflection shaders, glowing border beams, and voice reactivity",
-    components: ["thinking-orb", "thinking-orb-block", "metal-fx", "metal-fx-block", "border-beam", "voice-glow", "sticky-slides-block", "sticky-slides", "human-atlas", "human-atlas-block", "img-fx", "liquid-gooey"]
+    components: ["thinking-orb", "thinking-orb-block", "metal-fx", "metal-fx-block", "border-beam", "voice-glow", "sticky-slides-block", "sticky-slides", "img-fx", "liquid-gooey"]
   },
   "data-table": {
     name: "Data Tables",
@@ -158,6 +158,7 @@ const SUPPORTED_STYLES = ["nova", "default", "new-york"];
 async function resolveComponentSource(comp, name, quiet) {
   const folder = comp.folder || "ui";
   const localCandidates = [
+    folder === "hooks" ? path.join(__dirname, "..", "src", "hooks", comp.file) : path.join(__dirname, "..", "src", "components", folder, comp.file),
     path.join(__dirname, "..", "src", "components", folder, comp.file),
     path.join(__dirname, "..", "src", "components", folder === "ui" ? "blocks" : "ui", comp.file),
   ];
@@ -167,7 +168,9 @@ async function resolveComponentSource(comp, name, quiet) {
     return fs.readFileSync(localFound, "utf-8");
   }
 
-  const primaryUrl = `${GITHUB_RAW}/${GITHUB_REPO}/main/src/components/${folder}/${comp.file}`;
+  const primaryUrl = folder === "hooks"
+    ? `${GITHUB_RAW}/${GITHUB_REPO}/main/src/hooks/${comp.file}`
+    : `${GITHUB_RAW}/${GITHUB_REPO}/main/src/components/${folder}/${comp.file}`;
   if (!quiet) console.log(`Downloading ${name}...`);
   try {
     return await fetch(primaryUrl);
@@ -185,6 +188,13 @@ async function resolveComponentSource(comp, name, quiet) {
 }
 
 function findInstalledFile(comp) {
+  if (comp.folder === "hooks") {
+    const hookCandidates = [
+      path.join(process.cwd(), "hooks", comp.file),
+      path.join(process.cwd(), "src", "hooks", comp.file),
+    ];
+    return hookCandidates.find((p) => fs.existsSync(p));
+  }
   const candidates = [
     path.join(process.cwd(), "components", comp.folder || "ui", comp.file),
     path.join(process.cwd(), "src", "components", comp.folder || "ui", comp.file),
@@ -246,6 +256,12 @@ function getOutputDir(folder = "ui") {
   if (idx !== -1 && args[idx + 1]) return args[idx + 1];
   const shortIdx = args.indexOf("-d");
   if (shortIdx !== -1 && args[shortIdx + 1]) return args[shortIdx + 1];
+  if (folder === "hooks") {
+    if (fs.existsSync(path.join(process.cwd(), "src"))) {
+      return path.join(process.cwd(), "src", "hooks");
+    }
+    return path.join(process.cwd(), "hooks");
+  }
   return path.join(process.cwd(), "components", folder);
 }
 

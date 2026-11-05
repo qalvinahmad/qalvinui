@@ -82,6 +82,7 @@ function getComponentSource(name) {
 
   const folder = comp.folder || "ui";
   const candidates = [
+    folder === "hooks" ? path.join(__dirname, "..", "src", "hooks", comp.file) : path.join(__dirname, "..", "src", "components", folder, comp.file),
     path.join(__dirname, "..", "src", "components", folder, comp.file),
     path.join(__dirname, "..", "src", "components", folder === "ui" ? "blocks" : "ui", comp.file)
   ];

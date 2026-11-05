@@ -49,6 +49,14 @@ export default function DocsLayout({
         "href": "/docs/skills"
     },
     {
+        "title": "Hooks",
+        "href": "/docs/hooks"
+    },
+    {
+        "title": "Resources",
+        "href": "/docs/resources/llms-txt"
+    },
+    {
         "title": "Registry",
         "href": "/docs/registry"
     },
@@ -149,6 +157,15 @@ export default function DocsLayout({
     { title: "Liquid Gooey", href: "/docs/ui/liquid-gooey", isNew: true },
   ];
 
+  const hooksItems = [
+    { title: "useMediaQuery", href: "/docs/hooks/use-media-query", isNew: true },
+    { title: "useCopyToClipboard", href: "/docs/hooks/use-copy-to-clipboard", isNew: true },
+  ];
+
+  const resourcesItems = [
+    { title: "llms.txt", href: "/docs/resources/llms-txt", isNew: true },
+  ];
+
   const registryItems = [
     {
         "title": "Registry",
@@ -243,6 +260,32 @@ export default function DocsLayout({
                 </div>
                 <div className="grid grid-flow-row auto-rows-max text-sm">
                   {uiItems.map((item) => (
+                    <NavLink key={item.href} href={item.href} isNew={item.isNew}>{item.title}</NavLink>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hooks */}
+              <div className="py-2">
+                <div className="flex items-center justify-between mb-1 px-2 py-1">
+                  <h4 className="text-sm font-semibold">Hooks</h4>
+                  <span className="rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-[10px] font-semibold text-[#000000]">New</span>
+                </div>
+                <div className="grid grid-flow-row auto-rows-max text-sm">
+                  {hooksItems.map((item) => (
+                    <NavLink key={item.href} href={item.href} isNew={item.isNew}>{item.title}</NavLink>
+                  ))}
+                </div>
+              </div>
+
+              {/* Resources */}
+              <div className="py-2">
+                <div className="flex items-center justify-between mb-1 px-2 py-1">
+                  <h4 className="text-sm font-semibold">Resources</h4>
+                  <span className="rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-[10px] font-semibold text-[#000000]">New</span>
+                </div>
+                <div className="grid grid-flow-row auto-rows-max text-sm">
+                  {resourcesItems.map((item) => (
                     <NavLink key={item.href} href={item.href} isNew={item.isNew}>{item.title}</NavLink>
                   ))}
                 </div>
