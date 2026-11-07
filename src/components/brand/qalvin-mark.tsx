@@ -4,10 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 /**
- * QalvinMark — Figma/Aceternity UI selection frame:
- * 4 blue corner handles with extended crosshair guidelines.
- * Rest: 2D flat squircle card with /icon.png.
- * Hover: transforms into 3D isometric stack with base card and elevated top card.
+ * QalvinMark — Figma-style 2D selection frame with 3D isometric stacked card.
+ * Matches Image 1:
+ * - 4 blue corner handles with extended crosshairs.
+ * - Base wireframe outline card on the floor.
+ * - Top card elevated in 3D along Z-axis with shadow and /icon.png.
+ * - Brand label with bold black "qalvin" and bold gray "ui".
  */
 export function QalvinMark() {
   return (
@@ -39,26 +41,27 @@ export function QalvinMark() {
           className="qalvin-mark-scene absolute inset-[4px] block size-[28px]"
           style={{ perspective: 400 }}
         >
-          {/* Base Card (underneath, emerges on hover) */}
-          <span className="qalvin-mark-base absolute inset-0 block rounded-[7px] border border-zinc-200/90 bg-white/95 shadow-xs dark:border-zinc-700/80 dark:bg-zinc-800" />
+          {/* Base Card (Wireframe outline at the floor, transparent interior) */}
+          <span className="qalvin-mark-base absolute inset-0 block rounded-[6px] border border-zinc-300/90 bg-transparent dark:border-zinc-600" />
 
           {/* Top Card (floats up on hover along Z-axis, housing /icon.png) */}
-          <span className="qalvin-mark-top absolute inset-0 block overflow-hidden rounded-[7px] border border-zinc-200/90 bg-[#f3f3f3] shadow-xs dark:border-zinc-700/90 dark:bg-zinc-900">
+          <span className="qalvin-mark-top absolute inset-0 block overflow-hidden rounded-[6px] border border-zinc-200/90 bg-white shadow-xs dark:border-zinc-700/90 dark:bg-zinc-900">
             <Image
               src="/icon.png"
               alt=""
               width={28}
               height={28}
               priority
-              className="size-full object-cover rounded-[6px] dark:invert"
+              className="size-full object-cover rounded-[5px] dark:invert"
             />
           </span>
         </span>
       </span>
 
-      {/* Brand Label */}
-      <span className="hidden text-base font-bold tracking-tight text-foreground sm:inline">
-        qalvin<span className="font-semibold text-muted-foreground"> ui</span>
+      {/* Brand Label (Matches Image 1: bold black "qalvin" + bold gray "ui") */}
+      <span className="hidden text-[17px] font-bold tracking-tight leading-none text-foreground sm:inline-flex items-baseline">
+        <span>qalvin</span>
+        <span className="ml-1 text-zinc-500 dark:text-zinc-400">ui</span>
       </span>
     </Link>
   );

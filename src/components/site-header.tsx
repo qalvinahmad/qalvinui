@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { Search, Moon, Sun, FileText, Component, Palette, Terminal, BookOpen, Coffee } from "lucide-react";
+import { Search, Moon, Sun, FileText, Component, Palette, Terminal, BookOpen, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QalvinMark } from "@/components/brand/qalvin-mark";
 import { cn } from "@/lib/utils";
@@ -287,43 +287,39 @@ export function SiteHeader() {
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-            {/* Single pill: search, theme toggle, donate */}
-            <div className="flex w-full flex-1 items-center gap-px rounded-full border border-border/60 bg-muted/40 p-1 sm:w-auto sm:flex-none">
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                aria-label="Search documentation and components (Press Cmd+K)"
-                className="relative inline-flex h-8 flex-1 cursor-pointer items-center justify-start whitespace-nowrap gap-2 rounded-full bg-transparent px-1.5 text-sm font-normal text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64"
+            {/* Action group matching Image 3: [Cart] [Theme] [Search ⌘K] */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Link
+                href="/blocks#checkout"
+                aria-label="Shopping Cart and interactive checkout"
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-background/95 text-foreground shadow-2xs transition-colors hover:bg-muted/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <Search className="ml-2 size-4 shrink-0 opacity-50" />
-                <span className="hidden lg:inline-flex">Search documentation...</span>
-                <span className="inline-flex lg:hidden">Search...</span>
-                <kbd className="pointer-events-none absolute right-[0.35rem] top-[0.25rem] hidden h-5 select-none items-center gap-1 rounded-full border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </button>
-              <span aria-hidden="true" className="mx-1 hidden h-5 w-px shrink-0 bg-border sm:block" />
+                <ShoppingCart className="size-[17px] stroke-[1.8] text-foreground/80" />
+              </Link>
               <Button
                 variant="ghost"
                 size="icon"
                 aria-label="Switch between light and dark theme"
-                className="size-8 shrink-0 rounded-full px-0"
+                className="size-9 shrink-0 rounded-xl border border-border/70 bg-background/95 text-foreground shadow-2xs transition-colors hover:bg-muted/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               >
-                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                <Sun className="size-[18px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-foreground/80" />
+                <Moon className="absolute size-[18px] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-foreground/80" />
                 <span className="sr-only">Toggle theme</span>
               </Button>
-              <span aria-hidden="true" className="mx-1 hidden h-5 w-px shrink-0 bg-border sm:block" />
-              <a
-                href="https://buymeacoffee.com/alvinahmad"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Donate via Buy Me a Coffee (opens in new tab)"
-                className="group inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full pl-1.5 pr-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Search documentation and components (Press Cmd+K)"
+                className="group relative inline-flex h-9 w-36 items-center justify-between rounded-xl border border-border/70 bg-background/95 px-3 text-sm text-muted-foreground shadow-2xs transition-colors hover:bg-muted/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:w-48 md:w-56"
               >
-                <Coffee className="size-4 transition-transform duration-150 ease-out group-hover:scale-110 group-active:scale-95" />
-                <span className="hidden sm:inline">Donate</span>
-              </a>
+                <span className="flex items-center gap-2">
+                  <Search className="size-4 shrink-0 opacity-60 transition-opacity group-hover:opacity-90" />
+                  <span className="font-normal text-muted-foreground">Search</span>
+                </span>
+                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded-md border border-border/60 bg-muted/60 px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                  <span className="text-xs">⌘</span>K
+                </kbd>
+              </button>
             </div>
             <nav className="flex items-center gap-2">
               <Link
@@ -331,15 +327,15 @@ export function SiteHeader() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="View Qalvin UI repository on GitHub (opens in new tab)"
-                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
               >
-                <div className="inline-flex items-center gap-2 text-sm font-medium border border-border/40 rounded-md px-3 py-1.5 bg-muted/50 hover:bg-muted/80 transition-colors">
+                <div className="inline-flex h-9 items-center gap-2 text-sm font-medium border border-border/70 rounded-xl px-3 bg-background/95 hover:bg-muted/80 transition-colors shadow-2xs">
                   <Github className="h-4 w-4" />
                   <span className="tabular-nums">{stars}</span>
                 </div>
               </Link>
-              <Link href="/create" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
-                <Button size="sm" aria-label="Create new component" className="h-8 ml-2 rounded-md font-medium">
+              <Link href="/create" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+                <Button size="sm" aria-label="Create new component" className="h-9 px-3.5 rounded-xl font-medium shadow-2xs">
                   + New
                 </Button>
               </Link>
