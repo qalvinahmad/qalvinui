@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
-import { Sparkles, Search, Layers, Grid } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { ComponentCard } from "@/components/ui/component-card";
 
 const allUiComponents = [
@@ -596,46 +595,47 @@ export default function UiOverviewPage() {
   }, [selectedCategory, searchQuery]);
 
   return (
-    <div className="space-y-10 pb-16">
-      {/* Hero Header */}
-      <div className="space-y-4">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+    <div className="pb-16">
+      {/* Page Header */}
+      <div className="space-y-3 pb-10 md:pb-12">
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
           <Sparkles className="h-3.5 w-3.5" />
           <span>80+ Specialized UI & Creative Effects</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">Specialized UI</h1>
-        <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
-          Production-grade creative effects, WebGL shaders, animated widgets, AI prompt tools, and gesture-driven micro-interactions. Built with React 19, Tailwind CSS v4, and Base UI primitives.
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Specialized UI</h1>
+        <p className="max-w-3xl text-base text-muted-foreground leading-relaxed sm:text-lg">
+          Production-grade creative effects, WebGL shaders, animated widgets, AI prompt
+          tools, and gesture-driven micro-interactions.
         </p>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="space-y-4">
-        <div className="relative max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      {/* Filters */}
+      <div className="pb-10 md:pb-12">
+        <div className="relative max-w-md pb-4">
+          <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search 80+ UI components..."
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border bg-muted/30 focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+            placeholder="Search components..."
+            className="w-full rounded-full border border-zinc-200 bg-zinc-50 py-2.5 pl-11 pr-4 text-sm transition-all placeholder:text-muted-foreground focus:border-zinc-300 focus:bg-background focus:outline-none focus:ring-2 focus:ring-ring/30 dark:border-zinc-800 dark:bg-zinc-900/50 dark:focus:border-zinc-700"
           />
         </div>
 
-        <div className="flex flex-wrap gap-2 pt-1">
+        <div className="flex flex-wrap gap-2">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+              className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
                 selectedCategory === cat
-                  ? "bg-foreground text-background shadow-xs font-semibold"
-                  : "bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground border border-transparent"
+                  ? "bg-foreground font-semibold text-background"
+                  : "border border-zinc-200/80 text-muted-foreground hover:border-zinc-300 hover:text-foreground dark:border-zinc-800 dark:hover:border-zinc-700"
               }`}
             >
               {cat}
               {cat === "All" && (
-                <span className="ml-1.5 opacity-60 text-[11px] font-mono">
+                <span className="ml-1.5 font-mono text-[11px] opacity-60">
                   {allUiComponents.length}
                 </span>
               )}
@@ -644,30 +644,24 @@ export default function UiOverviewPage() {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>Showing {filtered.length} components</span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((item) => (
-            <ComponentCard
-              key={item.slug}
-              name={item.name}
-              description={item.description}
-              tag={item.tag}
-              href={`/docs/ui/${item.slug}`}
-            />
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <div className="text-center py-16 border rounded-2xl bg-muted/20">
-            <p className="text-sm text-muted-foreground">No components matched your search query.</p>
-          </div>
-        )}
+      {/* Gallery Grid */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+        {filtered.map((item) => (
+          <ComponentCard
+            key={item.slug}
+            name={item.name}
+            description={item.description}
+            tag={item.tag}
+            href={`/docs/ui/${item.slug}`}
+          />
+        ))}
       </div>
+
+      {filtered.length === 0 && (
+        <div className="rounded-2xl bg-muted/20 py-16 text-center">
+          <p className="text-sm text-muted-foreground">No components matched your search query.</p>
+        </div>
+      )}
     </div>
   );
 }

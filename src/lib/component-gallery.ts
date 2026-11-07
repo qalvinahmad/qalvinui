@@ -1,16 +1,21 @@
-import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { ComponentCard } from "@/components/ui/component-card";
+export type GalleryComponent = {
+  name: string;
+  description: string;
+};
 
-const components = [
-  { name: "Accordion", description: "A collapsible content area." },
-  { name: "Alert", description: "Displays a callout for important information." },
-  { name: "Alert Dialog", description: "A modal dialog that interrupts the user with important content." },
+/**
+ * Canonical list of base components used by the landing page
+ * and the /docs/components gallery page (coss.com/ui style).
+ */
+export const GALLERY_COMPONENTS: GalleryComponent[] = [
+  { name: "Accordion", description: "A set of collapsible panels with headings and content." },
+  { name: "Alert", description: "A callout for displaying important information." },
+  { name: "Alert Dialog", description: "A dialog that requires user response to proceed." },
   { name: "Autocomplete", description: "An input that suggests options as you type." },
   { name: "Avatar", description: "An image element with a fallback for representing the user." },
-  { name: "Badge", description: "Displays a badge or a component that looks like a badge." },
+  { name: "Badge", description: "A badge or a component that looks like a badge." },
   { name: "Breadcrumb", description: "Displays the path to the current resource using a hierarchy of links." },
-  { name: "Button", description: "Displays a button or a component that looks like a button." },
+  { name: "Button", description: "A button or a component that looks like a button." },
   { name: "Calendar", description: "A date field component that allows users to enter and edit date." },
   { name: "Card", description: "Displays a card with header, content, and footer." },
   { name: "Checkbox", description: "A control that allows the user to toggle between checked and not checked." },
@@ -50,49 +55,6 @@ const components = [
   { name: "Tooltip", description: "A popup that displays information related to an element on hover." },
 ];
 
-export default function Page() {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">Components</h1>
-        <p className="text-base sm:text-lg text-muted-foreground max-w-3xl">
-          Browse the collection of built-in components. Each component is accessible, customizable, and follows WAI-ARIA patterns.
-        </p>
-      </div>
-
-      <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-            <Sparkles className="h-4 w-4" />
-            <span>Looking for AI, 3D WebGL & Motion Effects?</span>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Explore our specialized <strong>UI</strong> collection featuring Sticky Slides, Thinking Orb, Metal FX, Image FX, and Liquid Gooey.
-          </p>
-        </div>
-        <Link
-          href="/docs/ui"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity whitespace-nowrap self-start sm:self-center"
-        >
-          <span>Explore UI Collection</span>
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-
-      {/* Grid of reusable Coss-styled component cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-        {components.map((component) => {
-          const slug = component.name.toLowerCase().replace(/\s+/g, "-");
-          return (
-            <ComponentCard
-              key={component.name}
-              name={component.name}
-              description={component.description}
-              href={`/docs/components/${slug}`}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
+export function slugifyComponentName(name: string) {
+  return name.toLowerCase().replace(/\s+/g, "-");
 }
