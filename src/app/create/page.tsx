@@ -249,28 +249,32 @@ export const themePreset = {
 
           <div className="p-4 flex flex-col gap-2.5 bg-[#1e1e1e] border-t border-white/10">
             <button
+              type="button"
               onClick={handleCopyPreset}
-              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-[color,background-color,transform] duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
             >
               {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
               {copied ? "Copied!" : "--preset b0"}
             </button>
             <button
+              type="button"
               onClick={() => toast.info(`Current Preset: ${activeStyle} - ${activeTheme}`)}
-              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-[color,background-color,transform] duration-150 flex items-center justify-center gap-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
             >
               Open Preset
             </button>
             <button
+              type="button"
               onClick={handleShuffle}
-              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-[color,background-color,transform] duration-150 flex items-center justify-center gap-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
             >
               <Shuffle className="h-3.5 w-3.5" /> Shuffle
             </button>
             <button
+              type="button"
               onClick={handleCopyPreset}
               style={{ backgroundColor: currentTheme.primary }}
-              className="w-full py-2.5 rounded-xl text-white font-bold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg mt-1"
+              className="w-full py-2.5 rounded-xl text-white font-bold text-xs hover:opacity-90 transition-[opacity,transform] duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-lg mt-1 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
             >
               <Sparkles className="h-3.5 w-3.5" /> Get Theme Code
             </button>

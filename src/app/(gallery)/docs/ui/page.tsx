@@ -612,30 +612,32 @@ export default function UiOverviewPage() {
       {/* Filters */}
       <div className="pb-10 md:pb-12">
         <div className="relative max-w-md pb-4">
-          <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground opacity-60" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search components..."
-            className="w-full rounded-full border border-zinc-200 bg-zinc-50 py-2.5 pl-11 pr-4 text-sm transition-all placeholder:text-muted-foreground focus:border-zinc-300 focus:bg-background focus:outline-none focus:ring-2 focus:ring-ring/30 dark:border-zinc-800 dark:bg-zinc-900/50 dark:focus:border-zinc-700"
+            placeholder="Search specialized components..."
+            aria-label="Search specialized UI components"
+            className="w-full rounded-full border border-border/80 bg-muted/40 py-2.5 pl-11 pr-4 text-base md:text-sm transition-[border-color,background-color,box-shadow] duration-150 placeholder:text-muted-foreground focus:border-border focus:bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
           />
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Component category filters">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+              aria-pressed={selectedCategory === cat}
+              className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-[color,background-color,border-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                 selectedCategory === cat
-                  ? "bg-foreground font-semibold text-background"
-                  : "border border-zinc-200/80 text-muted-foreground hover:border-zinc-300 hover:text-foreground dark:border-zinc-800 dark:hover:border-zinc-700"
+                  ? "bg-foreground font-semibold text-background shadow-xs"
+                  : "border border-border/80 text-muted-foreground hover:border-border hover:text-foreground"
               }`}
             >
               {cat}
               {cat === "All" && (
-                <span className="ml-1.5 font-mono text-[11px] opacity-60">
+                <span className="ml-1.5 font-mono text-[11px] tabular-nums opacity-75">
                   {allUiComponents.length}
                 </span>
               )}
@@ -658,8 +660,22 @@ export default function UiOverviewPage() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="rounded-2xl bg-muted/20 py-16 text-center">
-          <p className="text-sm text-muted-foreground">No components matched your search query.</p>
+        <div className="rounded-2xl border border-dashed border-border/80 bg-muted/20 py-16 text-center space-y-3">
+          <p className="text-sm font-medium text-foreground">
+            No components matched &ldquo;{searchQuery}&rdquo;
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Try searching for another keyword or reset the filters.
+          </p>
+          <button
+            onClick={() => {
+              setSearchQuery("");
+              setSelectedCategory("All");
+            }}
+            className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Clear filters
+          </button>
         </div>
       )}
     </div>

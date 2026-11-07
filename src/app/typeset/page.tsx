@@ -254,14 +254,16 @@ export const typography = {
 
           <div className="p-4 flex flex-col gap-2.5 bg-[#1e1e1e] border-t border-white/10">
             <button
+              type="button"
               onClick={handleShuffle}
-              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-xs font-semibold text-white transition-[color,background-color,transform] duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
             >
               <Shuffle className="h-4 w-4" /> Shuffle Typography
             </button>
             <button
+              type="button"
               onClick={handleGetCode}
-              className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground hover:opacity-90 text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground hover:opacity-90 text-xs font-semibold transition-[opacity,transform] duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-md outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
             >
               {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               {copied ? "Tokens Copied!" : "Get CSS Tokens"}
@@ -341,12 +343,15 @@ export const typography = {
 
           {/* Floating Bottom Nav */}
           <div className="mt-16 flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border/60">
-            <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl border border-border/80">
+            <div role="group" aria-label="Reading page selection" className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl border border-border/80">
               {[1, 2, 3, 4, 5].map((page) => (
                 <button
                   key={page}
+                  type="button"
+                  aria-label={`Go to page ${page}`}
+                  aria-pressed={activePage === page}
                   onClick={() => setActivePage(page)}
-                  className={`h-7 px-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`h-7 px-2.5 rounded-lg text-xs font-mono tabular-nums font-bold transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                     activePage === page
                       ? "bg-primary text-primary-foreground shadow-xs"
                       : "text-muted-foreground hover:text-foreground"

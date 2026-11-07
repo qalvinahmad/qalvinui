@@ -250,32 +250,35 @@ export default function IconsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search icons (e.g. settings, arrow, user, code)..."
-            className="w-full h-10 pl-9 pr-4 text-sm rounded-xl border bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+            aria-label="Search icons"
+            className="w-full h-10 pl-9 pr-4 text-base md:text-sm rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
 
         {/* Sliders: Size & Stroke */}
         <div className="flex flex-wrap items-center gap-6 text-xs font-medium text-muted-foreground">
           <div className="flex items-center gap-2">
-            <span>Size: {size}px</span>
+            <span className="tabular-nums">Size: {size}px</span>
             <input
               type="range"
               min="16"
               max="40"
               value={size}
+              aria-label="Icon size in pixels"
               onChange={(e) => setSize(Number(e.target.value))}
               className="w-24 accent-primary cursor-pointer"
             />
           </div>
 
           <div className="flex items-center gap-2">
-            <span>Stroke: {strokeWidth}px</span>
+            <span className="tabular-nums">Stroke: {strokeWidth}px</span>
             <input
               type="range"
               min="1"
               max="3"
               step="0.5"
               value={strokeWidth}
+              aria-label="Icon stroke width in pixels"
               onChange={(e) => setStrokeWidth(Number(e.target.value))}
               className="w-20 accent-primary cursor-pointer"
             />
@@ -284,13 +287,15 @@ export default function IconsPage() {
       </div>
 
       {/* Categories Filter Pills */}
-      <div className="flex flex-wrap gap-2">
+      <div role="group" aria-label="Icon category filters" className="flex flex-wrap gap-2">
         {categories.map((cat) => (
           <button
             key={cat}
+            type="button"
+            aria-pressed={category === cat}
             onClick={() => setCategory(cat)}
             className={cn(
-              "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer",
+              "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100",
               category === cat
                 ? "bg-foreground text-background shadow-2xs"
                 : "border bg-card hover:bg-muted text-muted-foreground hover:text-foreground"
@@ -310,9 +315,11 @@ export default function IconsPage() {
           return (
             <button
               key={icon.name}
+              type="button"
+              aria-label={`Copy ${icon.name} icon code`}
               onClick={() => copyIconCode(icon)}
               className={cn(
-                "group relative border rounded-2xl p-4 bg-card hover:bg-muted/50 transition-all duration-200 flex flex-col items-center justify-center gap-3 cursor-pointer shadow-2xs hover:shadow-xs hover:border-foreground/40",
+                "group relative border border-border rounded-2xl p-4 bg-card hover:bg-muted/50 transition-[border-color,background-color,transform,box-shadow] duration-150 flex flex-col items-center justify-center gap-3 cursor-pointer shadow-2xs hover:shadow-xs hover:border-foreground/40 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:active:scale-100",
                 isCopied && "border-primary ring-2 ring-primary/20 bg-primary/5"
               )}
             >

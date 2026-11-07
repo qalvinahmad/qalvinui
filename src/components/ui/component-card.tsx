@@ -22,18 +22,20 @@ export function ComponentCard({
   return (
     <Link
       href={href}
+      aria-label={`${name} component`}
       className={cn(
-        "group relative flex flex-col rounded-2xl border border-zinc-200/80 bg-card p-1.5",
-        "transition-all duration-200",
-        "hover:border-zinc-300 dark:border-zinc-800/90 dark:hover:border-zinc-700",
-        "hover:shadow-[0_6px_20px_-8px_rgba(0,0,0,0.12)]",
+        "group relative flex flex-col rounded-[20px] border border-border/80 bg-card p-2",
+        "transition-[border-color,box-shadow,transform] duration-150 ease-out",
+        "hover:border-border hover:shadow-[0_6px_20px_-8px_rgba(0,0,0,0.12)]",
+        "active:scale-[0.98] motion-reduce:active:scale-100",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className
       )}
     >
       {/* Header */}
-      <div className="flex flex-col gap-1.5 px-3.5 pb-4 pt-3">
+      <div className="flex flex-col gap-1.5 px-3 pb-3.5 pt-2.5">
         <div className="flex items-baseline justify-between gap-2">
-          <h3 className="text-lg font-semibold tracking-tight text-foreground">
+          <h3 className="text-base font-semibold tracking-tight text-foreground sm:text-lg">
             {name}
           </h3>
           {tag && (
@@ -42,13 +44,13 @@ export function ComponentCard({
             </span>
           )}
         </div>
-        <p className="line-clamp-2 min-h-[45px] text-sm leading-normal text-zinc-600 dark:text-zinc-400 sm:text-[15px]">
+        <p className="line-clamp-2 min-h-[40px] text-xs leading-relaxed text-muted-foreground sm:text-sm text-pretty">
           {description}
         </p>
       </div>
 
       {/* Preview Canvas */}
-      <div className="relative flex flex-1 items-center justify-center overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50 p-5 transition-colors group-hover:bg-zinc-100/60 dark:border-zinc-800/60 dark:bg-zinc-900/40 dark:group-hover:bg-zinc-900/60 sm:min-h-[220px] xl:min-h-[240px] min-h-[200px]">
+      <div className="relative flex flex-1 items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-muted/30 p-5 transition-colors group-hover:bg-muted/50 sm:min-h-[220px] xl:min-h-[240px] min-h-[200px]">
         {preview ? preview : <ComponentMiniPreview name={name} />}
       </div>
     </Link>

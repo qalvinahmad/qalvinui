@@ -22,19 +22,19 @@ export default function Home() {
         <div className="flex flex-wrap items-center gap-2 pt-4 text-sm font-medium">
           <Link
             href="/docs/installation"
-            className="rounded-full border border-zinc-200/80 px-3.5 py-1.5 text-muted-foreground transition-colors hover:border-zinc-300 hover:text-foreground dark:border-zinc-800 dark:hover:border-zinc-700"
+            className="rounded-full border border-border/80 px-3.5 py-1.5 text-muted-foreground transition-[color,border-color,background-color,transform] duration-150 hover:border-border hover:text-foreground active:scale-[0.96] motion-reduce:active:scale-100 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Docs
           </Link>
           <Link
             href="/docs/components"
-            className="rounded-full border border-zinc-200/80 px-3.5 py-1.5 text-muted-foreground transition-colors hover:border-zinc-300 hover:text-foreground dark:border-zinc-800 dark:hover:border-zinc-700"
+            className="rounded-full border border-border/80 px-3.5 py-1.5 text-muted-foreground transition-[color,border-color,background-color,transform] duration-150 hover:border-border hover:text-foreground active:scale-[0.96] motion-reduce:active:scale-100 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Components
           </Link>
           <Link
             href="/docs/ui"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1.5 text-primary transition-opacity hover:opacity-80"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1.5 text-primary transition-[opacity,transform] duration-150 hover:opacity-80 active:scale-[0.96] motion-reduce:active:scale-100 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <Sparkles className="size-3.5" />
             Specialized UI
@@ -58,11 +58,11 @@ export default function Home() {
       <div className="mt-10 md:mt-12">
         <Link
           href="/docs/ui"
-          className="group inline-flex items-center gap-2 rounded-full border border-zinc-200/80 py-2 pl-4 pr-3 text-sm font-medium text-muted-foreground transition-colors hover:border-zinc-300 hover:text-foreground dark:border-zinc-800 dark:hover:border-zinc-700"
+          className="group inline-flex items-center gap-2 rounded-full border border-border/80 py-2 pl-4 pr-3 text-sm font-medium text-muted-foreground transition-[color,border-color,transform] duration-150 hover:border-border hover:text-foreground active:scale-[0.98] motion-reduce:active:scale-100 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Sparkles className="size-4 text-primary" />
-          Explore the specialized UI collection — 80+ creative effects
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          <span>Explore the specialized UI collection — 80+ creative effects</span>
+          <ArrowRight className="size-4 transition-transform duration-150 ease-out motion-safe:group-hover:translate-x-0.5" />
         </Link>
       </div>
     </div>

@@ -4,9 +4,16 @@ import { PreviewKit } from "@/components/docs/preview-toolbar";
 
 function NavLink({ href, children, isNew = false }: { href: string; children: React.ReactNode, isNew?: boolean }) {
   return (
-    <Link href={href} className="flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground">
-      {children}
-      {isNew && <span className="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">New</span>}
+    <Link
+      href={href}
+      className="flex w-full items-center justify-between rounded-md border border-transparent px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-[color,background-color] duration-150 hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.98] motion-reduce:active:scale-100"
+    >
+      <span className="truncate">{children}</span>
+      {isNew && (
+        <span className="ml-2 shrink-0 rounded bg-[#adfa1d] px-1.5 py-0.5 text-[10px] font-bold leading-none text-black">
+          New
+        </span>
+      )}
     </Link>
   );
 }

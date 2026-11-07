@@ -144,14 +144,16 @@ export default function BlocksPage() {
 
       {/* Categories Bar */}
       <div id="blocks-grid" className="flex items-center justify-between mb-8 overflow-x-auto pb-2 scroll-mt-20">
-        <div className="flex items-center space-x-6 text-sm font-medium">
+        <div role="tablist" aria-label="Block categories" className="flex items-center space-x-6 text-sm font-medium">
           {["Featured", "Chat", "AI & Agents", "Text & Motion", "Checkout", "3D & Templates", "Sidebar", "Login", "Signup"].map((cat) => (
             <button
               key={cat}
+              role="tab"
+              aria-selected={selectedCategory === cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`py-2 transition-colors cursor-pointer ${
+              className={`py-2 transition-[color,border-color] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm ${
                 selectedCategory === cat
-                  ? "text-foreground border-b-2 border-foreground font-semibold"
+                  ? "text-foreground border-b-2 border-foreground font-semibold -mb-[2px]"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -160,8 +162,9 @@ export default function BlocksPage() {
           ))}
         </div>
         <button
+          type="button"
           onClick={() => setSelectedCategory("Featured")}
-          className="inline-flex items-center justify-center rounded-md bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 shrink-0 cursor-pointer"
+          className="inline-flex items-center justify-center rounded-md bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 shrink-0 cursor-pointer transition-[background-color,transform] duration-150 active:scale-[0.96] motion-reduce:active:scale-100 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
         >
           Browse all blocks
         </button>
@@ -205,8 +208,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("shiningText", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.shiningText === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.shiningText === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -214,8 +220,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("shiningText", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.shiningText === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.shiningText === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -223,8 +232,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("shiningText", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.shiningText === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.shiningText === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -232,15 +244,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("shiningText")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.shiningText ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.shiningText ? "Collapse" : "Expand"}
                   >
                     {isExpanded.shiningText ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("shiningText")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -310,8 +326,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("checkout", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.checkout === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.checkout === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -319,8 +338,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("checkout", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.checkout === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.checkout === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -328,8 +350,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("checkout", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.checkout === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.checkout === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -337,15 +362,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("checkout")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.checkout ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.checkout ? "Collapse" : "Expand"}
                   >
                     {isExpanded.checkout ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("checkout")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -415,8 +444,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("thinkingOrb", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.thinkingOrb === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.thinkingOrb === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -424,8 +456,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("thinkingOrb", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.thinkingOrb === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.thinkingOrb === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -433,8 +468,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("thinkingOrb", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.thinkingOrb === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.thinkingOrb === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -442,15 +480,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("thinkingOrb")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.thinkingOrb ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.thinkingOrb ? "Collapse" : "Expand"}
                   >
                     {isExpanded.thinkingOrb ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("thinkingOrb")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -520,8 +562,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("metalFx", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.metalFx === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.metalFx === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -529,8 +574,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("metalFx", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.metalFx === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.metalFx === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -538,8 +586,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("metalFx", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.metalFx === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.metalFx === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -547,15 +598,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("metalFx")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.metalFx ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.metalFx ? "Collapse" : "Expand"}
                   >
                     {isExpanded.metalFx ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("metalFx")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -625,8 +680,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("stickySlides", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.stickySlides === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.stickySlides === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -634,8 +692,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("stickySlides", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.stickySlides === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.stickySlides === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -643,8 +704,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("stickySlides", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.stickySlides === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.stickySlides === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -652,15 +716,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("stickySlides")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.stickySlides ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.stickySlides ? "Collapse" : "Expand"}
                   >
                     {isExpanded.stickySlides ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("stickySlides")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -730,8 +798,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("chat", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.chat === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.chat === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -739,8 +810,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("chat", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.chat === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.chat === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -748,8 +822,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("chat", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.chat === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.chat === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -757,15 +834,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("chat")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.chat ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.chat ? "Collapse" : "Expand"}
                   >
                     {isExpanded.chat ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("chat")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -834,8 +915,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("dashboard", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.dashboard === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.dashboard === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -843,8 +927,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("dashboard", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.dashboard === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.dashboard === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -852,8 +939,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("dashboard", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.dashboard === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.dashboard === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -861,15 +951,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("dashboard")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.dashboard ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.dashboard ? "Collapse" : "Expand"}
                   >
                     {isExpanded.dashboard ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("dashboard")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -938,8 +1032,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("sidebar", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.sidebar === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.sidebar === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -947,8 +1044,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("sidebar", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.sidebar === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.sidebar === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -956,8 +1056,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("sidebar", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.sidebar === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.sidebar === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -965,15 +1068,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("sidebar")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.sidebar ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.sidebar ? "Collapse" : "Expand"}
                   >
                     {isExpanded.sidebar ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("sidebar")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -1042,8 +1149,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("login", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.login === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.login === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -1051,8 +1161,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("login", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.login === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.login === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -1060,8 +1173,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("login", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.login === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.login === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -1069,15 +1185,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("login")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.login ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.login ? "Collapse" : "Expand"}
                   >
                     {isExpanded.login ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("login")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />
@@ -1146,8 +1266,11 @@ export default function BlocksPage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0">
                 <div className="hidden md:flex items-center gap-1 border-r pr-2 border-border text-muted-foreground">
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("signup", "desktop")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Desktop preview mode"
+                    aria-pressed={deviceMode.signup === "desktop"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.signup === "desktop" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Desktop View"
@@ -1155,8 +1278,11 @@ export default function BlocksPage() {
                     <Monitor className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("signup", "tablet")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Tablet preview mode"
+                    aria-pressed={deviceMode.signup === "tablet"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.signup === "tablet" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Tablet View"
@@ -1164,8 +1290,11 @@ export default function BlocksPage() {
                     <Tablet className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setBlockDevice("signup", "mobile")}
-                    className={`p-2 rounded-md transition-colors cursor-pointer ${
+                    aria-label="Mobile preview mode"
+                    aria-pressed={deviceMode.signup === "mobile"}
+                    className={`p-2 rounded-md transition-[color,background-color,transform] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 ${
                       deviceMode.signup === "mobile" ? "bg-muted text-foreground" : "hover:text-foreground hover:bg-muted/50"
                     }`}
                     title="Mobile View"
@@ -1173,15 +1302,19 @@ export default function BlocksPage() {
                     <Smartphone className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => toggleExpand("signup")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer"
+                    aria-label={isExpanded.signup ? "Collapse preview" : "Expand preview"}
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                     title={isExpanded.signup ? "Collapse" : "Expand"}
                   >
                     {isExpanded.signup ? <Minimize2 className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleReload("signup")}
-                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform active:rotate-180"
+                    aria-label="Reload preview animation"
+                    className="p-2 hover:text-foreground rounded-md hover:bg-muted cursor-pointer transition-transform duration-150 active:rotate-180 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                     title="Reload Preview"
                   >
                     <RotateCw className="h-4 w-4" />

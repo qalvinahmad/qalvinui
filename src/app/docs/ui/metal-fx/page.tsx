@@ -19,10 +19,12 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
     <div className="relative rounded-lg border bg-muted/50 p-4 font-mono text-sm">
       <div className="absolute right-4 top-4">
         <button
+          type="button"
           onClick={onCopy}
-          className="flex h-8 w-8 items-center justify-center rounded-md border bg-background text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
+          aria-label={copied ? "Code copied to clipboard" : "Copy code"}
+          className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-[color,background-color,transform] duration-150 hover:bg-muted hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100 cursor-pointer"
         >
-          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
         </button>
       </div>
       <pre className="overflow-x-auto">

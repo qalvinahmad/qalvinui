@@ -44,6 +44,12 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${urbanist.variable} font-sans min-h-full flex flex-col bg-background text-foreground antialiased`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:ring-2 focus:ring-ring focus:shadow-md focus:rounded-md text-sm font-medium"
+        >
+          Skip to main content
+        </a>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -51,7 +57,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SiteHeader />
-          <div className="flex-1">
+          <div id="main-content" className="flex-1">
             {children}
           </div>
           <Toaster />

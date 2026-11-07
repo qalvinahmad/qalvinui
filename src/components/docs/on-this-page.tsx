@@ -122,7 +122,7 @@ export function OnThisPage() {
   if (headings.length === 0 || pathname === "/docs/installation") return null;
 
   return (
-    <div className="space-y-3 text-sm">
+    <nav aria-label="On this page navigation" className="space-y-3 text-sm">
       <p className="font-semibold text-xs tracking-tight text-foreground uppercase">
         On This Page
       </p>
@@ -134,8 +134,9 @@ export function OnThisPage() {
               key={heading.id}
               href={`#${heading.id}`}
               onClick={(e) => scrollToHeading(heading.id, e)}
+              aria-current={isActive ? "location" : undefined}
               className={cn(
-                "block text-xs transition-colors py-1 leading-snug cursor-pointer",
+                "block text-xs transition-colors py-1 leading-snug cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm",
                 heading.level === 3 ? "pl-5 text-[11px]" : "pl-3",
                 isActive
                   ? "border-l-2 border-foreground font-semibold text-foreground -ml-[2px]"
@@ -147,6 +148,6 @@ export function OnThisPage() {
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 }

@@ -164,13 +164,15 @@ export default function ColorsPage() {
         </div>
 
         {/* Format Selector */}
-        <div className="inline-flex rounded-xl border bg-muted/50 p-1 text-xs font-semibold">
+        <div role="group" aria-label="Color copy format" className="inline-flex rounded-xl border border-border bg-muted/50 p-1 text-xs font-semibold">
           {(["HEX", "Class"] as const).map((fmt) => (
             <button
               key={fmt}
+              type="button"
+              aria-pressed={format === fmt}
               onClick={() => setFormat(fmt)}
               className={cn(
-                "px-3 py-1.5 rounded-lg transition-colors cursor-pointer",
+                "px-3 py-1.5 rounded-lg transition-[color,background-color] duration-150 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100",
                 format === fmt
                   ? "bg-background text-foreground shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
@@ -199,15 +201,17 @@ export default function ColorsPage() {
           ].map((item) => (
             <button
               key={item.token}
+              type="button"
+              aria-label={`Copy CSS variable for ${item.label}: var(--${item.token})`}
               onClick={() => {
                 navigator.clipboard.writeText(`var(--${item.token})`);
                 toast.success(`Copied var(--${item.token})`);
               }}
               className={cn(
-                "h-20 rounded-xl p-3 flex flex-col justify-between text-left transition-transform hover:scale-105 cursor-pointer shadow-2xs",
+                "h-20 rounded-xl p-3 flex flex-col justify-between text-left transition-[transform,box-shadow] duration-150 hover:scale-[1.03] active:scale-[0.96] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 cursor-pointer shadow-2xs outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 item.bg,
                 item.text || "text-foreground",
-                item.border && "border"
+                item.border && "border border-border"
               )}
             >
               <span className="text-xs font-semibold">{item.label}</span>
@@ -225,7 +229,7 @@ export default function ColorsPage() {
             <div key={palette.name} className="space-y-2">
               <div className="flex justify-between items-center text-sm font-semibold">
                 <span>{palette.name}</span>
-                <span className="text-xs text-muted-foreground font-mono">{palette.shades.length} shades</span>
+                <span className="text-xs text-muted-foreground font-mono tabular-nums">{palette.shades.length} shades</span>
               </div>
 
               <div className="grid grid-cols-6 sm:grid-cols-11 gap-1.5">
@@ -234,9 +238,11 @@ export default function ColorsPage() {
                   return (
                     <button
                       key={shade.step}
+                      type="button"
+                      aria-label={`Copy ${palette.name} ${shade.step} (${shade.hex})`}
                       onClick={() => copyColor(palette.name, shade.step, shade.hex)}
                       style={{ backgroundColor: shade.hex }}
-                      className="group relative h-16 rounded-xl p-2 flex flex-col justify-between text-left transition-all duration-200 hover:scale-105 cursor-pointer shadow-2xs border border-black/5"
+                      className="group relative h-16 rounded-xl p-2 flex flex-col justify-between text-left transition-[transform,box-shadow] duration-150 hover:scale-[1.04] active:scale-[0.96] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 cursor-pointer shadow-2xs border border-black/10 dark:border-white/10 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     >
                       <span
                         style={{ color: shade.textColor }}

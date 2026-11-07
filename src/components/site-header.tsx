@@ -291,6 +291,7 @@ export function SiteHeader() {
             <div className="flex w-full flex-1 items-center gap-px rounded-full border border-border/60 bg-muted/40 p-1 sm:w-auto sm:flex-none">
               <button
                 onClick={() => setIsSearchOpen(true)}
+                aria-label="Search documentation and components (Press Cmd+K)"
                 className="relative inline-flex h-8 flex-1 cursor-pointer items-center justify-start whitespace-nowrap gap-2 rounded-full bg-transparent px-1.5 text-sm font-normal text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64"
               >
                 <Search className="ml-2 size-4 shrink-0 opacity-50" />
@@ -304,6 +305,7 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
+                aria-label="Switch between light and dark theme"
                 className="size-8 shrink-0 rounded-full px-0"
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               >
@@ -316,22 +318,28 @@ export function SiteHeader() {
                 href="https://buymeacoffee.com/alvinahmad"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Donate via Buy Me a Coffee"
-                className="group inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full pl-1.5 pr-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground"
+                aria-label="Donate via Buy Me a Coffee (opens in new tab)"
+                className="group inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full pl-1.5 pr-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <Coffee className="size-4 transition-transform duration-150 ease-out group-hover:scale-110 group-active:scale-95" />
                 <span className="hidden sm:inline">Donate</span>
               </a>
             </div>
             <nav className="flex items-center gap-2">
-              <Link href="https://github.com/qalvinahmad/qalvinui" target="_blank" rel="noreferrer">
+              <Link
+                href="https://github.com/qalvinahmad/qalvinui"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="View Qalvin UI repository on GitHub (opens in new tab)"
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+              >
                 <div className="inline-flex items-center gap-2 text-sm font-medium border border-border/40 rounded-md px-3 py-1.5 bg-muted/50 hover:bg-muted/80 transition-colors">
                   <Github className="h-4 w-4" />
-                  <span>{stars}</span>
+                  <span className="tabular-nums">{stars}</span>
                 </div>
               </Link>
-              <Link href="/create">
-                <Button size="sm" className="h-8 ml-2 rounded-md">
+              <Link href="/create" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
+                <Button size="sm" aria-label="Create new component" className="h-8 ml-2 rounded-md font-medium">
                   + New
                 </Button>
               </Link>
@@ -342,16 +350,23 @@ export function SiteHeader() {
 
       {/* Search Modal */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm" onClick={() => setIsSearchOpen(false)}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search documentation and components"
+          className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm overscroll-contain"
+          onClick={() => setIsSearchOpen(false)}
+        >
           <div 
-            className="fixed left-[50%] top-[20%] z-50 grid w-full max-w-lg translate-x-[-50%] gap-4 border bg-background shadow-lg sm:rounded-lg overflow-hidden" 
+            className="fixed left-[50%] top-[20%] z-50 grid w-full max-w-lg translate-x-[-50%] gap-4 border bg-background shadow-lg sm:rounded-lg overflow-hidden overscroll-contain" 
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center border-b px-3">
               <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
               <input 
                 ref={inputRef}
-                className="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50" 
+                aria-label="Search documentation and components"
+                className="flex h-11 w-full rounded-md bg-transparent py-3 text-base md:text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50" 
                 placeholder="Type a command or search..." 
                 value={searchQuery}
                 onChange={(e) => {
@@ -363,10 +378,11 @@ export function SiteHeader() {
                 ESC
               </kbd>
             </div>
-            <div className="max-h-[300px] overflow-y-auto p-2">
+            <div className="max-h-[300px] overflow-y-auto p-2 overscroll-contain">
               {filteredItems.length === 0 ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">
-                  No results found.
+                <div className="py-8 text-center text-sm text-muted-foreground">
+                  <p className="font-medium text-foreground">No results found for &ldquo;{searchQuery}&rdquo;</p>
+                  <p className="text-xs text-muted-foreground mt-1">Try searching for components, blocks, or documentation.</p>
                 </div>
               ) : (
                 Object.entries(groupedItems).map(([category, items]) => (

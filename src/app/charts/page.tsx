@@ -880,7 +880,8 @@ export function TooltipShowcase() {
                   "featured-copy"
                 )
               }
-              className="p-2 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+              aria-label="Copy CLI command"
+              className="p-2 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground cursor-pointer transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
               title="Copy CLI command"
             >
               {copiedId === "featured-copy" ? (
@@ -902,7 +903,8 @@ export function TooltipShowcase() {
                   renderChart: () => null,
                 })
               }
-              className="inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium shadow-xs hover:bg-accent hover:text-accent-foreground cursor-pointer"
+              aria-label="View source code"
+              className="inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium shadow-xs hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
             >
               <Code2 className="h-4 w-4" /> View Code
             </button>
@@ -920,15 +922,20 @@ export function TooltipShowcase() {
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="inline-flex items-center justify-between rounded-md border bg-background px-3 py-1.5 text-sm font-medium shadow-xs min-w-[160px] cursor-pointer hover:bg-muted/50 transition-colors"
+                aria-haspopup="listbox"
+                aria-expanded={isDropdownOpen}
+                aria-label="Filter chart by time range"
+                className="inline-flex items-center justify-between rounded-md border bg-background px-3 py-1.5 text-sm font-medium shadow-xs min-w-[160px] cursor-pointer hover:bg-muted/50 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
               >
                 {timeRange} <ChevronDown className="h-4 w-4 text-muted-foreground ml-2" />
               </button>
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-1 w-44 rounded-lg border bg-popover text-popover-foreground shadow-lg z-20 py-1">
+                <div role="listbox" aria-label="Time range options" className="absolute right-0 mt-1 w-44 rounded-lg border bg-popover text-popover-foreground shadow-lg z-20 py-1">
                   {["Last 3 months", "Last 30 days", "Last 7 days"].map((option) => (
                     <button
                       key={option}
+                      role="option"
+                      aria-selected={timeRange === option}
                       onClick={() => {
                         setTimeRange(option);
                         setIsDropdownOpen(false);
@@ -1005,7 +1012,12 @@ export function TooltipShowcase() {
       {/* Code Modal Dialog */}
       {activeCodeModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-zinc-950 border border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-zinc-100">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Source code for ${activeCodeModal.title}`}
+            className="bg-zinc-950 border border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-zinc-100 overscroll-contain"
+          >
             <div className="flex items-center justify-between p-4 border-b border-zinc-800">
               <div>
                 <h3 className="font-semibold text-sm">{activeCodeModal.title}</h3>
@@ -1013,8 +1025,10 @@ export function TooltipShowcase() {
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   onClick={() => copyToClipboard(activeCodeModal.code, "modal-copy")}
-                  className="flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white bg-zinc-800 px-3 py-1.5 rounded-md cursor-pointer hover:bg-zinc-700 transition-colors"
+                  aria-label="Copy chart source code to clipboard"
+                  className="flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white bg-zinc-800 px-3 py-1.5 rounded-md cursor-pointer hover:bg-zinc-700 transition-[color,background-color,transform] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                 >
                   {copiedId === "modal-copy" ? (
                     <>
@@ -1027,8 +1041,10 @@ export function TooltipShowcase() {
                   )}
                 </button>
                 <button
+                  type="button"
                   onClick={() => setActiveCodeModal(null)}
-                  className="p-1.5 text-zinc-400 hover:text-white rounded-md hover:bg-zinc-800 cursor-pointer"
+                  aria-label="Close code dialog"
+                  className="p-1.5 text-zinc-400 hover:text-white rounded-md hover:bg-zinc-800 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.96] motion-reduce:active:scale-100"
                 >
                   <X className="h-4 w-4" />
                 </button>

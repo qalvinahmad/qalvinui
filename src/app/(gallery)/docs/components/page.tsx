@@ -12,7 +12,7 @@ export default function Page() {
       {/* Page Header */}
       <div className="space-y-2 pb-10 md:pb-12">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Components</h1>
-        <p className="max-w-3xl text-base text-muted-foreground sm:text-lg">
+        <p className="max-w-3xl text-base text-muted-foreground sm:text-lg text-pretty">
           Browse the collection of built-in components. Each component is accessible,
           customizable, and follows WAI-ARIA patterns.
         </p>
@@ -20,7 +20,7 @@ export default function Page() {
           Looking for creative effects?{" "}
           <Link
             href="/docs/ui"
-            className="inline-flex items-center gap-1 font-medium text-foreground underline decoration-zinc-300 underline-offset-4 transition-colors hover:decoration-zinc-400 dark:decoration-zinc-600 dark:hover:decoration-zinc-500"
+            className="inline-flex items-center gap-1 font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
           >
             Explore the specialized UI collection
             <ArrowRight className="size-3.5" />
