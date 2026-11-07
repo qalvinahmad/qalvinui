@@ -243,45 +243,60 @@
 }
 
 /* ---------------------------------------------------------------------------
- * QalvinMark — the isometric stack logo (src/components/brand/qalvin-mark.tsx)
- * Orthographic 3D, like the hairline mark: rotate the ground plane, lift
- * the top card along z on hover, dashed slot waits behind.
+ * QalvinMark — bounding box with crosshairs and 3D isometric stack card
+ * Matches Figma/Aceternity UI selection frame with 4 corner handles.
+ * Rest: 2D flat squircle card with /icon.png.
+ * Hover: transforms smoothly into 3D isometric stack with base card and elevated top card.
  * ------------------------------------------------------------------------- */
 .qalvin-mark-scene {
   transform-style: preserve-3d;
-  transform: rotateX(56deg) rotateZ(-45deg);
+  transform: rotateX(0deg) rotateZ(0deg) scale(1);
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.qalvin-mark-card {
+.qalvin-mark-base {
   transform-style: preserve-3d;
-  transform: translateZ(7px);
-  transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.qalvin-mark-handle {
-  transform: translateZ(2px);
-}
-
-.qalvin-mark-slot {
+  transform: translateZ(0px);
   opacity: 0;
-  transition: opacity 160ms ease-out;
+  transition: opacity 200ms ease, transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qalvin-mark-top {
+  transform-style: preserve-3d;
+  transform: translateZ(0px);
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 360ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .qalvin-mark:hover .qalvin-mark-card {
-    transform: translateZ(18px);
+  .qalvin-mark:hover .qalvin-mark-scene,
+  .qalvin-mark:focus-visible .qalvin-mark-scene {
+    transform: rotateX(54deg) rotateZ(-45deg) scale(0.78);
   }
-  .qalvin-mark:hover .qalvin-mark-slot {
+  .qalvin-mark:hover .qalvin-mark-base,
+  .qalvin-mark:focus-visible .qalvin-mark-base {
     opacity: 1;
+    transform: translateZ(0px);
+  }
+  .qalvin-mark:hover .qalvin-mark-top,
+  .qalvin-mark:focus-visible .qalvin-mark-top {
+    transform: translateZ(12px) translateY(-2px);
+    box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.28), 0 4px 6px -2px rgba(0, 0, 0, 0.12);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .qalvin-mark-card {
-    transition: none;
+  .qalvin-mark-scene,
+  .qalvin-mark-base,
+  .qalvin-mark-top {
+    transition: opacity 150ms ease;
   }
-  .qalvin-mark:hover .qalvin-mark-card {
-    transform: translateZ(7px);
+  .qalvin-mark:hover .qalvin-mark-scene,
+  .qalvin-mark:focus-visible .qalvin-mark-scene {
+    transform: none;
+  }
+  .qalvin-mark:hover .qalvin-mark-top,
+  .qalvin-mark:focus-visible .qalvin-mark-top {
+    transform: none;
   }
 }
 
