@@ -6,6 +6,8 @@ import { Check, Copy, RotateCcw } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Checkbox as AriaCheckbox } from "react-aria-components";
+import * as RadixCheckbox from "@radix-ui/react-checkbox";
 import { cn } from "@/lib/utils";
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
@@ -41,6 +43,65 @@ function CheckboxDemo() {
       <Label
         htmlFor="terms"
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        Accept terms and conditions
+      </Label>
+    </div>
+  );
+}
+
+/* --- Provider demos: one real implementation per library ------------------- */
+
+function ReactAriaCheckboxDemo() {
+  const [selected, setSelected] = useState(true);
+  return (
+    <AriaCheckbox
+      isSelected={selected}
+      onChange={setSelected}
+      className={cn(
+        "group flex cursor-pointer items-center gap-2.5 text-sm font-medium outline-none",
+        "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50"
+      )}
+    >
+      <span
+        className={cn(
+          "relative flex size-5 shrink-0 items-center justify-center rounded-md border border-input bg-white transition-colors dark:bg-input/30",
+          "group-data-[selected]:border-primary group-data-[selected]:bg-primary",
+          "group-data-[focus-visible]:border-ring group-data-[focus-visible]:ring-3 group-data-[focus-visible]:ring-ring/50",
+          "group-data-[hovered]:border-ring/60",
+          "after:absolute after:-inset-x-2 after:-inset-y-2 after:content-['']"
+        )}
+      >
+        <Check aria-hidden="true" className="hidden size-3.5 text-primary-foreground [stroke-width:3] group-data-[selected]:block" />
+      </span>
+      <span className="leading-none">Accept terms and conditions</span>
+    </AriaCheckbox>
+  );
+}
+
+function RadixCheckboxDemo() {
+  const [checked, setChecked] = useState(true);
+  return (
+    <div className="flex items-center space-x-2">
+      <RadixCheckbox.Root
+        id="radix-terms"
+        checked={checked}
+        onCheckedChange={(v) => setChecked(Boolean(v))}
+        className={cn(
+          "peer relative flex size-5 shrink-0 items-center justify-center rounded-md border border-input bg-white outline-none transition-colors dark:bg-input/30",
+          "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          "after:absolute after:-inset-x-3 after:-inset-y-2",
+          "data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+        )}
+      >
+        <RadixCheckbox.Indicator className="grid place-content-center">
+          <Check aria-hidden="true" className="size-3.5 [stroke-width:3]" />
+        </RadixCheckbox.Indicator>
+      </RadixCheckbox.Root>
+      <Label
+        htmlFor="radix-terms"
+        className="text-sm font-medium leading-none"
       >
         Accept terms and conditions
       </Label>
@@ -557,6 +618,41 @@ export { Checkbox }
 `;
   const manualDeps = `npm i @base-ui/react clsx tailwind-merge class-variance-authority lucide-react`;
 
+  const ariaSnippet = `// React Aria Components (react-aria-components)
+import { Checkbox } from "react-aria-components"
+import { useState } from "react"
+
+export function AriaDemo() {
+  const [selected, setSelected] = useState(true)
+
+  return (
+    <Checkbox isSelected={selected} onChange={setSelected} className="group">
+      <span className="group-data-[selected]:bg-primary">…</span>
+      <span>Accept terms and conditions</span>
+    </Checkbox>
+  )
+}`;
+  const radixSnippet = `// Radix UI (@radix-ui/react-checkbox)
+import * as Checkbox from "@radix-ui/react-checkbox"
+import { useState } from "react"
+
+export function RadixDemo() {
+  const [checked, setChecked] = useState(true)
+
+  return (
+    <Checkbox.Root
+      checked={checked}
+      onCheckedChange={(v) => setChecked(Boolean(v))}
+      className="data-[state=checked]:bg-primary"
+    >
+      <Checkbox.Indicator>
+        <Check />
+      </Checkbox.Indicator>
+    </Checkbox.Root>
+  )
+}`;
+
+
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-3xl space-y-10">
@@ -586,15 +682,24 @@ export { Checkbox }
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
               <CheckboxDemo />
             </div>
+            <div className="border-t p-4">
+              <CodeBlock code={`import { Checkbox } from "@/components/ui/checkbox"\n// @base-ui/react — the default Qalvin UI checkbox`} />
+            </div>
           </TabsContent>
           <TabsContent value="react-aria" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              <CheckboxDemo />
+              <ReactAriaCheckboxDemo />
+            </div>
+            <div className="border-t p-4">
+              <CodeBlock code={ariaSnippet} />
             </div>
           </TabsContent>
           <TabsContent value="radix" className="mt-6 border rounded-lg overflow-hidden">
             <div className="flex min-h-[350px] w-full items-center justify-center p-10 bg-background">
-              <CheckboxDemo />
+              <RadixCheckboxDemo />
+            </div>
+            <div className="border-t p-4">
+              <CodeBlock code={radixSnippet} />
             </div>
           </TabsContent>
         </Tabs>
