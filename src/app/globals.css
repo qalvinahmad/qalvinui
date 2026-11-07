@@ -129,6 +129,49 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * QalvinMark — the isometric stack logo (src/components/brand/qalvin-mark.tsx)
+ * Orthographic 3D, like the hairline mark: rotate the ground plane, lift
+ * the top card along z on hover, dashed slot waits behind.
+ * ------------------------------------------------------------------------- */
+.qalvin-mark-scene {
+  transform-style: preserve-3d;
+  transform: rotateX(56deg) rotateZ(-45deg);
+}
+
+.qalvin-mark-card {
+  transform-style: preserve-3d;
+  transform: translateZ(7px);
+  transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.qalvin-mark-handle {
+  transform: translateZ(2px);
+}
+
+.qalvin-mark-slot {
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .qalvin-mark:hover .qalvin-mark-card {
+    transform: translateZ(18px);
+  }
+  .qalvin-mark:hover .qalvin-mark-slot {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qalvin-mark-card {
+    transition: none;
+  }
+  .qalvin-mark:hover .qalvin-mark-card {
+    transform: translateZ(7px);
+  }
+}
+
 @keyframes shining-sweep {
   0% {
     background-position: 200% center;
