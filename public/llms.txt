@@ -37,6 +37,23 @@ Qalvin UI provides 40+ accessible UI components, interactive blocks, creative We
 - [Liquid Gooey](https://qalvinui.vercel.app/docs/ui/liquid-gooey): Fluid SVG filter metaball morphing effects for dynamic interfaces.
 - [Sticky Slides](https://qalvinui.vercel.app/docs/ui/sticky-slides): Full-page stacked scroll presentation decks in TSX, JSX, TS, and JS formats.
 - [Border Beam](https://qalvinui.vercel.app/docs/ui/border-beam): Animated glowing border gradient beam along container edges.
+- [Dot Field](https://qalvinui.vercel.app/docs/ui/dot-field): Interactive dot field background with magnetic particle repulsion.
+- [Background Paths](https://qalvinui.vercel.app/docs/ui/background-paths): Floating radiant SVG bezier light path streams.
+- [Flow Field](https://qalvinui.vercel.app/docs/ui/flow-field): Streamline curl-noise vector fields that scatter on click.
+- [Card Flip](https://qalvinui.vercel.app/docs/ui/card-flip): 3D perspective card flip with front and back interactive faces.
+- [Card Stack](https://qalvinui.vercel.app/docs/ui/card-stack): Swipeable stacked deck of cards with smooth gesture physics.
+- [Liquid Glass Card](https://qalvinui.vercel.app/docs/ui/liquid-glass-card): Glassmorphism music player card with spinning, scrubbable disc.
+- [Apple Activity Card](https://qalvinui.vercel.app/docs/ui/apple-activity-card): Concentric fitness rings with metric breakdown.
+- [Bento Grid](https://qalvinui.vercel.app/docs/ui/bento-grid): Asymmetric responsive bento grid showcase layout.
+- [Morphic Navbar](https://qalvinui.vercel.app/docs/ui/morphic-navbar): Floating morphing navigation bar with elastic indicator.
+- [Toolbar](https://qalvinui.vercel.app/docs/ui/toolbar): macOS-style dock toolbar with fluid tooltips.
+- [Cart Button](https://qalvinui.vercel.app/docs/ui/cart-button): Interactive e-commerce add-to-cart button that expands into a stepper.
+- [AI Prompt](https://qalvinui.vercel.app/docs/ui/ai-prompt): Multi-action generative AI prompt composer with autosizing textarea.
+- [AI Input Search](https://qalvinui.vercel.app/docs/ui/ai-input-search): Smart AI search input with suggestion chips.
+- [AI Tool Approval](https://qalvinui.vercel.app/docs/ui/ai-tool-approval): Interactive confirmation card for AI function execution.
+- [AI Diff Review](https://qalvinui.vercel.app/docs/ui/ai-diff-review): Side-by-side git diff review card for AI code generation.
+- [Particle Button](https://qalvinui.vercel.app/docs/ui/particle-button): Confetti particle explosion trigger on click.
+- [Hold Button](https://qalvinui.vercel.app/docs/ui/hold-button): Long-press radial progress button for critical actions.
 
 ## React Hooks
 

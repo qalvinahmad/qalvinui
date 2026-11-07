@@ -29,9 +29,15 @@ function Drawer({
   showSwipeHandle = false,
   snapPoints,
   swipeDirection = "down",
+  activeSnapPoint,
+  setActiveSnapPoint,
+  fadeFromIndex,
   ...props
 }: DrawerPrimitive.Root.Props & {
   showSwipeHandle?: boolean
+  activeSnapPoint?: string | number | null
+  setActiveSnapPoint?: (point: any) => void
+  fadeFromIndex?: number
 }) {
   const hasSnapPoints = snapPoints != null && snapPoints.length > 0
   const contextValue = React.useMemo(
@@ -52,7 +58,7 @@ function Drawer({
   )
 }
 
-function DrawerTrigger({ ...props }: DrawerPrimitive.Trigger.Props) {
+function DrawerTrigger({ asChild, ...props }: DrawerPrimitive.Trigger.Props & { asChild?: boolean }) {
   return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />
 }
 

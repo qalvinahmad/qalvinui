@@ -148,14 +148,407 @@ export default function DocsLayout({
   ];
 
   const uiItems = [
-    { title: "Sticky Slides", href: "/docs/ui/sticky-slides", isNew: true },
-    { title: "Thinking Orb", href: "/docs/ui/thinking-orb", isNew: true },
-    { title: "Metal FX", href: "/docs/ui/metal-fx", isNew: true },
-    { title: "Image FX", href: "/docs/ui/img-fx", isNew: true },
-    { title: "Border Beam", href: "/docs/ui/border-beam", isNew: true },
-    { title: "Voice Glow", href: "/docs/ui/voice-glow", isNew: true },
-    { title: "Liquid Gooey", href: "/docs/ui/liquid-gooey", isNew: true },
-  ];
+  {
+    "title": "Activity Terrain",
+    "href": "/docs/ui/activity-terrain",
+    "isNew": true
+  },
+  {
+    "title": "AI Autocomplete",
+    "href": "/docs/ui/ai-autocomplete",
+    "isNew": true
+  },
+  {
+    "title": "AI Citations",
+    "href": "/docs/ui/ai-citations",
+    "isNew": true
+  },
+  {
+    "title": "AI Context Meter",
+    "href": "/docs/ui/ai-context-meter",
+    "isNew": true
+  },
+  {
+    "title": "AI Diff Review",
+    "href": "/docs/ui/ai-diff-review",
+    "isNew": true
+  },
+  {
+    "title": "AI Inline Edit",
+    "href": "/docs/ui/ai-inline-edit",
+    "isNew": true
+  },
+  {
+    "title": "AI Input Search",
+    "href": "/docs/ui/ai-input-search",
+    "isNew": true
+  },
+  {
+    "title": "AI Loading",
+    "href": "/docs/ui/ai-loading",
+    "isNew": true
+  },
+  {
+    "title": "AI Memory",
+    "href": "/docs/ui/ai-memory",
+    "isNew": true
+  },
+  {
+    "title": "AI Message Queue",
+    "href": "/docs/ui/ai-message-queue",
+    "isNew": true
+  },
+  {
+    "title": "AI Model Selector",
+    "href": "/docs/ui/ai-model-selector",
+    "isNew": true
+  },
+  {
+    "title": "AI Prompt",
+    "href": "/docs/ui/ai-prompt",
+    "isNew": true
+  },
+  {
+    "title": "AI Tool Approval",
+    "href": "/docs/ui/ai-tool-approval",
+    "isNew": true
+  },
+  {
+    "title": "Amount Pad",
+    "href": "/docs/ui/amount-pad",
+    "isNew": true
+  },
+  {
+    "title": "Apple Activity Card",
+    "href": "/docs/ui/apple-activity-card",
+    "isNew": true
+  },
+  {
+    "title": "Avatar Picker",
+    "href": "/docs/ui/avatar-picker",
+    "isNew": true
+  },
+  {
+    "title": "Background Paths",
+    "href": "/docs/ui/background-paths",
+    "isNew": true
+  },
+  {
+    "title": "Bell Button",
+    "href": "/docs/ui/bell-button",
+    "isNew": true
+  },
+  {
+    "title": "Bento Grid",
+    "href": "/docs/ui/bento-grid",
+    "isNew": true
+  },
+  {
+    "title": "Boarding Pass",
+    "href": "/docs/ui/boarding-pass",
+    "isNew": true
+  },
+  {
+    "title": "Border Beam",
+    "href": "/docs/ui/border-beam",
+    "isNew": true
+  },
+  {
+    "title": "Card Field",
+    "href": "/docs/ui/card-field",
+    "isNew": true
+  },
+  {
+    "title": "Card Flip",
+    "href": "/docs/ui/card-flip",
+    "isNew": true
+  },
+  {
+    "title": "Card Stack",
+    "href": "/docs/ui/card-stack",
+    "isNew": true
+  },
+  {
+    "title": "Carousel Cards",
+    "href": "/docs/ui/carousel-cards",
+    "isNew": true
+  },
+  {
+    "title": "Cart Button",
+    "href": "/docs/ui/cart-button",
+    "isNew": true
+  },
+  {
+    "title": "Caustics Background",
+    "href": "/docs/ui/caustics-background",
+    "isNew": true
+  },
+  {
+    "title": "Clip Trimmer",
+    "href": "/docs/ui/clip-trimmer",
+    "isNew": true
+  },
+  {
+    "title": "Command Button",
+    "href": "/docs/ui/command-button",
+    "isNew": true
+  },
+  {
+    "title": "Currency Transfer",
+    "href": "/docs/ui/currency-transfer",
+    "isNew": true
+  },
+  {
+    "title": "Detent Dial",
+    "href": "/docs/ui/detent-dial",
+    "isNew": true
+  },
+  {
+    "title": "Dot Field",
+    "href": "/docs/ui/dot-field",
+    "isNew": true
+  },
+  {
+    "title": "Drape Background",
+    "href": "/docs/ui/drape-background",
+    "isNew": true
+  },
+  {
+    "title": "File Upload",
+    "href": "/docs/ui/file-upload",
+    "isNew": true
+  },
+  {
+    "title": "Flow Field",
+    "href": "/docs/ui/flow-field",
+    "isNew": true
+  },
+  {
+    "title": "Focal Point Picker",
+    "href": "/docs/ui/focal-point-picker",
+    "isNew": true
+  },
+  {
+    "title": "Hold Button",
+    "href": "/docs/ui/hold-button",
+    "isNew": true
+  },
+  {
+    "title": "Image FX",
+    "href": "/docs/ui/img-fx",
+    "isNew": true
+  },
+  {
+    "title": "Liquid Gauge",
+    "href": "/docs/ui/liquid-gauge",
+    "isNew": true
+  },
+  {
+    "title": "Liquid Glass Card",
+    "href": "/docs/ui/liquid-glass-card",
+    "isNew": true
+  },
+  {
+    "title": "Liquid Gooey",
+    "href": "/docs/ui/liquid-gooey",
+    "isNew": true
+  },
+  {
+    "title": "Location Picker",
+    "href": "/docs/ui/location-picker",
+    "isNew": true
+  },
+  {
+    "title": "Marker Text",
+    "href": "/docs/ui/marker-text",
+    "isNew": true
+  },
+  {
+    "title": "Marking Menu",
+    "href": "/docs/ui/marking-menu",
+    "isNew": true
+  },
+  {
+    "title": "Metal FX",
+    "href": "/docs/ui/metal-fx",
+    "isNew": true
+  },
+  {
+    "title": "Metric Card",
+    "href": "/docs/ui/metric-card",
+    "isNew": true
+  },
+  {
+    "title": "Morph Popover",
+    "href": "/docs/ui/morph-popover",
+    "isNew": true
+  },
+  {
+    "title": "Morphic Navbar",
+    "href": "/docs/ui/morphic-navbar",
+    "isNew": true
+  },
+  {
+    "title": "Notification Stack",
+    "href": "/docs/ui/notification-stack",
+    "isNew": true
+  },
+  {
+    "title": "Particle Button",
+    "href": "/docs/ui/particle-button",
+    "isNew": true
+  },
+  {
+    "title": "Photo Straighten",
+    "href": "/docs/ui/photo-straighten",
+    "isNew": true
+  },
+  {
+    "title": "Profile Dropdown",
+    "href": "/docs/ui/profile-dropdown",
+    "isNew": true
+  },
+  {
+    "title": "Receipt Printer",
+    "href": "/docs/ui/receipt-printer",
+    "isNew": true
+  },
+  {
+    "title": "Save Button",
+    "href": "/docs/ui/save-button",
+    "isNew": true
+  },
+  {
+    "title": "Scroll Index",
+    "href": "/docs/ui/scroll-index",
+    "isNew": true
+  },
+  {
+    "title": "Seat Map",
+    "href": "/docs/ui/seat-map",
+    "isNew": true
+  },
+  {
+    "title": "Shape Hero",
+    "href": "/docs/ui/shape-hero",
+    "isNew": true
+  },
+  {
+    "title": "Signature Pad",
+    "href": "/docs/ui/signature-pad",
+    "isNew": true
+  },
+  {
+    "title": "Slide Text Button",
+    "href": "/docs/ui/slide-text-button",
+    "isNew": true
+  },
+  {
+    "title": "Slot Picker",
+    "href": "/docs/ui/slot-picker",
+    "isNew": true
+  },
+  {
+    "title": "Smooth Drawer",
+    "href": "/docs/ui/smooth-drawer",
+    "isNew": true
+  },
+  {
+    "title": "Spending Ring",
+    "href": "/docs/ui/spending-ring",
+    "isNew": true
+  },
+  {
+    "title": "Stack Panel",
+    "href": "/docs/ui/stack-panel",
+    "isNew": true
+  },
+  {
+    "title": "Status Island",
+    "href": "/docs/ui/status-island",
+    "isNew": true
+  },
+  {
+    "title": "Stay Picker",
+    "href": "/docs/ui/stay-picker",
+    "isNew": true
+  },
+  {
+    "title": "Sticky Slides",
+    "href": "/docs/ui/sticky-slides",
+    "isNew": true
+  },
+  {
+    "title": "Switch Button",
+    "href": "/docs/ui/switch-button",
+    "isNew": true
+  },
+  {
+    "title": "Synced Transcript",
+    "href": "/docs/ui/synced-transcript",
+    "isNew": true
+  },
+  {
+    "title": "Team Selector",
+    "href": "/docs/ui/team-selector",
+    "isNew": true
+  },
+  {
+    "title": "Tear Button",
+    "href": "/docs/ui/tear-button",
+    "isNew": true
+  },
+  {
+    "title": "Thinking Orb",
+    "href": "/docs/ui/thinking-orb",
+    "isNew": true
+  },
+  {
+    "title": "Timezone Planner",
+    "href": "/docs/ui/timezone-planner",
+    "isNew": true
+  },
+  {
+    "title": "Tip Selector",
+    "href": "/docs/ui/tip-selector",
+    "isNew": true
+  },
+  {
+    "title": "Toolbar",
+    "href": "/docs/ui/toolbar",
+    "isNew": true
+  },
+  {
+    "title": "Topo Background",
+    "href": "/docs/ui/topo-background",
+    "isNew": true
+  },
+  {
+    "title": "Type Writer",
+    "href": "/docs/ui/type-writer",
+    "isNew": true
+  },
+  {
+    "title": "Undo Button",
+    "href": "/docs/ui/undo-button",
+    "isNew": true
+  },
+  {
+    "title": "Uptime Card",
+    "href": "/docs/ui/uptime-card",
+    "isNew": true
+  },
+  {
+    "title": "Voice Glow",
+    "href": "/docs/ui/voice-glow",
+    "isNew": true
+  },
+  {
+    "title": "Wheel Picker",
+    "href": "/docs/ui/wheel-picker",
+    "isNew": true
+  }
+];
 
   const hooksItems = [
     { title: "useMediaQuery", href: "/docs/hooks/use-media-query", isNew: true },

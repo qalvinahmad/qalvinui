@@ -42,6 +42,22 @@ Qalvin UI provides 40+ accessible UI components, interactive blocks, creative We
 - Liquid Gooey: https://qalvinui.vercel.app/docs/ui/liquid-gooey
 - Sticky Slides: https://qalvinui.vercel.app/docs/ui/sticky-slides
 - Border Beam: https://qalvinui.vercel.app/docs/ui/border-beam
+- Dot Field: https://qalvinui.vercel.app/docs/ui/dot-field
+- Background Paths: https://qalvinui.vercel.app/docs/ui/background-paths
+- Flow Field: https://qalvinui.vercel.app/docs/ui/flow-field
+- Card Flip: https://qalvinui.vercel.app/docs/ui/card-flip
+- Card Stack: https://qalvinui.vercel.app/docs/ui/card-stack
+- Liquid Glass Card: https://qalvinui.vercel.app/docs/ui/liquid-glass-card
+- Apple Activity Card: https://qalvinui.vercel.app/docs/ui/apple-activity-card
+- Bento Grid: https://qalvinui.vercel.app/docs/ui/bento-grid
+- Morphic Navbar: https://qalvinui.vercel.app/docs/ui/morphic-navbar
+- Toolbar: https://qalvinui.vercel.app/docs/ui/toolbar
+- Cart Button: https://qalvinui.vercel.app/docs/ui/cart-button
+- AI Prompt: https://qalvinui.vercel.app/docs/ui/ai-prompt
+- AI Input Search: https://qalvinui.vercel.app/docs/ui/ai-input-search
+- AI Tool Approval: https://qalvinui.vercel.app/docs/ui/ai-tool-approval
+- Particle Button: https://qalvinui.vercel.app/docs/ui/particle-button
+- Hold Button: https://qalvinui.vercel.app/docs/ui/hold-button
 
 ## React Hooks
 
