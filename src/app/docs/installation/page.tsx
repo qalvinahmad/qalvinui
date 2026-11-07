@@ -2,8 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export default function InstallationPage() {
   return (
-    <div className="flex flex-col lg:flex-row gap-10">
-      <div className="flex-1 w-full min-w-0 max-w-[800px]">
+    <div className="max-w-[800px]">
         <div className="flex items-center justify-between mb-2">
           <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">Installation</h1>
           <div className="flex items-center gap-2">
@@ -57,34 +56,6 @@ export default function InstallationPage() {
         <p className="text-sm text-muted-foreground">
           Available for Next.js, Vite, Laravel, React Router, Astro, and TanStack Start.
         </p>
-      </div>
-
-      <div className="hidden xl:block w-[250px] shrink-0">
-        <div className="sticky top-20">
-          <div className="mb-4 text-sm font-semibold">On This Page</div>
-          <ul className="m-0 list-none text-sm space-y-2">
-            <li>
-              <a href="#" className="inline-block no-underline font-medium text-foreground">Use shadcn/create</a>
-            </li>
-            <li>
-              <a href="#" className="inline-block no-underline text-muted-foreground hover:text-foreground">Use the CLI</a>
-            </li>
-            <li>
-              <a href="#" className="inline-block no-underline text-muted-foreground hover:text-foreground">Existing Project</a>
-            </li>
-            <li>
-              <a href="#" className="inline-block no-underline text-muted-foreground hover:text-foreground">Choose Your Framework</a>
-            </li>
-          </ul>
-
-          <div className="mt-8 rounded-xl border bg-card text-card-foreground shadow-sm p-4">
-            <h4 className="font-semibold mb-2 text-sm">Deploy your shadcn/ui app on Vercel</h4>
-            <p className="text-xs text-muted-foreground mb-4">Trusted by OpenAI, Sonos, Adobe, and more.</p>
-            <p className="text-xs text-muted-foreground mb-4">Vercel provides tools and infrastructure to deploy apps and features at scale.</p>
-            <Button variant="outline" size="sm" className="w-full text-xs h-8">Deploy Now</Button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

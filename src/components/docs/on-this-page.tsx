@@ -118,7 +118,8 @@ export function OnThisPage() {
     }
   };
 
-  if (headings.length === 0) return null;
+  // Hidden entirely on the installation page — it has its own setup flow, no TOC needed
+  if (headings.length === 0 || pathname === "/docs/installation") return null;
 
   return (
     <div className="space-y-3 text-sm">
