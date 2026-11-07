@@ -71,6 +71,108 @@ export default function Page() {
           <p className="text-foreground/80">npx @alvinahmad/ui skills add --all</p>
         </div>
       </div>
+
+      <div className="space-y-4">
+        <h2 className="text-2xl font-semibold tracking-tight">Credits &amp; Sources</h2>
+        <p className="text-muted-foreground">
+          The UI skills used across this project build on excellent collections from
+          the design engineering community. All credit to their authors:
+        </p>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="font-semibold">
+                <a
+                  href="https://hairline.lucasmarkes.com/skills"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="hover:underline underline-offset-4"
+                >
+                  Hairline — Skills <span className="font-normal text-muted-foreground">by Lucas Marques</span>
+                </a>
+              </h3>
+              <code className="rounded bg-muted px-2 py-0.5 text-xs font-mono">npx skills add lucasmarkes/hairline</code>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Isometric line figures that answer the pointer. One command installs both skills:
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">hairline-create</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">hairline-adopt</code>
+            </div>
+          </div>
+
+          <div className="rounded-lg border p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="font-semibold">
+                <a
+                  href="https://jakub.kr/skills"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="hover:underline underline-offset-4"
+                >
+                  Jakub Krehel — Interface Skills
+                </a>
+              </h3>
+              <code className="rounded bg-muted px-2 py-0.5 text-xs font-mono">npx skills add jakubkrehel/skills</code>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Reviews, stress tests, and polish for every layer of an interface:
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">teardown</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">state-machine</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">break</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">explain-interface</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">variant</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">interface-review</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">better-interface</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">better-ui</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">better-typography</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">better-colors</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">better-accessibility</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">better-layout</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">better-writing</code>
+            </div>
+          </div>
+
+          <div className="rounded-lg border p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="font-semibold">
+                <a
+                  href="https://emilkowal.ski/skill"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="hover:underline underline-offset-4"
+                >
+                  Emil Kowalski — AI Skills for Design Engineers
+                </a>
+              </h3>
+              <code className="rounded bg-muted px-2 py-0.5 text-xs font-mono">npx skills add emilkowalski/skill</code>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Animation craft and interface design advice, from the maker of Sonner:
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">emil-design-eng</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">animate</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">animate-expo</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">review-animations</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">improve-animations</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">find-animation-opportunities</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">animation-performance</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">animation-vocabulary</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">apple-design</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">pick-ui-library</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">prototype</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">mobile-native</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">break-ui</code>
+              <code className="rounded-full border px-2 py-0.5 text-xs font-mono">ask-sonner</code>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
