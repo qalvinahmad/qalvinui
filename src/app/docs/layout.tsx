@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { OnThisPage } from "@/components/docs/on-this-page";
+import { PreviewKit } from "@/components/docs/preview-toolbar";
 
 function NavLink({ href, children, isNew = false }: { href: string; children: React.ReactNode, isNew?: boolean }) {
   return (
@@ -620,9 +621,10 @@ export default function DocsLayout({
 
   return (
     <div className="container mx-auto px-4 max-w-screen-2xl">
+      <PreviewKit />
       <div className="flex flex-col md:flex-row gap-6 md:gap-10 py-8">
         <aside className="w-full md:w-[220px] lg:w-[240px] shrink-0">
-          <div className="sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pb-10">
+          <div className="sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto no-scrollbar pb-10">
             <div className="space-y-6">
               
               {/* Sections */}
@@ -704,7 +706,7 @@ export default function DocsLayout({
 
         {/* Right Sidebar: Head Description Tracker ("On This Page") */}
         <aside className="hidden xl:block w-52 2xl:w-60 shrink-0">
-          <div className="sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto pb-10 pl-4 border-l border-border/40">
+          <div className="sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto no-scrollbar pb-10 pl-4 border-l border-border/40">
             <OnThisPage />
           </div>
         </aside>

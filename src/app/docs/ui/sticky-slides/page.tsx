@@ -203,7 +203,7 @@ export const slides: SlideData[] = [
               <span className="font-mono text-[11px] hidden sm:inline">CSS position: sticky; top: 0</span>
             </div>
 
-            <div className="h-[460px] overflow-y-auto rounded-2xl border border-border/80 relative shadow-inner scroll-smooth">
+            <div className="h-[460px] overflow-y-auto no-scrollbar rounded-2xl border border-border/80 relative shadow-inner scroll-smooth">
               <StickySlides
                 slideHeightClass="h-[460px]"
                 showIndicators={false}
