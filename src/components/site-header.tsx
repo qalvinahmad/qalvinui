@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { Search, Moon, Sun, FileText, Component, Palette, Terminal, BookOpen, ShoppingCart } from "lucide-react";
+import { Search, Moon, Sun, FileText, Component, Palette, Terminal, BookOpen, ShoppingCart, Layout, Box, Sparkles, Leaf, Zap, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QalvinMark } from "@/components/brand/qalvin-mark";
 import { cn } from "@/lib/utils";
@@ -42,7 +42,9 @@ const searchItems: SearchItem[] = [
   { title: "Installation", description: "Install Qalvin UI in your project", href: "/docs/installation", icon: FileText, category: "Documentation" },
   { title: "Theming", description: "Customize the look and feel", href: "/docs/theming", icon: Palette, category: "Documentation" },
   { title: "CLI", description: "Command line interface", href: "/docs/cli", icon: Terminal, category: "Documentation" },
-  { title: "Typeset", description: "Typography utilities", href: "/docs/typeset", icon: FileText, category: "Documentation" },
+  { title: "Typeset", description: "Typography utilities and rhythm studio", href: "/typeset", icon: FileText, category: "Documentation" },
+  { title: "Templates", description: "Production-ready Landing Page, Admin, CRM & SaaS templates", href: "/templates", icon: Layout, category: "Templates" },
+  { title: "Studio", description: "Integrated theme, typography and template studio", href: "/create", icon: Palette, category: "Studio" },
   { title: "Changelog", description: "Version history and updates", href: "/docs/changelog", icon: BookOpen, category: "Documentation" },
   
   // Registry
@@ -61,6 +63,18 @@ const searchItems: SearchItem[] = [
   { title: "registry-item.json", description: "Registry item format", href: "/docs/registry-item-json", icon: FileText, category: "Registry" },
   
   // Components
+  { title: "3D Glass Button", description: "Interactive 3D physical glass AI pill button with galaxy orb & burst physics", href: "/docs/ui/3d-glass-button", icon: Sparkles, category: "Components" },
+  { title: "3D CRT", description: "Interactive 3D CRT phosphor display, scanlines & shadow mask (Terminal, Nintendo)", href: "/docs/ui/3d-crt", icon: Monitor, category: "Components" },
+  { title: "3D Warp Field", description: "Interactive 3D starfield, light streaks & hyperspace tunnel", href: "/docs/ui/3d-warp-field", icon: Zap, category: "Components" },
+  { title: "3D Space", description: "Interactive 3D WebGL deep indigo nebula space (Julian Vance)", href: "/docs/ui/3d-space", icon: Sparkles, category: "Components" },
+  { title: "3D Book Showcase", description: "Interactive 3D field manuals, book tilt & blossom petals", href: "/docs/ui/3d-book-showcase", icon: BookOpen, category: "Components" },
+  { title: "3D Woven", description: "Interactive 3D kinetic textiles & Verlet cloth physics (Lumina)", href: "/docs/ui/3d-woven", icon: Sparkles, category: "Components" },
+  { title: "3D Paper", description: "Interactive 3D realistic paper mesh, curl physics & certificates (Nocturne)", href: "/docs/ui/3d-paper", icon: FileText, category: "Components" },
+  { title: "3D Plant", description: "Interactive 3D procedural plant, moss & living world (Sylva)", href: "/docs/ui/3d-plant", icon: Leaf, category: "Components" },
+  { title: "3D Section", description: "Interactive 3D spatial viewport and depth container", href: "/docs/ui/3d-section", icon: Box, category: "Components" },
+  { title: "3D Hero", description: "Interactive 3D WebGL night walk Kyoto temple hero (Kage)", href: "/docs/ui/3d-hero", icon: Sparkles, category: "Components" },
+  { title: "3D Holocard", description: "Interactive 3D holographic trading card with custom shaders", href: "/docs/ui/3d-holocard", icon: Sparkles, category: "Components" },
+  { title: "3D Sketchbook", description: "Interactive 3D botanical flipbook with realistic page curl", href: "/docs/ui/3d-sketchbook", icon: BookOpen, category: "Components" },
   { title: "Accordion", description: "A collapsible content area", href: "/docs/components/accordion", icon: Component, category: "Components" },
   { title: "Alert", description: "Displays a callout for important information", href: "/docs/components/alert", icon: Component, category: "Components" },
   { title: "Alert Dialog", description: "A modal dialog for important content", href: "/docs/components/alert-dialog", icon: Component, category: "Components" },
@@ -240,22 +254,24 @@ export function SiteHeader() {
                 Charts
               </Link>
               <Link
-                href="/typeset"
+                href="/templates"
                 className={cn(
                   "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/typeset") ? "text-foreground" : "text-foreground/60"
+                  pathname?.startsWith("/templates") ? "text-foreground" : "text-foreground/60"
                 )}
               >
-                Typeset
+                Templates
               </Link>
               <Link
                 href="/create"
                 className={cn(
                   "transition-colors hover:text-foreground/80",
-                  pathname?.startsWith("/create") ? "text-foreground" : "text-foreground/60"
+                  pathname?.startsWith("/create") || pathname?.startsWith("/typeset")
+                    ? "text-foreground"
+                    : "text-foreground/60"
                 )}
               >
-                Create
+                Studio
               </Link>
               <Link
                 href="https://qalvinfont.vercel.app/"
@@ -336,11 +352,6 @@ export function SiteHeader() {
                   <Github className="h-4 w-4" />
                   <span className="tabular-nums">{stars}</span>
                 </div>
-              </Link>
-              <Link href="/create" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
-                <Button size="sm" aria-label="Create new component" className="h-9 px-3.5 rounded-xl font-medium shadow-2xs">
-                  + New
-                </Button>
               </Link>
             </nav>
           </div>

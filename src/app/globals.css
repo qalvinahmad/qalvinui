@@ -243,60 +243,142 @@
 }
 
 /* ---------------------------------------------------------------------------
- * QalvinMark — bounding box with crosshairs and 3D isometric stack card
- * Matches Image 1:
- * Rest: 3D isometric with wireframe outline base card and elevated solid top card.
- * Hover: top card floats higher along Z-axis with deeper elevation shadow.
+ * QalvinMark — Figma-style 2D bounding box → 3D isometric stack on hover
+ *
+ * REST  : Clean flat 2D card ("UI" text) with thin guide lines and 4 blue
+ *         corner handles — mirrors the Aceternity UI logo aesthetic.
+ * HOVER : True CSS 3D isometric projection: scene tilts via rotateX + rotateZ,
+ *         revealing 3 stacked card layers and 4 blue corner dots at their real
+ *         3D Z-positions, joined by vertical connecting pillars.
  * ------------------------------------------------------------------------- */
+
+/* ── Scene container ────────────────────────────────────────────────────── */
 .qalvin-mark-scene {
   transform-style: preserve-3d;
-  transform: rotateX(54deg) rotateZ(-45deg) scale(0.78);
-  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: rotateX(0deg) rotateZ(0deg) scale(1);
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ── Guide lines (bounding-box crosshairs visible at rest) ──────────────── */
+.qm-guide {
+  background: rgba(161, 161, 170, 0.70); /* zinc-400/70 */
+  transition: opacity 300ms ease;
+}
+.dark .qm-guide {
+  background: rgba(82, 82, 91, 0.70);  /* zinc-600/70 */
+}
+
+/* ── Layer 1: Base card (floor) ─────────────────────────────────────────── */
 .qalvin-mark-base {
   transform-style: preserve-3d;
   transform: translateZ(0px);
-  opacity: 1;
+  opacity: 0;
+  border-color: rgba(161, 161, 170, 0.80);
+  background: transparent;
+  transition: opacity 200ms ease 20ms, transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark .qalvin-mark-base {
+  border-color: rgba(82, 82, 91, 0.80);
 }
 
+/* ── Layer 2: Middle card ───────────────────────────────────────────────── */
+.qalvin-mark-mid {
+  transform-style: preserve-3d;
+  transform: translateZ(0px);
+  opacity: 0;
+  border-color: rgba(161, 161, 170, 0.60);
+  background: rgba(255, 255, 255, 0.35);
+  transition: opacity 220ms ease 40ms, transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark .qalvin-mark-mid {
+  border-color: rgba(82, 82, 91, 0.60);
+  background: rgba(39, 39, 42, 0.40);
+}
+
+/* ── Layer 3: Top card (always visible) ─────────────────────────────────── */
 .qalvin-mark-top {
   transform-style: preserve-3d;
-  transform: translateZ(11px) translateY(-2px);
-  box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.22), 0 3px 6px -1px rgba(0, 0, 0, 0.08);
-  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
+  transform: translateZ(0px);
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 340ms ease;
 }
 
+/* ── Corner dot handles ─────────────────────────────────────────────────── */
+.qm-dot {
+  /* Base Z keeps them at the top-card level (Z=17px via inline style). */
+  /* At REST: guide lines + dots appear in 2D — scene has no rotation. */
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Vertical connecting pillars (hidden at rest) ───────────────────────── */
+.qm-pillar {
+  background: rgba(37, 99, 235, 0.55);
+  opacity: 0;
+  transition: opacity 200ms ease 60ms;
+}
+.dark .qm-pillar {
+  background: rgba(59, 130, 246, 0.55);
+}
+
+/* ══ HOVER / FOCUS-VISIBLE STATE ══════════════════════════════════════════ */
 @media (hover: hover) and (pointer: fine) {
+  /* Tilt whole scene into isometric view */
   .qalvin-mark:hover .qalvin-mark-scene,
   .qalvin-mark:focus-visible .qalvin-mark-scene {
-    transform: rotateX(54deg) rotateZ(-45deg) scale(0.82);
+    transform: rotateX(54deg) rotateZ(-45deg) scale(0.80);
   }
+
+  /* Guide lines fade out slightly so layers read clearly */
+  .qalvin-mark:hover .qm-guide,
+  .qalvin-mark:focus-visible .qm-guide {
+    opacity: 0.4;
+  }
+
+  /* Layer 1: Base floor — fade in */
+  .qalvin-mark:hover .qalvin-mark-base,
+  .qalvin-mark:focus-visible .qalvin-mark-base {
+    opacity: 1;
+    transform: translateZ(0px);
+  }
+
+  /* Layer 2: Middle — fade in and rise */
+  .qalvin-mark:hover .qalvin-mark-mid,
+  .qalvin-mark:focus-visible .qalvin-mark-mid {
+    opacity: 1;
+    transform: translateZ(8px);
+  }
+
+  /* Layer 3: Top — rise to full height */
   .qalvin-mark:hover .qalvin-mark-top,
   .qalvin-mark:focus-visible .qalvin-mark-top {
-    transform: translateZ(16px) translateY(-4px);
-    box-shadow: 0 14px 28px -3px rgba(0, 0, 0, 0.3), 0 6px 10px -2px rgba(0, 0, 0, 0.12);
+    transform: translateZ(16px);
+    box-shadow:
+      0 10px 22px -4px rgba(0, 0, 0, 0.26),
+      0 4px 8px -2px rgba(0, 0, 0, 0.10);
+  }
+
+  /* Vertical pillars — appear on hover */
+  .qalvin-mark:hover .qm-pillar,
+  .qalvin-mark:focus-visible .qm-pillar {
+    opacity: 1;
   }
 }
 
+/* ══ REDUCED MOTION ═══════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   .qalvin-mark-scene {
-    transform: rotateX(0deg) rotateZ(0deg) scale(1);
-    transition: none;
+    transform: none !important;
+    transition: none !important;
   }
-  .qalvin-mark-base {
-    display: none;
+  .qalvin-mark-base,
+  .qalvin-mark-mid,
+  .qm-pillar {
+    display: none !important;
   }
   .qalvin-mark-top {
-    transform: none;
-    box-shadow: none;
-    transition: none;
-  }
-  .qalvin-mark:hover .qalvin-mark-scene,
-  .qalvin-mark:focus-visible .qalvin-mark-scene,
-  .qalvin-mark:hover .qalvin-mark-top,
-  .qalvin-mark:focus-visible .qalvin-mark-top {
-    transform: none;
+    transform: none !important;
+    box-shadow: none !important;
+    transition: none !important;
   }
 }
 

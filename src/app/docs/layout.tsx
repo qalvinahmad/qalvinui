@@ -157,6 +157,66 @@ export default function DocsLayout({
 
   const uiItems = [
   {
+    "title": "3D Glass Button",
+    "href": "/docs/ui/3d-glass-button",
+    "isNew": true
+  },
+  {
+    "title": "3D CRT",
+    "href": "/docs/ui/3d-crt",
+    "isNew": true
+  },
+  {
+    "title": "3D Warp Field",
+    "href": "/docs/ui/3d-warp-field",
+    "isNew": true
+  },
+  {
+    "title": "3D Space",
+    "href": "/docs/ui/3d-space",
+    "isNew": true
+  },
+  {
+    "title": "3D Book Showcase",
+    "href": "/docs/ui/3d-book-showcase",
+    "isNew": true
+  },
+  {
+    "title": "3D Woven",
+    "href": "/docs/ui/3d-woven",
+    "isNew": true
+  },
+  {
+    "title": "3D Paper",
+    "href": "/docs/ui/3d-paper",
+    "isNew": true
+  },
+  {
+    "title": "3D Plant",
+    "href": "/docs/ui/3d-plant",
+    "isNew": true
+  },
+  {
+    "title": "3D Hero",
+    "href": "/docs/ui/3d-hero",
+    "isNew": true
+  },
+  {
+    "title": "3D Holocard",
+    "href": "/docs/ui/3d-holocard",
+    "isNew": true
+  },
+  {
+    "title": "3D Section",
+    "href": "/docs/ui/3d-section",
+    "isNew": true
+  },
+  {
+    "title": "3D Sketchbook",
+    "href": "/docs/ui/3d-sketchbook",
+    "isNew": true
+  },
+  {
     "title": "Activity Terrain",
     "href": "/docs/ui/activity-terrain",
     "isNew": true
