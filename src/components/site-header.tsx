@@ -287,36 +287,39 @@ export function SiteHeader() {
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-            {/* Action group matching Image 3: [Cart] [Theme] [Search ⌘K] */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <Link
-                href="/blocks#checkout"
-                aria-label="Shopping Cart and interactive checkout"
-                className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-background/95 text-foreground shadow-2xs transition-colors hover:bg-muted/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            {/* Action group: Cart (BuyMeACoffee), Theme Toggle, and Search bar wrapped in gray card (Matches reference) */}
+            <div className="flex items-center gap-1 rounded-2xl border border-zinc-200/80 bg-zinc-100/90 p-1 shadow-2xs dark:border-zinc-800 dark:bg-zinc-800/60">
+              <a
+                href="https://buymeacoffee.com/alvinahmad"
+                target="_blank"
+                rel="noreferrer"
+                title="Support on Buy Me a Coffee"
+                aria-label="Support on Buy Me a Coffee (opens in new tab)"
+                className="inline-flex size-[34px] shrink-0 items-center justify-center rounded-xl border border-zinc-200/70 bg-background text-foreground shadow-2xs transition-all hover:bg-muted/80 hover:border-zinc-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:border-zinc-700/80 dark:hover:border-zinc-600"
               >
-                <ShoppingCart className="size-[17px] stroke-[1.8] text-foreground/80" />
-              </Link>
+                <ShoppingCart className="size-4 stroke-[1.8] text-foreground/80" />
+              </a>
               <Button
                 variant="ghost"
                 size="icon"
                 aria-label="Switch between light and dark theme"
-                className="size-9 shrink-0 rounded-xl border border-border/70 bg-background/95 text-foreground shadow-2xs transition-colors hover:bg-muted/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="size-[34px] shrink-0 rounded-xl border border-zinc-200/70 bg-background text-foreground shadow-2xs transition-all hover:bg-muted/80 hover:border-zinc-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:border-zinc-700/80 dark:hover:border-zinc-600"
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               >
-                <Sun className="size-[18px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-foreground/80" />
-                <Moon className="absolute size-[18px] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-foreground/80" />
+                <Sun className="size-[17px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-foreground/80" />
+                <Moon className="absolute size-[17px] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-foreground/80" />
                 <span className="sr-only">Toggle theme</span>
               </Button>
               <button
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Search documentation and components (Press Cmd+K)"
-                className="group relative inline-flex h-9 w-36 items-center justify-between rounded-xl border border-border/70 bg-background/95 px-3 text-sm text-muted-foreground shadow-2xs transition-colors hover:bg-muted/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:w-48 md:w-56"
+                className="group relative inline-flex h-[34px] w-36 items-center justify-between rounded-xl border border-zinc-200/70 bg-background px-3 text-sm text-muted-foreground shadow-2xs transition-all hover:bg-muted/80 hover:border-zinc-300 hover:text-foreground active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:border-zinc-700/80 dark:hover:border-zinc-600 sm:w-48 md:w-56"
               >
                 <span className="flex items-center gap-2">
                   <Search className="size-4 shrink-0 opacity-60 transition-opacity group-hover:opacity-90" />
                   <span className="font-normal text-muted-foreground">Search</span>
                 </span>
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded-md border border-border/60 bg-muted/60 px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded-md border border-zinc-200/80 bg-zinc-100 px-1.5 font-mono text-[10px] font-medium text-muted-foreground dark:border-zinc-700/80 dark:bg-zinc-800">
                   <span className="text-xs">⌘</span>K
                 </kbd>
               </button>
